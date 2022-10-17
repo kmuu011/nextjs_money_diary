@@ -28,6 +28,8 @@ const Account: NextPage = () => {
 
         await getAccountList(undefined, true);
     }
+
+
     
 
     const getAccountList = async (nextPage?: boolean, initial?: boolean): Promise<void> => {
