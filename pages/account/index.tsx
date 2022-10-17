@@ -29,9 +29,6 @@ const Account: NextPage = () => {
         await getAccountList(undefined, true);
     }
 
-
-    
-
     const getAccountList = async (nextPage?: boolean, initial?: boolean): Promise<void> => {
         const selectPage = initial ? 1 : nextPage ? page + 1 : page;
 
