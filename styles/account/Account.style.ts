@@ -19,23 +19,23 @@ export const accountTotalStatisticWrap = css`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  background-color: var(--color-3);
-  height: 300px;
-  padding: 13px;
+  background-color: var(--color-1);
+  height: var(--very-large-card-height-size);
+  padding: var(--default-padding-size);
 
   div {
-    padding: 10px 0
+    padding: var(--medium-padding-size) 0;
   }
 `;
 
 export const allAccountTotalAmountDesc = css`
-  color: var(--color-1);
-  font-size: 24px;
+  color: var(--color-4);
+  font-size: var(--default-font-size);
 `;
 
 export const allAccountTotalAmount = css`
-  color: white;
-  font-size: 32px;
+  color: var(--color-real-white);
+  font-size: var(--large-font-size);
 `;
 
 export const accountListWrap = css`
@@ -46,30 +46,58 @@ export const accountListWrap = css`
   flex-wrap: wrap;
 `;
 
-export const accountItem = (isLast: boolean) => css`
+export const accountItem = css`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  border-bottom: ${isLast ? 0 : 1}px solid var(--color-2);
+  border-bottom: 1px solid var(--color-1);
   overflow-y: auto;
   width: 100%;
-  height: 215px;
+  height: var(--large-card-height-size);
   background-color: #fff;
   cursor: pointer;
-  padding: 13px;
+  padding: var(--default-padding-size);
 
   div {
-    padding: 5px 0;
+    padding: var(--small-padding-size) 0;
+  }
+`;
+
+export const accountLastItem = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  width: 100%;
+  height: var(--large-card-height-size);
+  background-color: #fff;
+  cursor: pointer;
+  padding: var(--default-padding-size);
+
+  div {
+    padding: var(--small-padding-size) 0;
   }
 `;
 
 export const accountName = css`
-  font-size: 20px;
+  font-size: var(--default-font-size);
   color: var(--color-4);
 `;
 
 export const accountAmount = css`
-  font-size: 24px;
-  color: black;
+  font-size: var(--default-font-size);
+  color: var(--color-7);
+`;
+
+export const accountAddPlus = css`
+  font-size: 40px;
+  color: var(--color-2);
+  
+`;
+
+export const accountAddText = css`
+  font-size: var(--default-font-size);
+  color: var(--color-2);
 `;

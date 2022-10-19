@@ -70,7 +70,7 @@ const Account: NextPage = () => {
 
             <div className={styles.accountTotalStatisticWrap}>
                 <div className={styles.allAccountTotalAmountDesc}>
-                    내 자산
+                    총 자산
                 </div>
                 <div className={styles.allAccountTotalAmount}>
                     1,500,000원
@@ -98,6 +98,16 @@ const Account: NextPage = () => {
                     })
                 }
             </InfiniteScroll>
+
+            <div className={styles.accountLastItem}>
+                <div className={styles.accountAddPlus}>
+                    +
+                </div>
+                <div className={styles.accountAddText}>
+                    가계부 추가
+                </div>
+
+            </div>
 
         </div>
     )

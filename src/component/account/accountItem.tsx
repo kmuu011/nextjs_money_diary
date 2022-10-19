@@ -65,7 +65,7 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
 
     return (
         <div
-            className={styles.accountItem(false)}
+            className={styles.accountItem}
         >
             <div className={styles.accountName}>
                 {accountName}
