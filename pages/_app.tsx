@@ -12,8 +12,10 @@ import {
 import {css} from "@emotion/css";
 
 function MyApp({Component, pageProps}: AppProps) {
+    const [innerHeight, setInnerHeight] = useState(600);
+
     const [bodyCss, setBodyCss] = useState(css`
-          height: 600px;
+          height: ${innerHeight}px;
           overflow-y: auto;
     `);
 
@@ -27,14 +29,20 @@ function MyApp({Component, pageProps}: AppProps) {
             }
         }
 
+    }, []);
+
+    useEffect(() => {
         const height = window.innerHeight-137;
+
+        window.addEventListener('resize', () => {
+            setInnerHeight(window.innerHeight)
+        });
 
         setBodyCss(css`
           height: ${height}px;
           overflow-y: auto;
         `)
-
-    }, []);
+    }, [innerHeight])
 
     return (
         <RecoilRoot>
