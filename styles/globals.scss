@@ -1,6 +1,7 @@
 @import "reset";
 
 :root {
+  --body-box-shadow: 0 0 12px rgb(0 0 0 / 10%);
   --background-color: #f5fbf9;
 
   --color-0: #f5fbf9;
@@ -23,7 +24,7 @@
   --default-font-size: 24px;
   --small-font-size: 18px;
 
-  --input-border-color: #d1d5db;
+  --input-border-color: var(--color-1);
   --border-radius: 4px;
 
   --default-top-margin: 25px;
@@ -39,9 +40,7 @@
 }
 
 html {
-  display: flex;
-  justify-content: center;
-  background-color: white;
+  background-color: #ffffff;
   height: 100%;
 }
 
@@ -49,12 +48,6 @@ html,
 body {
   padding: 0;
   margin: 0;
-}
-
-body{
-  position: relative;
-  width: 500px;
-  background-color: var(--background-color);
 }
 
 html, body, div, span, applet, object, iframe,
@@ -101,7 +94,7 @@ input 태그 css
 input[type="text"],
 input[type="number"],
 input[type="password"],
-input[type="email"]{
+input[type="email"] {
   position: relative;
   letter-spacing: .1em;
   padding: 0 10px;
@@ -179,7 +172,7 @@ input[type="checkbox"] + label:before {
   border-radius: var(--border-radius);
 }
 
-input[type="checkbox"]{
+input[type="checkbox"] {
   border: 0;
   clip: rect(0 0 0 0);
   height: 1px;
@@ -190,13 +183,13 @@ input[type="checkbox"]{
   width: 1px;
 }
 
-input[type="checkbox"]:hover + label:before{
+input[type="checkbox"]:hover + label:before {
   border-color: var(--color-2);
   cursor: pointer;
 }
 
 
-input[type="checkbox"] + label{
+input[type="checkbox"] + label {
   position: relative;
   padding-left: 26px;
   font-weight: normal;

@@ -14,7 +14,7 @@ const CircleButton: FunctionComponent<CircleButtonProps> = (
       height: 60px;
       border-radius: 30px;
       box-shadow: 2px 2px 5px rgb(0 0 0 / 40%);
-      background: #fff;
+      background: var(--color-2);
       cursor: pointer;
     `;
 

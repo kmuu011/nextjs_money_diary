@@ -7,6 +7,10 @@ export const selectAccountApi = async (payload: SelectQueryDto): Promise<AxiosRe
     return await callApi<SelectQueryDto>('get', 'account', payload);
 }
 
+export const selectOneAccountApi = async (accountIdx: number): Promise<AxiosResponse | undefined> => {
+    return await callApi('get', `account/${accountIdx}`);
+}
+
 export const createAccountApi = async (payload: CreateAccountDto): Promise<AxiosResponse | undefined> => {
     return await callApi<CreateAccountDto>('post', 'account', payload)
 }

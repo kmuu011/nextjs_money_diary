@@ -1,17 +1,12 @@
 import {css} from "@emotion/css";
+import {defaultBodyCss} from "../common/Common.style";
 
-export const container = () => {
-    return css`
-      text-align: center;
-      margin: 0 auto;
-      width: 100%;
-    `
-};
-
-export const circleButtonWrap = css`
-  position: fixed;
-  right: 14px;
-  bottom: 150px;
+export const container = css`
+  ${defaultBodyCss};
+  text-align: center;
+  margin: 0 auto;
+  overflow-y: auto;
+  box-shadow: var(--body-box-shadow);
 `;
 
 export const accountTotalStatisticWrap = css`
@@ -29,7 +24,7 @@ export const accountTotalStatisticWrap = css`
 `;
 
 export const allAccountTotalAmountDesc = css`
-  color: var(--color-4);
+  color: var(--color-0);
   font-size: var(--default-font-size);
 `;
 
@@ -39,11 +34,6 @@ export const allAccountTotalAmount = css`
 `;
 
 export const accountListWrap = css`
-  display: flex;
-  justify-content: center;
-  column-gap: 14px;
-  flex-direction: row;
-  flex-wrap: wrap;
 `;
 
 export const accountItem = css`
@@ -53,7 +43,6 @@ export const accountItem = css`
   justify-content: center;
   border-bottom: 1px solid var(--color-1);
   overflow-y: auto;
-  width: 100%;
   height: var(--large-card-height-size);
   background-color: #fff;
   cursor: pointer;
@@ -70,7 +59,6 @@ export const accountLastItem = css`
   align-items: center;
   justify-content: center;
   overflow-y: auto;
-  width: 100%;
   height: var(--large-card-height-size);
   background-color: #fff;
   cursor: pointer;
@@ -94,7 +82,7 @@ export const accountAmount = css`
 export const accountAddPlus = css`
   font-size: 40px;
   color: var(--color-2);
-  
+
 `;
 
 export const accountAddText = css`

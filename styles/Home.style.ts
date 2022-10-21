@@ -1,13 +1,20 @@
 import {css} from "@emotion/css";
 
 export const container = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   margin: 0 auto;
-  width: 450px;
-`
+  height: 100vh;
+  box-shadow: var(--body-box-shadow);
+`;
+
+export const innerContainer = css`
+    width: 80%;
+`;
 
 export const title = css`
-  margin-top: 150px;
   font-size: 48px
 `;
 

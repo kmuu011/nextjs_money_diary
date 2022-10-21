@@ -10,12 +10,6 @@ export const container = css`
   min-height: 600px;
 `;
 
-export const circleButtonWrap = css`
-  position: fixed;
-  right: 14px;
-  bottom: 150px;
-`;
-
 export const todoListWrap = css`
   padding: 14px;
   display: flex;

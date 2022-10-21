@@ -17,10 +17,9 @@ const GlobalNavigation: FunctionComponent = () => {
     useEffect(() => {
         if (showSideBar) {
             document.body.style.cssText = `
-                position: fixed; 
                 top: -${window.scrollY}px;
-                overflow-y: scroll;
-                width: 500px;
+                overflow-y: hidden;
+                width: 100%;
                 `;
         } else {
             const scrollY = document.body.style.top;

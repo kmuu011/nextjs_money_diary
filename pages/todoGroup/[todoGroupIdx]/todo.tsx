@@ -10,6 +10,7 @@ import {useEffect, useState} from "react";
 import {TodoItemType} from "../../../src/interface/type/todo";
 import TodoItem from "../../../src/component/todoGroup/todo/todoItem";
 import {CircleButtonProps} from "../../../src/interface/props/common";
+import {circleButtonWrap} from "../../../styles/common/Common.style";
 
 const Todo: NextPage = () => {
     const todoGroupIdx: number = Number(useRouter().query.todoGroupIdx);
@@ -65,7 +66,7 @@ const Todo: NextPage = () => {
         <div className={styles.container}>
             <SetHead/>
 
-            <div className={styles.circleButtonWrap}>
+            <div className={circleButtonWrap()}>
                 <CircleButton {...circleButtonProps}/>
             </div>
 
