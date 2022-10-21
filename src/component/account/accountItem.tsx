@@ -64,19 +64,19 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
     }
 
     return (
-        <div
-            className={styles.accountItem(false)}
-        >
-            <div className={styles.accountName}>
-                {accountName}
-            </div>
-            <div className={styles.accountAmount}>
-                {totalAmount}원
-            </div>
-            {/*<Link href={`/account/${index}`}>*/}
-            {/*</Link>*/}
+        <Link href={`/account/${index}/history`}>
+            <div
+                className={styles.accountItem}
+            >
+                <div className={styles.accountName}>
+                    {accountName}
+                </div>
+                <div className={styles.accountAmount}>
+                    {totalAmount}원
+                </div>
 
-        </div>
+            </div>
+        </Link>
     )
 }
 

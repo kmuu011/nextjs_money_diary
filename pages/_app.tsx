@@ -1,22 +1,17 @@
 import '../styles/globals.scss';
 import '../public/static/font/NanumSquareRound/style.scss';
 import type {AppProps} from 'next/app';
-import {Fragment, useEffect, useState} from "react";
+import {Fragment, useEffect} from "react";
 import Footer from "../src/component/common/Footer";
 import GlobalNavigation from "../src/component/common/navigation/GlobalNavigation";
 import NavigationMenu from "../src/component/common/sideBar/SideBar";
 
 import {
-    RecoilRoot,
+    RecoilRoot
 } from 'recoil';
-import {css} from "@emotion/css";
+import {serviceBody, serviceWrap} from "../styles/common/Common.style";
 
 function MyApp({Component, pageProps}: AppProps) {
-    const [bodyCss, setBodyCss] = useState(css`
-          height: 600px;
-          overflow-y: auto;
-    `);
-
     useEffect(() => {
         const pathName: string = window.location.pathname;
         const tokenCode: string | null = localStorage.getItem('token-code');
@@ -26,25 +21,20 @@ function MyApp({Component, pageProps}: AppProps) {
                 window.location.href = '/todoGroup';
             }
         }
-
-        const height = window.innerHeight-137;
-
-        setBodyCss(css`
-          height: ${height}px;
-          overflow-y: auto;
-        `)
-
     }, []);
 
     return (
         <RecoilRoot>
             <Fragment>
-                <GlobalNavigation/>
-                <NavigationMenu/>
-                <div className={bodyCss}>
-                    <Component {...pageProps}/>
+                <div className={serviceWrap}>
+                    <div
+                        className={serviceBody}
+                    >
+                        <GlobalNavigation/>
+                        <NavigationMenu/>
+                        <Component {...pageProps}/>
+                    </div>
                 </div>
-                <Footer/>
             </Fragment>
         </RecoilRoot>
     )

@@ -1,28 +1,46 @@
 @import "reset";
 
 :root {
-  --background-color: #f9fafb;
-  --color-1: #f9f9f9;
-  --color-2: #d1d1d1;
-  --color-3: #ababab;
-  --color-4: #898989;
+  --body-box-shadow: 0 0 12px rgb(0 0 0 / 10%);
+  --background-color: #f5fbf9;
+
+  --color-0: #f5fbf9;
+  --color-1: #adddd0;
+  --color-2: #89cebb;
+  --color-3: #65bfa7;
+  --color-4: #47aa8f;
+  --color-5: #388671;
+  --color-6: #296253;
+  --color-7: #1a3d35;
 
   --color-red: #ff6f6e;
   --color-blue: #4b6fff;
+  --color-real-white: #ffffff;
 
-  --font-color: #111827;
+  --default-font-color: #0e2726;
 
-  --input-border-color: #d1d5db;
+  --large-font-size: 34px;
+  --default-large-font-size: 30px;
+  --default-font-size: 24px;
+  --small-font-size: 18px;
+
+  --input-border-color: var(--color-1);
   --border-radius: 4px;
-  --main-width: 450px;
-  --main-width-mobile: 360px;
+
   --default-top-margin: 25px;
+
+  --default-padding-size: 13px;
+  --medium-padding-size: 10px;
+  --small-padding-size: 5px;
+
+  --very-large-card-height-size: 300px;
+  --large-card-height-size: 215px;
+  --medium-card-height-size: 150px;
+  --very-small-card-height-size: 80px;
 }
 
 html {
-  display: flex;
-  justify-content: center;
-  background-color: white;
+  background-color: #ffffff;
   height: 100%;
 }
 
@@ -30,12 +48,6 @@ html,
 body {
   padding: 0;
   margin: 0;
-}
-
-body{
-  position: relative;
-  width: 500px;
-  background-color: var(--background-color);
 }
 
 html, body, div, span, applet, object, iframe,
@@ -82,7 +94,7 @@ input 태그 css
 input[type="text"],
 input[type="number"],
 input[type="password"],
-input[type="email"]{
+input[type="email"] {
   position: relative;
   letter-spacing: .1em;
   padding: 0 10px;
@@ -98,7 +110,7 @@ input[type="email"]{
   outline: none;
   transition: color 5s ease, background-color .5s ease;
   -webkit-transition: color 5s ease, background-color .5s ease;
-  color: var(--font-color);
+  color: var(--default-font-color);
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
@@ -160,7 +172,7 @@ input[type="checkbox"] + label:before {
   border-radius: var(--border-radius);
 }
 
-input[type="checkbox"]{
+input[type="checkbox"] {
   border: 0;
   clip: rect(0 0 0 0);
   height: 1px;
@@ -171,13 +183,13 @@ input[type="checkbox"]{
   width: 1px;
 }
 
-input[type="checkbox"]:hover + label:before{
+input[type="checkbox"]:hover + label:before {
   border-color: var(--color-2);
   cursor: pointer;
 }
 
 
-input[type="checkbox"] + label{
+input[type="checkbox"] + label {
   position: relative;
   padding-left: 26px;
   font-weight: normal;
