@@ -66,7 +66,7 @@ const Todo: NextPage = () => {
         <div className={styles.container}>
             <SetHead/>
 
-            <div className={circleButtonWrap()}>
+            <div className={circleButtonWrap}>
                 <CircleButton {...circleButtonProps}/>
             </div>
 

@@ -24,12 +24,22 @@ export const accountHistoryTotalStatisticWrap = css`
   justify-content: center;
   align-items: flex-start;
   background-color: var(--color-1);
-  height: var(--very-large-card-height-size);
+  height: var(--large-card-height-size);
   padding: var(--default-padding-size);
 
   div {
     padding: var(--medium-padding-size) 0;
   }
+`;
+
+export const accountName = css`
+  color: var(--color-0);
+  font-size: var(--default-font-size);
+`;
+
+export const accountTotalAmount = css`
+  color: var(--color-real-white);
+  font-size: var(--large-font-size);
 `;
 
 export const accountHistoryItem = css`

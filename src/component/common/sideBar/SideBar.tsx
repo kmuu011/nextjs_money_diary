@@ -6,9 +6,10 @@ import {logout} from "../../../api/member";
 
 import settingsImage from "../../../../public/static/button/setting/settings.svg";
 import todoImage from "../../../../public/static/button/todo/list.svg";
-import {container, menuWrap} from "../../../../styles/common/sideBar/SideBar.style";
+import {menuWrap} from "../../../../styles/common/sideBar/SideBar.style";
 import {hideSideMenuBar} from "../../../utils/utils";
 import {SideMenuProps} from "../../../interface/props/common";
+import {modalBackground} from "../../../../styles/common/Common.style";
 
 const GlobalNavigation: FunctionComponent = () => {
     const [showSideBar, setShowSideBar] = useRecoilState(showSideBarAtom);
@@ -42,7 +43,7 @@ const GlobalNavigation: FunctionComponent = () => {
     ];
 
     return (
-        <div className={container(showSideBar)}
+        <div className={modalBackground(showSideBar)}
              id={"naviMenuContainer"}
              onClick={(e) => {
                  const element: HTMLDivElement = e.target as HTMLDivElement;

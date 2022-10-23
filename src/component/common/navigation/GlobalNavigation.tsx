@@ -2,7 +2,7 @@ import * as styles from '../../../../styles/common/navigation/GlobalNavigation.s
 import {FunctionComponent, useEffect, useState} from "react";
 import menuButton from "../../../../public/static/button/menu/menu.svg"
 import Image from "next/image";
-import {orRegExpMaker} from "../../../utils/utils";
+import {freezeBackground, orRegExpMaker} from "../../../utils/utils";
 import {useRecoilState} from "recoil";
 import {showSideBarAtom} from "../../../recoil/atoms/common";
 
@@ -15,19 +15,9 @@ const GlobalNavigation: FunctionComponent = () => {
     const [showSideBar, setShowSideBar] = useRecoilState(showSideBarAtom);
 
     useEffect(() => {
-        if (showSideBar) {
-            document.body.style.cssText = `
-                top: -${window.scrollY}px;
-                overflow-y: hidden;
-                width: 100%;
-                `;
-        } else {
-            const scrollY = document.body.style.top;
-            document.body.style.cssText = '';
-            window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
-        }
+        freezeBackground(showSideBar, window, document);
     }, [showSideBar]);
-    
+
     useEffect(() => {
         const pathName: string = window.location.pathname;
 
