@@ -27,7 +27,6 @@ export const callApi = async <T>(
     if (token === '') {
         window.location.href = '/';
         localStorage.removeItem('token-code');
-        alert('로그인 정보가 존재하지 않습니다. 다시 로그인해주세요.');
         return undefined;
     }
 

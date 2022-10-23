@@ -13,10 +13,17 @@ import CircleButton from "../../../src/component/common/button/CircleButton";
 import {circleButtonWrap} from "../../../styles/common/Common.style";
 import {CircleButtonProps} from "../../../src/interface/props/common";
 import addWhiteButton from "../../../public/static/button/add/addWhite.svg";
-
+import {useRecoilState} from "recoil";
+import {freezeBackground} from "../../../src/utils/utils";
+import {showAccountHistoryInsertModalAtom} from "../../../src/recoil/atoms/accountHistory";
+import AccountHistoryInsertModal from "../../../src/component/account/history/modal/AccountHistoryInsertModal";
 
 const AccountHistory: NextPage = () => {
     const accountIdx: number = Number(useRouter().query.accountIdx);
+    const [
+        showAccountHistoryInsertModal,
+        setShowAccountHistoryInsertModal
+    ] = useRecoilState(showAccountHistoryInsertModalAtom);
 
     const [accountInfo, setAccountInfo] = useState<AccountItemType>();
     const [accountHistoryList, setAccountHistoryList] = useState<AccountHistoryItemType[]>([]);
@@ -69,26 +76,41 @@ const AccountHistory: NextPage = () => {
         setLast(response.data.last);
     }
 
+    const openAccountInertModal = () => {
+        setShowAccountHistoryInsertModal(true);
+    }
+
     useEffect(() => {
         getAccountInfo();
         getAccountHistoryList();
     }, [accountIdx]);
 
+    useEffect(() => {
+        freezeBackground(showAccountHistoryInsertModal, window, document);
+    }, [showAccountHistoryInsertModal])
+
     const circleButtonProps: CircleButtonProps = {
         image: addWhiteButton,
-        action: () => {}
-    }
+        action: openAccountInertModal
+    };
 
     return (
         <div className={styles.container}>
             <SetHead/>
 
-            <div className={circleButtonWrap()}>
+            <AccountHistoryInsertModal/>
+
+            <div className={circleButtonWrap}>
                 <CircleButton {...circleButtonProps}/>
             </div>
 
             <div className={styles.accountHistoryTotalStatisticWrap}>
-                {accountInfo?.accountName}, {accountInfo?.totalAmount}
+                <div className={styles.accountName}>
+                    {accountInfo?.accountName}
+                </div>
+                <div className={styles.accountTotalAmount}>
+                    {accountInfo?.totalAmount}
+                </div>
             </div>
 
             <InfiniteScroll

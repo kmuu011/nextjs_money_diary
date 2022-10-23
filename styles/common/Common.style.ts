@@ -1,9 +1,21 @@
 import {css} from "@emotion/css";
 
-export const circleButtonWrap = (right?: number, bottom?: number) => css`
+export const modalBackground = (show: boolean) => css`
+  height: ${show ? '100%' : 0};
   position: fixed;
-  right: ${right ? right : 14}px;
-  bottom: ${bottom ? bottom : 150}px;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  background-color: rgb(0, 0, 0, 0.4);
+  z-index: 999;
+  opacity: ${show ? 1 : 0};
+  transition: opacity .3s;
+`
+export const circleButtonWrap = css`
+  position: fixed;
+  right: 50%;
+  bottom: 3%;
+  transform: translate(50%);
 `;
 
 export const defaultBodyCss = css`

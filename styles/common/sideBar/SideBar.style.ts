@@ -3,16 +3,6 @@ import {useRouter} from "next/router";
 
 const sideBarWidth = 300;
 
-export const container = (show: boolean) => css`
-  height: 100%;
-  position: fixed;
-  width: ${show ? '100%' : 0};
-  left: 0;
-  top: 0;
-  background-color: rgb(0, 0, 0, 0.4);
-  z-index: 999;
-`;
-
 export const menuWrap = (show: boolean) => css`
   position: relative;
   left: ${show ? 0 : sideBarWidth * -1.05}px;

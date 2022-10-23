@@ -5,7 +5,7 @@ import SetHead from "../../src/component/common/Head";
 import {createAccountApi, selectAccountApi} from "../../src/api/account";
 import {AccountItemType} from "../../src/interface/type/account";
 import InfiniteScroll from 'react-infinite-scroller';
-import AccountItem from "../../src/component/account/accountItem";
+import AccountItem from "../../src/component/account/AccountItem";
 
 const Account: NextPage = () => {
     const [accountList, setAccountList] = useState<AccountItemType[]>([]);
