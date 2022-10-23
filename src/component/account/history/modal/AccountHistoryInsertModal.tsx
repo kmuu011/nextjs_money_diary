@@ -1,15 +1,73 @@
-import {FunctionComponent} from "react";
+import {FunctionComponent, useEffect, useState} from "react";
 import {useRecoilState} from "recoil";
 
-import {showAccountHistoryInsertModalAtom} from "../../../../recoil/atoms/accountHistory";
+import {showAccountHistoryInsertModalAtom} from "../../../../recoil/atoms/account/history";
 import {modalBackground} from "../../../../../styles/common/Common.style";
 import * as styles from "../../../../../styles/account/history/insertModal.style";
+import {AccountHistoryCategoryItemType} from "../../../../interface/type/account/history/category";
+import {selectAccountHistoryCategoryApi} from "../../../../api/account/history/category";
+import {createAccountHistoryApi} from "../../../../api/account/history/history";
+import {useRouter} from "next/router";
 
 const AccountHistoryInsertModal: FunctionComponent = () => {
+    const accountIdx: number = Number(useRouter().query.accountIdx);
+
     const [
         showAccountHistoryInsertModal,
         setShowAccountHistoryInsertModal
     ] = useRecoilState(showAccountHistoryInsertModalAtom);
+
+    const [type, setType] = useState<number>(0);
+    const [amount, setAmount] = useState<number>(0);
+    const [content, setContent] = useState<string>('');
+    const [category, setCategory] = useState<number>(0);
+    const [categoryList, setCategoryList] = useState<AccountHistoryCategoryItemType[]>([]);
+
+    const getCategoryList = async () => {
+        const response = await selectAccountHistoryCategoryApi({type});
+
+        if (response?.status !== 200) {
+            alert(response?.data.message);
+            return;
+        }
+
+        setCategoryList(response.data);
+        setCategory(19)
+    };
+
+    const insertAccountHistory = async () => {
+        if (amount < 1) {
+            alert('금액을 정확히 입력해주세요.');
+            return;
+        }
+
+        if (content.replace(/\s/g, '') === '') {
+            alert('내용을 입력해주세요.');
+            return;
+        }
+
+        if (category === 0) {
+            alert('카테고리를 지정해주세요.');
+            return;
+        }
+
+        const response = await createAccountHistoryApi(
+            accountIdx,
+            {
+                amount,
+                content,
+                type,
+                accountHistoryCategoryIdx: category
+            }
+        );
+
+        console.log(response)
+
+    }
+
+    useEffect(() => {
+        getCategoryList()
+    }, [type]);
 
     return (
         <div className={modalBackground(showAccountHistoryInsertModal)}
@@ -26,22 +84,41 @@ const AccountHistoryInsertModal: FunctionComponent = () => {
             >
                 <div className={styles.accountHistoryInsertBody(showAccountHistoryInsertModal)}>
                     <div>
-                        <input type={"text"}/>
+                        <input
+                            type={"number"}
+                            onChange={(e) => setAmount(parseInt(e.target.value))}
+                        />
                     </div>
                     <div>
-                        <input type={"text"}/>
+                        <input
+                            type={"text"}
+                            onChange={(e) => setContent(e.target.value)}
+                        />
                     </div>
                     <div>
-                        <div>지출</div>
-                        <div>수입</div>
+                        <div onClick={() => setType(0)}>지출</div>
+                        <div onClick={() => setType(1)}>수입</div>
                     </div>
                     <div>
-                        <select>
-                            <option>테스트</option>
+                        <select
+                            value={category}
+                            onChange={(e) => {
+                                setCategory(Number(e.target.value))
+                            }}
+                        >
+                            {
+                                categoryList.map(c => {
+                                    return <option
+                                        value={c.idx} key={c.idx}
+                                    >
+                                        {c.name}
+                                    </option>
+                                })
+                            }
                         </select>
                     </div>
 
-                    <div>
+                    <div onClick={insertAccountHistory}>
                         등록하기
                     </div>
                 </div>

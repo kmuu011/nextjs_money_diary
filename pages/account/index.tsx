@@ -2,8 +2,8 @@ import type {NextPage} from 'next';
 import * as styles from '../../styles/account/Account.style';
 import {useEffect, useState} from "react";
 import SetHead from "../../src/component/common/Head";
-import {createAccountApi, selectAccountApi} from "../../src/api/account";
-import {AccountItemType} from "../../src/interface/type/account";
+import {createAccountApi, selectAccountApi} from "../../src/api/account/account";
+import {AccountItemType} from "../../src/interface/type/account/account";
 import InfiniteScroll from 'react-infinite-scroller';
 import AccountItem from "../../src/component/account/AccountItem";
 

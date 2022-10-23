@@ -1,4 +1,4 @@
-import {AccountHistoryCategoryItemType} from "./accountHistoryCategory";
+import {AccountHistoryCategoryItemType} from "./category";
 
 export interface AccountHistoryItemType {
     idx: number

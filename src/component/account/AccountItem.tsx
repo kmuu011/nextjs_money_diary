@@ -5,8 +5,8 @@ import moreImage from "../../../public/static/button/more/more.svg";
 import confirmImage from "../../../public/static/button/confirm/confirm.svg";
 import cancelImage from "../../../public/static/button/cancel/cancel.svg";
 import Image from "next/image";
-import {deleteAccountApi, updateAccountApi} from "../../api/account";
-import {AccountItemProps} from "../../interface/props/account";
+import {deleteAccountApi, updateAccountApi} from "../../api/account/account";
+import {AccountItemProps} from "../../interface/props/account/account";
 
 const AccountItem: FunctionComponent<AccountItemProps> = (
     {

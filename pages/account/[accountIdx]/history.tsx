@@ -2,20 +2,20 @@ import type {NextPage} from 'next';
 import * as styles from '../../../styles/account/history/History.style';
 import {useEffect, useState} from "react";
 import InfiniteScroll from 'react-infinite-scroller';
-import {AccountHistoryItemType} from "../../../src/interface/type/accountHistory";
-import {selectAccountHistoryApi} from "../../../src/api/accountHistory";
+import {AccountHistoryItemType} from "../../../src/interface/type/account/history/history";
+import {selectAccountHistoryApi} from "../../../src/api/account/history/history";
 import {useRouter} from "next/router";
 import SetHead from "../../../src/component/common/Head";
 import AccountHistoryItem from "../../../src/component/account/history/accountHistoryItem";
-import {AccountItemType} from "../../../src/interface/type/account";
-import {selectOneAccountApi} from "../../../src/api/account";
+import {AccountItemType} from "../../../src/interface/type/account/account";
+import {selectOneAccountApi} from "../../../src/api/account/account";
 import CircleButton from "../../../src/component/common/button/CircleButton";
 import {circleButtonWrap} from "../../../styles/common/Common.style";
 import {CircleButtonProps} from "../../../src/interface/props/common";
 import addWhiteButton from "../../../public/static/button/add/addWhite.svg";
 import {useRecoilState} from "recoil";
 import {freezeBackground} from "../../../src/utils/utils";
-import {showAccountHistoryInsertModalAtom} from "../../../src/recoil/atoms/accountHistory";
+import {showAccountHistoryInsertModalAtom} from "../../../src/recoil/atoms/account/history";
 import AccountHistoryInsertModal from "../../../src/component/account/history/modal/AccountHistoryInsertModal";
 
 const AccountHistory: NextPage = () => {

@@ -1,7 +1,7 @@
 import {AxiosResponse} from "axios";
-import {SelectQueryDto} from "../interface/dto/common";
-import {callApi} from "../utils/axios";
-import {CreateAccountDto, UpdateAccountDto} from "../interface/dto/account";
+import {SelectQueryDto} from "../../interface/dto/common";
+import {callApi} from "../../utils/axios";
+import {CreateAccountDto, UpdateAccountDto} from "../../interface/dto/account/account";
 
 export const selectAccountApi = async (payload: SelectQueryDto): Promise<AxiosResponse | undefined> => {
     return await callApi<SelectQueryDto>('get', 'account', payload);
