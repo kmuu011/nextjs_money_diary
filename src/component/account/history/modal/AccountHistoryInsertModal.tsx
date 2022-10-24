@@ -32,7 +32,7 @@ const AccountHistoryInsertModal: FunctionComponent = () => {
         }
 
         setCategoryList(response.data);
-        setCategory(19)
+        setCategory(response.data[0].idx);
     };
 
     const insertAccountHistory = async () => {
@@ -85,21 +85,33 @@ const AccountHistoryInsertModal: FunctionComponent = () => {
                 <div className={styles.accountHistoryInsertBody(showAccountHistoryInsertModal)}>
                     <div>
                         <input
+                            placeholder={"금액"}
                             type={"number"}
                             onChange={(e) => setAmount(parseInt(e.target.value))}
                         />
                     </div>
-                    <div>
+                    <div className={styles.contentInput}>
                         <input
+                            placeholder={"내용"}
                             type={"text"}
                             onChange={(e) => setContent(e.target.value)}
                         />
                     </div>
-                    <div>
-                        <div onClick={() => setType(0)}>지출</div>
-                        <div onClick={() => setType(1)}>수입</div>
+                    <div className={styles.typeWrap}>
+                        <div
+                            className={styles.incomeType(type === 0)}
+                            onClick={() => setType(0)}
+                        >
+                            지출
+                        </div>
+                        <div
+                            className={styles.outcomeType(type === 1)}
+                            onClick={() => setType(1)}
+                        >
+                            수입
+                        </div>
                     </div>
-                    <div>
+                    <div className={styles.categoryWrap}>
                         <select
                             value={category}
                             onChange={(e) => {
@@ -118,8 +130,14 @@ const AccountHistoryInsertModal: FunctionComponent = () => {
                         </select>
                     </div>
 
-                    <div onClick={insertAccountHistory}>
-                        등록하기
+                    <div
+                        className={styles.buttonWrap}
+                    >
+                        <button
+                            onClick={insertAccountHistory}
+                        >
+                            등록하기
+                        </button>
                     </div>
                 </div>
             </div>
