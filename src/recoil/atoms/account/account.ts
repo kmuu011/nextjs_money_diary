@@ -1,8 +1,8 @@
 import {atom} from "recoil";
 import {getAtomKey} from "../../../utils/recoil";
 
-export const accountIdxAtom = atom({
-    key: getAtomKey('accountIdxAtom'),
-    default: 0
+export const getAccountInfoAtom = atom({
+    key: getAtomKey('getAccountInfo'),
+    default: () => {}
 });
 

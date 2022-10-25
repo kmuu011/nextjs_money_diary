@@ -1,8 +1,10 @@
+import {AccountHistoryCategoryItemType} from "../../../type/account/history/category";
+
 export interface AccountHistoryItemProps {
-    index: number
-    accountName: string
-    totalAmount: number
-    invisibleAmount: number
-    order: number
-    reloadAccountList: Function
+    idx: number
+    amount: number
+    content: string
+    type: number
+    createdAt: string
+    accountHistoryCategory: AccountHistoryCategoryItemType
 }

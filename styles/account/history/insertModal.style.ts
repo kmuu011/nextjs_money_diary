@@ -17,9 +17,9 @@ export const accountHistoryInsertBody = (show: boolean) => css`
   padding: 25px;
   position: relative;
   background-color: var(--background-color);
-  height: 300px;
+  height: 410px;
   width: 400px;
-  bottom: ${show ? '-50%' : '-80%'};
+  bottom: ${show ? '-35%' : '-80%'};
 
   transition: all .3s, height .3s cubic-bezier(0, 0, 1, 1) .3s;
   box-shadow: var(--body-box-shadow);
@@ -27,6 +27,13 @@ export const accountHistoryInsertBody = (show: boolean) => css`
 
 export const contentInput = css`
   margin-top: 10px;
+
+  textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    font-size: var(--small-default-font-size);
+  }
 `;
 
 export const typeWrap = css`
@@ -43,7 +50,7 @@ export const typeWrap = css`
 export const incomeType = (checked: boolean) => css`
   border-top-left-radius: var(--border-radius);
   border-bottom-left-radius: var(--border-radius);
-  height: 50px;
+  height: var(--default-input-height-size);
   width: 100%;
   display: flex;
   align-items: center;
@@ -57,7 +64,7 @@ export const incomeType = (checked: boolean) => css`
 export const outcomeType = (checked: boolean) => css`
   border-top-right-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
-  height: 50px;
+  height: var(--default-input-height-size);
   width: 100%;
   display: flex;
   align-items: center;
@@ -73,10 +80,21 @@ export const categoryWrap = css`
 
   select {
     padding: 0 8px;
-    height: 50px;
+    height: var(--default-input-height-size);
     width: 100%;
     font-size: var(--small-default-font-size);
     color: var(--color-2);
+  }
+`;
+
+export const dateWrap = css`
+  margin-top: 10px;
+  
+  input {
+    width: 100%;
+    height: var(--default-input-height-size);
+    font-size: var(--small-default-font-size);
+    padding: 0 8px;
   }
 `;
 

@@ -5,31 +5,20 @@ import moreImage from "../../../public/static/button/more/more.svg";
 import confirmImage from "../../../public/static/button/confirm/confirm.svg";
 import cancelImage from "../../../public/static/button/cancel/cancel.svg";
 import Image from "next/image";
+import {AccountHistoryItemProps} from "../../../interface/props/account/history/history";
 
-const AccountHistoryItem: FunctionComponent<any> = (
+const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
     {
-        index, accountHistoryName,
-        totalAmount, invisibleAmount, order,
-        reloadAccountHistoryList
+        idx, amount, content,
+        type, createdAt,
+        accountHistoryCategory
     }
 ) => {
     const [showMore, setShowMore] = useState(false);
-    const [getAccountHistoryName, setAccountHistoryName] = useState(accountHistoryName);
-    const [modifyMode, setModifyMode] = useState(false);
 
     const showMoreMenu = (): void => {
         setShowMore(true)
     }
-
-    const modifyStart = (): void => {
-        setShowMore(false);
-        setModifyMode(true);
-    }
-
-    const cancelModify = (): void => {
-        setModifyMode(false);
-    }
-
     // const updateAccountHistory = async (): Promise<void> => {
     //     const response = await updateAccountHistoryApi(
     //         index,
@@ -65,6 +54,15 @@ const AccountHistoryItem: FunctionComponent<any> = (
         <div
             className={styles.accountHistoryItem}
         >
+            <div>
+                {amount}
+            </div>
+            <div>
+                {content}
+            </div>
+            <div>
+                {accountHistoryCategory.name}
+            </div>
             {/*<Link href={`/accountHistory/${index}`}>*/}
             {/*</Link>*/}
 
