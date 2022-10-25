@@ -29,7 +29,7 @@ const AccountHistory: NextPage = () => {
     const [accountHistoryList, setAccountHistoryList] = useState<AccountHistoryItemType[]>([]);
     const [totalCount, setTotalCount] = useState<number>(0);
     const [page, setPage] = useState<number>(1);
-    const [last, setLast] = useState<number>(0)
+    const [last, setLast] = useState<number>(0);
 
     const getAccountInfo = async (): Promise<void> => {
         if (isNaN(accountIdx)) return;
@@ -87,7 +87,7 @@ const AccountHistory: NextPage = () => {
 
     useEffect(() => {
         freezeBackground(showAccountHistoryInsertModal, window, document);
-    }, [showAccountHistoryInsertModal])
+    }, [showAccountHistoryInsertModal]);
 
     const circleButtonProps: CircleButtonProps = {
         image: addWhiteButton,
@@ -98,7 +98,10 @@ const AccountHistory: NextPage = () => {
         <div className={styles.container}>
             <SetHead/>
 
-            <AccountHistoryInsertModal/>
+            <AccountHistoryInsertModal
+                reloadAccountInfo={getAccountInfo}
+                reloadAccountHistoryList={getAccountHistoryList}
+            />
 
             <div className={circleButtonWrap}>
                 <CircleButton {...circleButtonProps}/>
@@ -122,10 +125,15 @@ const AccountHistory: NextPage = () => {
             >
                 {
                     accountHistoryList.map((accountHistory, i) => {
+                        console.log(accountHistory)
                         return <AccountHistoryItem
-                            index={accountHistory.idx}
+                            idx={accountHistory.idx}
+                            amount={accountHistory.amount}
+                            content={accountHistory.content}
+                            type={accountHistory.type}
+                            createdAt={accountHistory.createdAt}
+                            accountHistoryCategory={accountHistory.accountHistoryCategory}
                             key={accountHistory.idx}
-                            reloadAccountHistoryList={getAccountHistoryList}
                         />
                     })
                 }

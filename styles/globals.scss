@@ -22,6 +22,7 @@
   --large-font-size: 34px;
   --default-large-font-size: 30px;
   --default-font-size: 24px;
+  --small-default-font-size: 20px;
   --small-font-size: 18px;
 
   --input-border-color: var(--color-1);
@@ -37,6 +38,10 @@
   --large-card-height-size: 215px;
   --medium-card-height-size: 150px;
   --very-small-card-height-size: 80px;
+
+  --default-button-height-size: 50px;
+
+  --default-input-height-size: 50px;
 }
 
 html {
@@ -75,14 +80,14 @@ a {
 
 Button {
   width: 100%;
-  height: 50px;
+  height: var(--default-button-height-size);
 
   display: inline-block;
   background-color: var(--color-3);
   border-radius: var(--border-radius);
   outline: none;
-  border: 1px solid transparent;
-  font-size: 1.2em;
+  border: 2px solid transparent;
+  font-size: var(--small-default-font-size);
   color: #fff;
   text-decoration: none;
   cursor: pointer;
@@ -99,9 +104,9 @@ input[type="email"] {
   letter-spacing: .1em;
   padding: 0 10px;
   width: 100%;
-  height: 50px;
-  font-size: 1.1em;
-  border: 1px solid var(--input-border-color);
+  height: var(--default-input-height-size);
+  font-size: var(--small-default-font-size);
+  border: 2px solid var(--input-border-color);
   background-color: #ffffff;
   box-sizing: border-box;
   cursor: text;
@@ -163,7 +168,7 @@ input[type="number"]::placeholder,
 input[type="password"]::placeholder,
 input[type="email"]::placeholder {
   color: #9fa5a5;
-  font-size: 1.1em;
+  font-size: var(--small-default-font-size);
   position: relative;
   top: 5%;
 }
@@ -265,4 +270,10 @@ input[type="checkbox"]:checked + label:after {
   -o-transition: -o-transform 200ms ease-out;
   -webkit-transition: -webkit-transform 200ms ease-out;
   transition: transform 200ms ease-out;
+}
+
+textarea, input {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }

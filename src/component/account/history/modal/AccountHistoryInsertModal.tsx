@@ -8,9 +8,20 @@ import {AccountHistoryCategoryItemType} from "../../../../interface/type/account
 import {selectAccountHistoryCategoryApi} from "../../../../api/account/history/category";
 import {createAccountHistoryApi} from "../../../../api/account/history/history";
 import {useRouter} from "next/router";
+import {DateObjectType} from "../../../../interface/type/common";
+import {dateToObject} from "../../../../utils/utils";
 
-const AccountHistoryInsertModal: FunctionComponent = () => {
+const AccountHistoryInsertModal: FunctionComponent<{
+    reloadAccountInfo: Function,
+    reloadAccountHistoryList: Function
+}> = (
+    {
+        reloadAccountInfo,
+        reloadAccountHistoryList
+    }
+) => {
     const accountIdx: number = Number(useRouter().query.accountIdx);
+    const dateObj: DateObjectType = dateToObject();
 
     const [
         showAccountHistoryInsertModal,
@@ -22,6 +33,7 @@ const AccountHistoryInsertModal: FunctionComponent = () => {
     const [content, setContent] = useState<string>('');
     const [category, setCategory] = useState<number>(0);
     const [categoryList, setCategoryList] = useState<AccountHistoryCategoryItemType[]>([]);
+    const [createdAt, setCreatedAt] = useState<string>(`${dateObj.year}-${dateObj.month}-${dateObj.date} ${dateObj.hour}:${dateObj.minute}`);
 
     const getCategoryList = async () => {
         const response = await selectAccountHistoryCategoryApi({type});
@@ -32,7 +44,7 @@ const AccountHistoryInsertModal: FunctionComponent = () => {
         }
 
         setCategoryList(response.data);
-        setCategory(19)
+        setCategory(response.data[0].idx);
     };
 
     const insertAccountHistory = async () => {
@@ -51,18 +63,24 @@ const AccountHistoryInsertModal: FunctionComponent = () => {
             return;
         }
 
+        if (isNaN(new Date(createdAt).getTime())) {
+            alert('일자가 올바르지 않습니다.');
+            return;
+        }
+
         const response = await createAccountHistoryApi(
             accountIdx,
             {
                 amount,
                 content,
                 type,
-                accountHistoryCategoryIdx: category
+                accountHistoryCategoryIdx: category,
+                createdAt
             }
         );
 
-        console.log(response)
-
+        await reloadAccountInfo();
+        await reloadAccountHistoryList(false, true);
     }
 
     useEffect(() => {
@@ -85,21 +103,26 @@ const AccountHistoryInsertModal: FunctionComponent = () => {
                 <div className={styles.accountHistoryInsertBody(showAccountHistoryInsertModal)}>
                     <div>
                         <input
+                            placeholder={"금액"}
                             type={"number"}
                             onChange={(e) => setAmount(parseInt(e.target.value))}
                         />
                     </div>
-                    <div>
-                        <input
-                            type={"text"}
-                            onChange={(e) => setContent(e.target.value)}
-                        />
+                    <div className={styles.typeWrap}>
+                        <div
+                            className={styles.incomeType(type === 0)}
+                            onClick={() => setType(0)}
+                        >
+                            지출
+                        </div>
+                        <div
+                            className={styles.outcomeType(type === 1)}
+                            onClick={() => setType(1)}
+                        >
+                            수입
+                        </div>
                     </div>
-                    <div>
-                        <div onClick={() => setType(0)}>지출</div>
-                        <div onClick={() => setType(1)}>수입</div>
-                    </div>
-                    <div>
+                    <div className={styles.categoryWrap}>
                         <select
                             value={category}
                             onChange={(e) => {
@@ -118,8 +141,28 @@ const AccountHistoryInsertModal: FunctionComponent = () => {
                         </select>
                     </div>
 
-                    <div onClick={insertAccountHistory}>
-                        등록하기
+                    <div className={styles.contentInput}>
+                        <textarea
+                            placeholder={"내용"}
+                            onChange={(e) => setContent(e.target.value)}
+                        />
+                    </div>
+                    <div className={styles.dateWrap}>
+                        <input
+                            type={"datetime-local"}
+                            value={createdAt}
+                            onChange={(e) => setCreatedAt(e.target.value)}
+                        />
+                    </div>
+
+                    <div
+                        className={styles.buttonWrap}
+                    >
+                        <button
+                            onClick={insertAccountHistory}
+                        >
+                            등록하기
+                        </button>
                     </div>
                 </div>
             </div>
