@@ -6,6 +6,7 @@ import confirmImage from "../../../public/static/button/confirm/confirm.svg";
 import cancelImage from "../../../public/static/button/cancel/cancel.svg";
 import Image from "next/image";
 import {AccountHistoryItemProps} from "../../../interface/props/account/history/history";
+import {dateToObject} from "../../../utils/utils";
 
 const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
     {
@@ -15,6 +16,7 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
     }
 ) => {
     const [showMore, setShowMore] = useState(false);
+    const dateObj = dateToObject(new Date(createdAt));
 
     const showMoreMenu = (): void => {
         setShowMore(true)
@@ -55,13 +57,18 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
             className={styles.accountHistoryItem}
         >
             <div>
-                {amount}
+                {`${dateObj.year}.${dateObj.month}.${dateObj.date} 
+                (${dateObj.dayStr})
+                ${dateObj.hour}:${dateObj.minute}`}
             </div>
-            <div>
-                {content}
-            </div>
-            <div>
-                {accountHistoryCategory.name}
+            <div className={styles.historyInfoWrap}>
+                <div className={styles.leftInfo}>
+                    <div>{accountHistoryCategory.name}</div>
+                    <div>{content}</div>
+                </div>
+                <div className={styles.rightInfo}>
+                    <div>{amount}</div>
+                </div>
             </div>
             {/*<Link href={`/accountHistory/${index}`}>*/}
             {/*</Link>*/}

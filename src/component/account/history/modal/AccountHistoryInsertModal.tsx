@@ -3,7 +3,7 @@ import {useRecoilState} from "recoil";
 
 import {showAccountHistoryInsertModalAtom} from "../../../../recoil/atoms/account/history";
 import {modalBackground} from "../../../../../styles/common/Common.style";
-import * as styles from "../../../../../styles/account/history/insertModal.style";
+import * as styles from "../../../../../styles/account/history/InsertModal.style";
 import {AccountHistoryCategoryItemType} from "../../../../interface/type/account/history/category";
 import {selectAccountHistoryCategoryApi} from "../../../../api/account/history/category";
 import {createAccountHistoryApi} from "../../../../api/account/history/history";

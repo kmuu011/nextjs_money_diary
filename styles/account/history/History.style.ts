@@ -59,3 +59,23 @@ export const accountHistoryItem = css`
     padding: var(--small-padding-size) 0;
   }
 `;
+
+export const historyInfoWrap = css`
+  display: flex;
+  width: 100%;
+`;
+
+export const rightInfo = css`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+`;
+export const leftInfo = css`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  align-items: flex-start;
+`;

@@ -8,3 +8,4 @@ export interface AccountHistoryItemProps {
     createdAt: string
     accountHistoryCategory: AccountHistoryCategoryItemType
 }
+
