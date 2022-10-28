@@ -6,7 +6,7 @@ import confirmImage from "../../../public/static/button/confirm/confirm.svg";
 import cancelImage from "../../../public/static/button/cancel/cancel.svg";
 import Image from "next/image";
 import {AccountHistoryItemProps} from "../../../interface/props/account/history/history";
-import {dateToObject} from "../../../utils/utils";
+import {commaParser, dateToObject} from "../../../utils/utils";
 
 const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
     {
@@ -56,22 +56,32 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
         <div
             className={styles.accountHistoryItem}
         >
-            <div>
+            <div className={styles.historyDate}>
                 {`${dateObj.year}.${dateObj.month}.${dateObj.date} 
                 (${dateObj.dayStr})
                 ${dateObj.hour}:${dateObj.minute}`}
             </div>
+
             <div className={styles.historyInfoWrap}>
                 <div className={styles.leftInfo}>
-                    <div>{accountHistoryCategory.name}</div>
+                    <div className={styles.categoryName}>
+                        {accountHistoryCategory.name}
+                    </div>
                     <div>{content}</div>
                 </div>
                 <div className={styles.rightInfo}>
-                    <div>{amount}</div>
+                    {
+                        type === 0 ?
+                            <div className={styles.historyContent(type)}>
+                                {commaParser(amount, type)}원
+                            </div>
+                            :
+                            <div className={styles.historyContent(type)}>
+                                {commaParser(amount, type)}원
+                            </div>
+                    }
                 </div>
             </div>
-            {/*<Link href={`/accountHistory/${index}`}>*/}
-            {/*</Link>*/}
 
         </div>
     )

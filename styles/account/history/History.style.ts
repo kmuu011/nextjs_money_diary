@@ -50,7 +50,7 @@ export const accountHistoryItem = css`
   border-bottom: 1px solid var(--color-1);
   overflow-y: auto;
   width: 100%;
-  height: var(--large-card-height-size);
+  height: var(--small-card-height-size);
   background-color: #fff;
   cursor: pointer;
   padding: var(--default-padding-size);
@@ -65,6 +65,15 @@ export const historyInfoWrap = css`
   width: 100%;
 `;
 
+export const historyDate = css`
+  color: #888888;
+`;
+
+export const categoryName = css`
+  padding: var(--medium-padding-size) 0;
+  color: var(--color-2);
+`;
+
 export const rightInfo = css`
   width: 100%;
   display: flex;
@@ -72,6 +81,7 @@ export const rightInfo = css`
   align-items: flex-end;
   justify-content: center;
 `;
+
 export const leftInfo = css`
   width: 100%;
   display: flex;
@@ -79,3 +89,12 @@ export const leftInfo = css`
   align-content: flex-start;
   align-items: flex-start;
 `;
+
+export const historyContent = (type: number) => css`
+  display: flex;
+  align-items: flex-start;
+  color: ${type === 0 ? `var(--color-red)` : `var(--color-blue)`};
+  font-size: var(--default-font-size);
+  height: 70%;
+`;
+

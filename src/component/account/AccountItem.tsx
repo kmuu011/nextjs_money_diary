@@ -7,6 +7,7 @@ import cancelImage from "../../../public/static/button/cancel/cancel.svg";
 import Image from "next/image";
 import {deleteAccountApi, updateAccountApi} from "../../api/account/account";
 import {AccountItemProps} from "../../interface/props/account/account";
+import {commaParser} from "../../utils/utils";
 
 const AccountItem: FunctionComponent<AccountItemProps> = (
     {
@@ -72,7 +73,7 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
                     {accountName}
                 </div>
                 <div className={styles.accountAmount}>
-                    {totalAmount}원
+                    {commaParser(totalAmount)}원
                 </div>
 
             </div>

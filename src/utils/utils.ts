@@ -3,6 +3,7 @@ import {DateObjectType} from "../interface/type/common";
 
 const dummyStr: string = 'QWERTYUIOPASDFGHJKLZXCVBNM0123456789';
 const dayStrList: string[] = ['일', '월', '화', '수', '목', '금', '토'];
+const signType: string[] = ['-', '+'];
 
 export const hideSideMenuBar = (setShowSideBar: SetterOrUpdater<boolean>): void => {
     setShowSideBar(false);
@@ -71,4 +72,14 @@ export const dateToObject = (dateValue?: Date): DateObjectType => {
     const second = dateValue.getSeconds().toString().padStart(2, '0');
 
     return {year, month, date, day, dayStr, hour, minute, second}
+}
+
+export const commaParser = (value: number, type?: number): string => {
+    const sign: string = type !== undefined ? signType[type] : '';
+
+    if(value > 0) {
+        return sign + Number(value).toLocaleString();
+    }else{
+        return Number(value).toLocaleString();
+    }
 }

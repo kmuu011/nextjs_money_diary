@@ -6,7 +6,7 @@ import {AccountHistoryItemType} from "../../../src/interface/type/account/histor
 import {selectAccountHistoryApi} from "../../../src/api/account/history/history";
 import {useRouter} from "next/router";
 import SetHead from "../../../src/component/common/Head";
-import AccountHistoryItem from "../../../src/component/account/history/accountHistoryItem";
+import AccountHistoryItem from "../../../src/component/account/history/AccountHistoryItem";
 import {AccountItemType} from "../../../src/interface/type/account/account";
 import {selectOneAccountApi} from "../../../src/api/account/account";
 import CircleButton from "../../../src/component/common/button/CircleButton";
@@ -14,7 +14,7 @@ import {circleButtonWrap} from "../../../styles/common/Common.style";
 import {CircleButtonProps} from "../../../src/interface/props/common";
 import addWhiteButton from "../../../public/static/button/add/addWhite.svg";
 import {useRecoilState} from "recoil";
-import {freezeBackground} from "../../../src/utils/utils";
+import {commaParser, freezeBackground} from "../../../src/utils/utils";
 import {showAccountHistoryInsertModalAtom} from "../../../src/recoil/atoms/account/history";
 import AccountHistoryInsertModal from "../../../src/component/account/history/modal/AccountHistoryInsertModal";
 
@@ -112,7 +112,7 @@ const AccountHistory: NextPage = () => {
                     {accountInfo?.accountName}
                 </div>
                 <div className={styles.accountTotalAmount}>
-                    {accountInfo?.totalAmount}
+                    {commaParser(accountInfo?.totalAmount || 0)}원
                 </div>
             </div>
 
