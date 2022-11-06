@@ -21,22 +21,22 @@ const SideMenu: FunctionComponent<SideMenuProps> = (
     return (
         <div>
             <div
-                className={menuItem(false, path)}
+                css={menuItem(false, path)}
                 onClick={() => {
                     setIsOpen(!isOpen)
                 }}
             >
-                <div className={menuIcon}>
+                <div css={menuIcon}>
                     <Image src={image} alt="메뉴 아이콘" width={25} height={25}/>
                 </div>
-                <div className={menuTitle}>
+                <div css={menuTitle}>
                     {title}
                 </div>
-                <div className={menuArrowCss(isOpen)}>
+                <div css={menuArrowCss(isOpen)}>
                     <Image src={arrowImage} alt="메뉴 확장 화살표"/>
                 </div>
             </div>
-            <div className={subMenuWrap(isOpen, children.length)}>
+            <div css={subMenuWrap(isOpen, children.length)}>
                 {children.map((subMenu, i) => {
                     return <SideSubMenu {...subMenu} key={i}/>
                 })}

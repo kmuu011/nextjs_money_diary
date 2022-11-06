@@ -67,12 +67,12 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
     return (
         <Link href={`/account/${index}/history`}>
             <div
-                className={styles.accountItem}
+                css={styles.accountItem}
             >
-                <div className={styles.accountName}>
+                <div css={styles.accountName}>
                     {accountName}
                 </div>
-                <div className={styles.accountAmount}>
+                <div css={styles.accountAmount}>
                     {commaParser(totalAmount)}원
                 </div>
 

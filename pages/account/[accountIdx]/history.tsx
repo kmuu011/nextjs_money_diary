@@ -95,7 +95,7 @@ const AccountHistory: NextPage = () => {
     };
 
     return (
-        <div className={styles.container}>
+        <div css={styles.container}>
             <SetHead/>
 
             <AccountHistoryInsertModal
@@ -103,21 +103,21 @@ const AccountHistory: NextPage = () => {
                 reloadAccountHistoryList={getAccountHistoryList}
             />
 
-            <div className={circleButtonWrap}>
+            <div css={circleButtonWrap}>
                 <CircleButton {...circleButtonProps}/>
             </div>
 
-            <div className={styles.accountHistoryTotalStatisticWrap}>
-                <div className={styles.accountName}>
+            <div css={styles.accountHistoryTotalStatisticWrap}>
+                <div css={styles.accountName}>
                     {accountInfo?.accountName}
                 </div>
-                <div className={styles.accountTotalAmount}>
+                <div css={styles.accountTotalAmount}>
                     {commaParser(accountInfo?.totalAmount || 0)}원
                 </div>
             </div>
 
             <InfiniteScroll
-                className={styles.accountHistoryListWrap}
+                css={styles.accountHistoryListWrap}
                 initialLoad={false}
                 pageStart={1}
                 loadMore={() => getAccountHistoryList(true)}

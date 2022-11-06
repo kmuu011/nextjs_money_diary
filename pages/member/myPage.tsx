@@ -42,7 +42,7 @@ const MyPage: NextPage = () => {
     }
 
     return (
-        <div className={styles.container}>
+        <div css={styles.container}>
             <SetHead/>
             <ProfileImageModifyModal
                 reloadMemberInfo={getMemberInfo}
@@ -54,13 +54,13 @@ const MyPage: NextPage = () => {
                 memberInfo={memberInfo}
             />
 
-            <div className={styles.title}>
+            <div css={styles.title}>
                 마이페이지
             </div>
 
-            <div className={styles.myPageWrap}>
-                <div className={styles.profileImgWrap}>
-                    <div className={styles.profileImgBorder} onClick={() => setShowProfileImageModifyModal(true)}>
+            <div css={styles.myPageWrap}>
+                <div css={styles.profileImgWrap}>
+                    <div css={styles.profileImgBorder} onClick={() => setShowProfileImageModifyModal(true)}>
                         <Image
                             src={imageSrc}
                             width={180}
@@ -70,34 +70,34 @@ const MyPage: NextPage = () => {
                     </div>
                 </div>
 
-                <div className={styles.profileInfoWrap}>
-                    <div className={styles.profileInfo}>
-                        <div className={styles.profileInfoDesc}>
+                <div css={styles.profileInfoWrap}>
+                    <div css={styles.profileInfo}>
+                        <div css={styles.profileInfoDesc}>
                             아이디
                         </div>
-                        <div className={styles.profileInfoValue}>
+                        <div css={styles.profileInfoValue}>
                             {memberInfo?.id || ''}
                         </div>
                     </div>
-                    <div className={styles.profileInfo}>
-                        <div className={styles.profileInfoDesc}>
+                    <div css={styles.profileInfo}>
+                        <div css={styles.profileInfoDesc}>
                             닉네임
                         </div>
-                        <div className={styles.profileInfoValue}>
+                        <div css={styles.profileInfoValue}>
                             {memberInfo?.nickname || ''}
                         </div>
                     </div>
-                    <div className={styles.profileInfo}>
-                        <div className={styles.profileInfoDesc}>
+                    <div css={styles.profileInfo}>
+                        <div css={styles.profileInfoDesc}>
                             이메일
                         </div>
-                        <div className={styles.profileInfoValue}>
+                        <div css={styles.profileInfoValue}>
                             {memberInfo?.email || ''}
                         </div>
                     </div>
                 </div>
 
-                <div className={styles.buttonWrap}>
+                <div css={styles.buttonWrap}>
                     <button onClick={() => setShowMemberInfoModifyModal(true)}>수정하기</button>
                 </div>
             </div>

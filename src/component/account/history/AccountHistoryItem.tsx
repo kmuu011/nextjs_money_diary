@@ -54,29 +54,29 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
 
     return (
         <div
-            className={styles.accountHistoryItem}
+            css={styles.accountHistoryItem}
         >
-            <div className={styles.historyDate}>
+            <div css={styles.historyDate}>
                 {`${dateObj.year}.${dateObj.month}.${dateObj.date} 
                 (${dateObj.dayStr})
                 ${dateObj.hour}:${dateObj.minute}`}
             </div>
 
-            <div className={styles.historyInfoWrap}>
-                <div className={styles.leftInfo}>
-                    <div className={styles.categoryName}>
+            <div css={styles.historyInfoWrap}>
+                <div css={styles.leftInfo}>
+                    <div css={styles.categoryName}>
                         {accountHistoryCategory.name}
                     </div>
                     <div>{content}</div>
                 </div>
-                <div className={styles.rightInfo}>
+                <div css={styles.rightInfo}>
                     {
                         type === 0 ?
-                            <div className={styles.historyContent(type)}>
+                            <div css={styles.historyContent(type)}>
                                 {commaParser(amount, type)}원
                             </div>
                             :
-                            <div className={styles.historyContent(type)}>
+                            <div css={styles.historyContent(type)}>
                                 {commaParser(amount, type)}원
                             </div>
                     }

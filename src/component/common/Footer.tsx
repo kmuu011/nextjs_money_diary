@@ -5,14 +5,14 @@ import logoImage from "../../../public/violet.png";
 
 const Footer: FunctionComponent = () => {
     return (
-        <footer className={styles.footer}>
+        <footer css={styles.footer}>
             <a
                 href="https://github.com/kmuu011/NextJS_Boilerplate"
                 target="_blank"
                 rel="noopener noreferrer"
             >
                 Made by {' '}
-                <span className={styles.logo}>
+                <span css={styles.logo}>
                     <Image src={logoImage} alt="Violet Logo" width={"44"} height={"44"}/>
                 </span>
             </a>

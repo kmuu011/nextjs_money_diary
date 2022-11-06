@@ -24,7 +24,7 @@ const GlobalNavigation: FunctionComponent = () => {
         setShowNavi(!orRegExpMaker(disabledLocationList).test(pathName));
     }, []);
 
-    return showNavi ? <div className={styles.container}>
+    return showNavi ? <div css={styles.container}>
         <Image onClick={() => setShowSideBar(!showSideBar)}
                src={menuButton}
                alt={"메뉴버튼"}

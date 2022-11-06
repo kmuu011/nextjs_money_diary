@@ -1,4 +1,4 @@
-import {css} from "@emotion/css";
+import {css} from "@emotion/react";
 
 export const modalBackground = (show: boolean) => css`
   height: ${show ? '100%' : 0};

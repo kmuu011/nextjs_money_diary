@@ -1,4 +1,4 @@
-import {css} from "@emotion/css";
+import {css} from "@emotion/react";
 import {defaultBodyCss} from "../../common/Common.style";
 
 export const container = css`

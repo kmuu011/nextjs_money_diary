@@ -6,11 +6,11 @@ import {SideSubMenuProps} from "../../../interface/props/common";
 const getSubMenu = (title: string, action?: Function, path?: string) => {
 
     return <div
-        className={menuItem(true, path)}
+        css={menuItem(true, path)}
         onClick={action ? () => action() : undefined}
     >
-        <div className={menuIcon}/>
-        <div className={menuTitle}>
+        <div css={menuIcon}/>
+        <div css={menuTitle}>
             {title}
         </div>
     </div>

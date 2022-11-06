@@ -58,10 +58,10 @@ const TodoGroupItem: FunctionComponent<TodoGroupItemProps> = (
 
     return (
         <div
-            className={styles.todoGroupItem}
+            css={styles.todoGroupItem}
         >
             <Link href={`/todoGroup/${index}/todo`}>
-                <div className={styles.todoWrap}>
+                <div css={styles.todoWrap}>
                     {
                         todoList.map((todo, i) => {
                             return <TodoItem
@@ -79,7 +79,7 @@ const TodoGroupItem: FunctionComponent<TodoGroupItemProps> = (
 
             {
                 modifyMode ?
-                    <div className={styles.modifyModeWrap}>
+                    <div css={styles.modifyModeWrap}>
                         <input
                             type={"text"} defaultValue={todoGroupTitle}
                             onChange={(e) => setTodoGroupTitle(e.target.value)}
@@ -92,7 +92,7 @@ const TodoGroupItem: FunctionComponent<TodoGroupItemProps> = (
                         </div>
                     </div>
                     :
-                    <div className={styles.todoGroupTitle}>
+                    <div css={styles.todoGroupTitle}>
                         {title}
                     </div>
 
@@ -100,13 +100,13 @@ const TodoGroupItem: FunctionComponent<TodoGroupItemProps> = (
             <div>
                 {updatedAt}
             </div>
-            <div className={styles.moreButtonWrap} onClick={() => showMoreMenu()}>
+            <div css={styles.moreButtonWrap} onClick={() => showMoreMenu()}>
                 <Image src={moreImage} alt="할일그룹옵션버튼" width={30} height={30}/>
             </div>
 
             {
                 showMore ?
-                    <div className={styles.moreWrap}>
+                    <div css={styles.moreWrap}>
                         <div onClick={() => modifyStart()}>수정</div>
                         <div onClick={() => deleteTodoGroup()}>삭제</div>
                         <div onClick={() => setShowMore(false)}>취소</div>

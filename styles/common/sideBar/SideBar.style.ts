@@ -1,4 +1,4 @@
-import {css} from "@emotion/css";
+import {css} from "@emotion/react";
 import {useRouter} from "next/router";
 
 const sideBarWidth = 300;

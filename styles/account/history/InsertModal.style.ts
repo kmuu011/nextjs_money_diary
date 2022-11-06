@@ -1,4 +1,4 @@
-import {css} from "@emotion/css";
+import {css} from "@emotion/react";
 
 export const accountHistoryInsertWrap = (show: boolean) => css`
   height: 100%;

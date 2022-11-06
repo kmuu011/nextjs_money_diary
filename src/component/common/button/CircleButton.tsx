@@ -1,6 +1,6 @@
 import {FunctionComponent} from "react";
 import Image from "next/image";
-import {css} from "@emotion/css";
+import {css} from "@emotion/react";
 import {CircleButtonProps} from "../../../interface/props/common";
 
 const CircleButton: FunctionComponent<CircleButtonProps> = (
@@ -19,7 +19,7 @@ const CircleButton: FunctionComponent<CircleButtonProps> = (
     `;
 
     return (
-        <div className={circleButtonCss} onClick={() => action()}>
+        <div css={circleButtonCss} onClick={() => action()}>
             <Image src={image} alt={"등록버튼"} width={34} height={34}/>
         </div>
     )

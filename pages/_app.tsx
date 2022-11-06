@@ -26,9 +26,9 @@ function MyApp({Component, pageProps}: AppProps) {
     return (
         <RecoilRoot>
             <Fragment>
-                <div className={serviceWrap}>
+                <div css={serviceWrap}>
                     <div
-                        className={serviceBody}
+                        css={serviceBody}
                     >
                         <GlobalNavigation/>
                         <NavigationMenu/>
