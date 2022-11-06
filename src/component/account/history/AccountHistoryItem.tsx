@@ -12,7 +12,9 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
     {
         idx, amount, content,
         type, createdAt,
-        accountHistoryCategory
+        accountHistoryCategory,
+        isLast,
+        setLastElement
     }
 ) => {
     const [showMore, setShowMore] = useState(false);
@@ -21,6 +23,7 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
     const showMoreMenu = (): void => {
         setShowMore(true)
     }
+
     // const updateAccountHistory = async (): Promise<void> => {
     //     const response = await updateAccountHistoryApi(
     //         index,
@@ -55,6 +58,7 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
     return (
         <div
             css={styles.accountHistoryItem}
+            ref={isLast ? setLastElement : null}
         >
             <div css={styles.historyDate}>
                 {`${dateObj.year}.${dateObj.month}.${dateObj.date} 
@@ -70,16 +74,9 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
                     <div>{content}</div>
                 </div>
                 <div css={styles.rightInfo}>
-                    {
-                        type === 0 ?
-                            <div css={styles.historyContent(type)}>
-                                {commaParser(amount, type)}원
-                            </div>
-                            :
-                            <div css={styles.historyContent(type)}>
-                                {commaParser(amount, type)}원
-                            </div>
-                    }
+                    <div css={styles.historyContent(type)}>
+                        {commaParser(amount, type)}원
+                    </div>
                 </div>
             </div>
 
