@@ -6,6 +6,7 @@ import confirmImage from "../../../public/static/button/confirm/confirm.svg";
 import cancelImage from "../../../public/static/button/cancel/cancel.svg";
 import Image from "next/image";
 import {AccountHistoryItemProps} from "../../../interface/props/account/history/history";
+import {commaParser, dateToObject} from "../../../utils/utils";
 
 const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
     {
@@ -15,6 +16,7 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
     }
 ) => {
     const [showMore, setShowMore] = useState(false);
+    const dateObj = dateToObject(new Date(createdAt));
 
     const showMoreMenu = (): void => {
         setShowMore(true)
@@ -52,19 +54,34 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
 
     return (
         <div
-            className={styles.accountHistoryItem}
+            css={styles.accountHistoryItem}
         >
-            <div>
-                {amount}
+            <div css={styles.historyDate}>
+                {`${dateObj.year}.${dateObj.month}.${dateObj.date} 
+                (${dateObj.dayStr})
+                ${dateObj.hour}:${dateObj.minute}`}
             </div>
-            <div>
-                {content}
+
+            <div css={styles.historyInfoWrap}>
+                <div css={styles.leftInfo}>
+                    <div css={styles.categoryName}>
+                        {accountHistoryCategory.name}
+                    </div>
+                    <div>{content}</div>
+                </div>
+                <div css={styles.rightInfo}>
+                    {
+                        type === 0 ?
+                            <div css={styles.historyContent(type)}>
+                                {commaParser(amount, type)}원
+                            </div>
+                            :
+                            <div css={styles.historyContent(type)}>
+                                {commaParser(amount, type)}원
+                            </div>
+                    }
+                </div>
             </div>
-            <div>
-                {accountHistoryCategory.name}
-            </div>
-            {/*<Link href={`/accountHistory/${index}`}>*/}
-            {/*</Link>*/}
 
         </div>
     )

@@ -7,6 +7,7 @@ import cancelImage from "../../../public/static/button/cancel/cancel.svg";
 import Image from "next/image";
 import {deleteAccountApi, updateAccountApi} from "../../api/account/account";
 import {AccountItemProps} from "../../interface/props/account/account";
+import {commaParser} from "../../utils/utils";
 
 const AccountItem: FunctionComponent<AccountItemProps> = (
     {
@@ -66,13 +67,13 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
     return (
         <Link href={`/account/${index}/history`}>
             <div
-                className={styles.accountItem}
+                css={styles.accountItem}
             >
-                <div className={styles.accountName}>
+                <div css={styles.accountName}>
                     {accountName}
                 </div>
-                <div className={styles.accountAmount}>
-                    {totalAmount}원
+                <div css={styles.accountAmount}>
+                    {commaParser(totalAmount)}원
                 </div>
 
             </div>

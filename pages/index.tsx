@@ -49,43 +49,43 @@ const Home: NextPage = () => {
     };
 
     return (
-        <div className={styles.container}>
+        <div css={styles.container}>
             <SetHead/>
 
-            <div className={styles.innerContainer}>
-                <div className={styles.title}>가계부</div>
+            <div css={styles.innerContainer}>
+                <div css={styles.title}>가계부</div>
 
-                <div className={styles.titleDesc}>
+                <div css={styles.titleDesc}>
                     로그인
                 </div>
 
                 <form onSubmit={login}>
-                    <div className={styles.idDiv}>
+                    <div css={styles.idDiv}>
                         <input ref={idInputRef} type="text" value={id} id="id" placeholder="아이디"
                                onChange={(e) => setId(e.target.value)}/>
                     </div>
 
-                    <div className={styles.passwordDiv}>
+                    <div css={styles.passwordDiv}>
                         <input ref={passwordInputRef} type="password" value={password} id="password" placeholder="비밀번호"
                                onChange={(e) => setPassword(e.target.value)}/>
                     </div>
 
-                    <div className={styles.keepLoginDiv}>
+                    <div css={styles.keepLoginDiv}>
                         <input type={"checkbox"} id={"cb"} defaultChecked={keepCheck}
                                onChange={(e) => setKeepCheck(e.target.checked)}/>
                         <label htmlFor={"cb"}>
-                            <div className={styles.keepLoginLabel}>
+                            <div css={styles.keepLoginLabel}>
                                 로그인 상태 유지
                             </div>
                         </label>
                     </div>
 
-                    <div className={styles.buttonDiv}>
+                    <div css={styles.buttonDiv}>
                         <button>로그인</button>
                     </div>
                 </form>
 
-                <div className={styles.buttonDiv}>
+                <div css={styles.buttonDiv}>
                     <Link href={'/signUp'}>
                         <button>회원가입</button>
                     </Link>

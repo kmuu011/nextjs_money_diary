@@ -86,7 +86,7 @@ const MemberInfoModifyModal: FunctionComponent<MemberInfoModifyModalProps> = (
 
     return (
         <div
-            className={styles.container(showMemberInfoModifyModal)}
+            css={styles.container(showMemberInfoModifyModal)}
             id="container"
             onClick={(e) => {
                 const element: HTMLDivElement = e.target as HTMLDivElement;
@@ -96,29 +96,29 @@ const MemberInfoModifyModal: FunctionComponent<MemberInfoModifyModalProps> = (
                 }
             }}
         >
-            <div className={styles.modalBody}>
-                <div className={styles.infoWrap}>
+            <div css={styles.modalBody}>
+                <div css={styles.infoWrap}>
                     닉네임
                     <input type="text" defaultValue={nickname} onChange={(e) => setNickname(e.target.value)}/>
                 </div>
-                <div className={styles.infoWrap}>
+                <div css={styles.infoWrap}>
                     이메일
                     <input type="text" defaultValue={email} onChange={(e) => setEmail(e.target.value)}/>
                 </div>
-                <div className={styles.infoWrap}>
+                <div css={styles.infoWrap}>
                     이전 비밀번호
                     <input type="password" onChange={(e) => setOriginalPassword(e.target.value)}/>
                 </div>
-                <div className={styles.infoWrap}>
+                <div css={styles.infoWrap}>
                     새 비밀번호
                     <input type="password" onChange={(e) => setNewPassword(e.target.value)}/>
                 </div>
-                <div className={styles.infoWrap}>
+                <div css={styles.infoWrap}>
                     새 비밀번호 확인
                     <input type="password" onChange={(e) => setNewPasswordCheck(e.target.value)}/>
                 </div>
 
-                <div className={styles.buttonWrap}>
+                <div css={styles.buttonWrap}>
                     <button onClick={() => updateMemberInfo()}>수정하기</button>
                     <button onClick={() => setShowMemberInfoModifyModal(false)}>취소</button>
                 </div>

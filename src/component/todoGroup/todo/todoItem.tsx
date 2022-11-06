@@ -5,7 +5,7 @@ import confirmImage from "../../../../public/static/button/confirm/confirm.svg";
 import cancelImage from "../../../../public/static/button/cancel/cancel.svg";
 import deleteImage from "../../../../public/static/button/delete/delete.svg";
 import Image from "next/image";
-import {css} from "@emotion/css";
+import {css} from "@emotion/react";
 import {TodoItemProps} from "../../../interface/props/todo";
 import {UpdateTodoDto} from "../../../interface/dto/todo";
 
@@ -93,9 +93,9 @@ const TodoGroupItem: FunctionComponent<TodoItemProps> = (
 
     return (
         <div
-            className={emotionCss.todoItemCss(preview)}
+            css={emotionCss.todoItemCss(preview)}
         >
-            <div className={emotionCss.checkboxWrap(preview)}>
+            <div css={emotionCss.checkboxWrap(preview)}>
                 <input
                     type={"checkbox"}
                     defaultChecked={todoComplete}
@@ -113,7 +113,7 @@ const TodoGroupItem: FunctionComponent<TodoItemProps> = (
                 />
                 :
                 <div
-                    className={emotionCss.content(todoComplete, preview)}
+                    css={emotionCss.content(todoComplete, preview)}
                     onClick={() => {
                         setModifyMode(true)
                     }}
@@ -122,7 +122,7 @@ const TodoGroupItem: FunctionComponent<TodoItemProps> = (
                 </div>
             }
             {modifyMode ?
-                <div className={styles.buttonWrap}>
+                <div css={styles.buttonWrap}>
                     <div onClick={() => updateTodo(undefined, true)}>
                         <Image src={confirmImage} alt="적용버튼" width={34} height={34}/>
                     </div>

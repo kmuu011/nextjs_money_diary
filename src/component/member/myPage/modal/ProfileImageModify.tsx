@@ -88,7 +88,7 @@ const ProfileImageModifyModal: FunctionComponent<ProfileImageModifyModalProps> =
 
     return (
         <div
-            className={styles.container(showProfileImageModifyModal)}
+            css={styles.container(showProfileImageModifyModal)}
             id="container"
             onClick={(e) => {
                 const element: HTMLDivElement = e.target as HTMLDivElement;
@@ -98,8 +98,8 @@ const ProfileImageModifyModal: FunctionComponent<ProfileImageModifyModalProps> =
                 }
             }}
         >
-            <div className={styles.modalBody}>
-                <div className={styles.profileImageBorder}>
+            <div css={styles.modalBody}>
+                <div css={styles.profileImageBorder}>
                     <Image
                         src={imageSrc}
                         width={180}
@@ -108,14 +108,14 @@ const ProfileImageModifyModal: FunctionComponent<ProfileImageModifyModalProps> =
                     />
                 </div>
 
-                <div className={styles.inputWarp}>
+                <div css={styles.inputWarp}>
                     <input type="file"
                            id={"img"}
                            onChange={(e) => loadImage(e.currentTarget.files)}
                     />
                 </div>
 
-                <div className={styles.buttonWrap}>
+                <div css={styles.buttonWrap}>
                     <button onClick={() => updateProfileImage()}>수정하기</button>
                     <button onClick={() => setShowProfileImageModifyModal(false)}>취소</button>
                     <button onClick={() => deleteProfileImage()}>이미지 삭제</button>

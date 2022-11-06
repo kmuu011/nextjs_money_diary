@@ -121,31 +121,31 @@ const Index: NextPage = () => {
 
 
     return (
-        <div className={styles.container}>
+        <div css={styles.container}>
             <SetHead/>
 
-            <div className={styles.title}>회원가입</div>
+            <div css={styles.title}>회원가입</div>
 
             <form onSubmit={signUp}>
-                <div className={styles.dataDiv}>
+                <div css={styles.dataDiv}>
                     <div>아이디</div>
                     <input type="text" id="id" placeholder="아이디"
                            onChange={(e) => typingCheck(e)}/>
                 </div>
 
-                <div className={styles.dataDiv}>
+                <div css={styles.dataDiv}>
                     <div>닉네임</div>
                     <input type="text" id="nickname" placeholder="닉네임"
                            onChange={(e) => typingCheck(e)}/>
                 </div>
 
-                <div className={styles.dataDiv}>
+                <div css={styles.dataDiv}>
                     <div>이메일</div>
                     <input type="text" id="email" placeholder="이메일"
                            onChange={(e) => typingCheck(e)}/>
                 </div>
 
-                <div className={styles.dataDiv}>
+                <div css={styles.dataDiv}>
                     <div>비밀번호</div>
                     <input type="password" id="password"
                            ref={passwordRef}
@@ -153,7 +153,7 @@ const Index: NextPage = () => {
                            placeholder="비밀번호"/>
                 </div>
 
-                <div className={styles.dataDiv}>
+                <div css={styles.dataDiv}>
                     <div>비밀번호 확인</div>
                     <input type="password" id="passwordCheck"
                            ref={passwordCheckRef}
@@ -161,12 +161,12 @@ const Index: NextPage = () => {
                            placeholder="비밀번호 확인"/>
                 </div>
 
-                <div className={styles.buttonDiv}>
+                <div css={styles.buttonDiv}>
                     <button>회원가입</button>
                 </div>
             </form>
 
-            <div className={styles.buttonDiv}>
+            <div css={styles.buttonDiv}>
                 <Link href={"/"}>
                     <button>메인으로</button>
                 </Link>

@@ -54,20 +54,20 @@ const Account: NextPage = () => {
 
     return (
         <div
-            className={styles.container}
+            css={styles.container}
         >
             <SetHead/>
 
-            <div className={styles.accountTotalStatisticWrap}>
-                <div className={styles.allAccountTotalAmountDesc}>
+            <div css={styles.accountTotalStatisticWrap}>
+                <div css={styles.allAccountTotalAmountDesc}>
                     총 자산
                 </div>
-                <div className={styles.allAccountTotalAmount}>
+                <div css={styles.allAccountTotalAmount}>
                     1,500,000원
                 </div>
             </div>
 
-            <div className={styles.accountListWrap}>
+            <div css={styles.accountListWrap}>
                 <InfiniteScroll
                     initialLoad={false}
                     pageStart={1}
@@ -89,13 +89,13 @@ const Account: NextPage = () => {
                     }
                 </InfiniteScroll>
                 <div
-                    className={styles.accountLastItem}
+                    css={styles.accountLastItem}
                     onClick={createAccount}
                 >
-                    <div className={styles.accountAddPlus}>
+                    <div css={styles.accountAddPlus}>
                         +
                     </div>
-                    <div className={styles.accountAddText}>
+                    <div css={styles.accountAddText}>
                         가계부 추가
                     </div>
                 </div>

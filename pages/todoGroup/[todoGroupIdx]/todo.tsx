@@ -63,15 +63,15 @@ const Todo: NextPage = () => {
     }, [todoGroupIdx]);
 
     return (
-        <div className={styles.container}>
+        <div css={styles.container}>
             <SetHead/>
 
-            <div className={circleButtonWrap}>
+            <div css={circleButtonWrap}>
                 <CircleButton {...circleButtonProps}/>
             </div>
 
             <InfiniteScroll
-                className={styles.todoListWrap}
+                css={styles.todoListWrap}
                 initialLoad={false}
                 pageStart={1}
                 loadMore={() => getTodoList(true)}

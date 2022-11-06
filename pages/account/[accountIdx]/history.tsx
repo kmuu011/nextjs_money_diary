@@ -6,7 +6,7 @@ import {AccountHistoryItemType} from "../../../src/interface/type/account/histor
 import {selectAccountHistoryApi} from "../../../src/api/account/history/history";
 import {useRouter} from "next/router";
 import SetHead from "../../../src/component/common/Head";
-import AccountHistoryItem from "../../../src/component/account/history/accountHistoryItem";
+import AccountHistoryItem from "../../../src/component/account/history/AccountHistoryItem";
 import {AccountItemType} from "../../../src/interface/type/account/account";
 import {selectOneAccountApi} from "../../../src/api/account/account";
 import CircleButton from "../../../src/component/common/button/CircleButton";
@@ -14,7 +14,7 @@ import {circleButtonWrap} from "../../../styles/common/Common.style";
 import {CircleButtonProps} from "../../../src/interface/props/common";
 import addWhiteButton from "../../../public/static/button/add/addWhite.svg";
 import {useRecoilState} from "recoil";
-import {freezeBackground} from "../../../src/utils/utils";
+import {commaParser, freezeBackground} from "../../../src/utils/utils";
 import {showAccountHistoryInsertModalAtom} from "../../../src/recoil/atoms/account/history";
 import AccountHistoryInsertModal from "../../../src/component/account/history/modal/AccountHistoryInsertModal";
 
@@ -95,7 +95,7 @@ const AccountHistory: NextPage = () => {
     };
 
     return (
-        <div className={styles.container}>
+        <div css={styles.container}>
             <SetHead/>
 
             <AccountHistoryInsertModal
@@ -103,21 +103,21 @@ const AccountHistory: NextPage = () => {
                 reloadAccountHistoryList={getAccountHistoryList}
             />
 
-            <div className={circleButtonWrap}>
+            <div css={circleButtonWrap}>
                 <CircleButton {...circleButtonProps}/>
             </div>
 
-            <div className={styles.accountHistoryTotalStatisticWrap}>
-                <div className={styles.accountName}>
+            <div css={styles.accountHistoryTotalStatisticWrap}>
+                <div css={styles.accountName}>
                     {accountInfo?.accountName}
                 </div>
-                <div className={styles.accountTotalAmount}>
-                    {accountInfo?.totalAmount}
+                <div css={styles.accountTotalAmount}>
+                    {commaParser(accountInfo?.totalAmount || 0)}원
                 </div>
             </div>
 
             <InfiniteScroll
-                className={styles.accountHistoryListWrap}
+                css={styles.accountHistoryListWrap}
                 initialLoad={false}
                 pageStart={1}
                 loadMore={() => getAccountHistoryList(true)}

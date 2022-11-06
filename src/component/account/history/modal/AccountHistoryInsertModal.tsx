@@ -3,7 +3,7 @@ import {useRecoilState} from "recoil";
 
 import {showAccountHistoryInsertModalAtom} from "../../../../recoil/atoms/account/history";
 import {modalBackground} from "../../../../../styles/common/Common.style";
-import * as styles from "../../../../../styles/account/history/insertModal.style";
+import * as styles from "../../../../../styles/account/history/InsertModal.style";
 import {AccountHistoryCategoryItemType} from "../../../../interface/type/account/history/category";
 import {selectAccountHistoryCategoryApi} from "../../../../api/account/history/category";
 import {createAccountHistoryApi} from "../../../../api/account/history/history";
@@ -88,7 +88,7 @@ const AccountHistoryInsertModal: FunctionComponent<{
     }, [type]);
 
     return (
-        <div className={modalBackground(showAccountHistoryInsertModal)}
+        <div css={modalBackground(showAccountHistoryInsertModal)}
              onClick={(e) => {
                  const element: HTMLDivElement = e.target as HTMLDivElement;
 
@@ -97,10 +97,10 @@ const AccountHistoryInsertModal: FunctionComponent<{
                  }
              }}>
             <div
-                className={styles.accountHistoryInsertWrap(showAccountHistoryInsertModal)}
+                css={styles.accountHistoryInsertWrap(showAccountHistoryInsertModal)}
                 id={"accountInsertModal"}
             >
-                <div className={styles.accountHistoryInsertBody(showAccountHistoryInsertModal)}>
+                <div css={styles.accountHistoryInsertBody(showAccountHistoryInsertModal)}>
                     <div>
                         <input
                             placeholder={"금액"}
@@ -108,21 +108,21 @@ const AccountHistoryInsertModal: FunctionComponent<{
                             onChange={(e) => setAmount(parseInt(e.target.value))}
                         />
                     </div>
-                    <div className={styles.typeWrap}>
+                    <div css={styles.typeWrap}>
                         <div
-                            className={styles.incomeType(type === 0)}
+                            css={styles.incomeType(type === 0)}
                             onClick={() => setType(0)}
                         >
                             지출
                         </div>
                         <div
-                            className={styles.outcomeType(type === 1)}
+                            css={styles.outcomeType(type === 1)}
                             onClick={() => setType(1)}
                         >
                             수입
                         </div>
                     </div>
-                    <div className={styles.categoryWrap}>
+                    <div css={styles.categoryWrap}>
                         <select
                             value={category}
                             onChange={(e) => {
@@ -141,13 +141,13 @@ const AccountHistoryInsertModal: FunctionComponent<{
                         </select>
                     </div>
 
-                    <div className={styles.contentInput}>
+                    <div css={styles.contentInput}>
                         <textarea
                             placeholder={"내용"}
                             onChange={(e) => setContent(e.target.value)}
                         />
                     </div>
-                    <div className={styles.dateWrap}>
+                    <div css={styles.dateWrap}>
                         <input
                             type={"datetime-local"}
                             value={createdAt}
@@ -156,7 +156,7 @@ const AccountHistoryInsertModal: FunctionComponent<{
                     </div>
 
                     <div
-                        className={styles.buttonWrap}
+                        css={styles.buttonWrap}
                     >
                         <button
                             onClick={insertAccountHistory}

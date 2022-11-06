@@ -43,7 +43,7 @@ const GlobalNavigation: FunctionComponent = () => {
     ];
 
     return (
-        <div className={modalBackground(showSideBar)}
+        <div css={modalBackground(showSideBar)}
              id={"naviMenuContainer"}
              onClick={(e) => {
                  const element: HTMLDivElement = e.target as HTMLDivElement;
@@ -52,7 +52,7 @@ const GlobalNavigation: FunctionComponent = () => {
                      setShowSideBar(false);
                  }
              }}>
-            <div className={menuWrap(showSideBar)}>
+            <div css={menuWrap(showSideBar)}>
                 {menuList.map((menu, i) => {
                     return <SideMenu
                         image={menu.image}
