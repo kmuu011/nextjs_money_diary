@@ -142,30 +142,6 @@ const AccountHistory: NextPage = () => {
                     {commaParser(accountInfo?.totalAmount || 0)}원
                 </div>
             </div>
-
-            {/*<InfiniteScroll*/}
-            {/*    css={styles.accountHistoryListWrap}*/}
-            {/*    initialLoad={false}*/}
-            {/*    pageStart={1}*/}
-            {/*    loadMore={() => getAccountHistoryList(true)}*/}
-            {/*    hasMore={true}*/}
-            {/*>*/}
-            {/*    {*/}
-            {/*        accountHistoryList.map((accountHistory, i) => {*/}
-            {/*            console.log(accountHistory)*/}
-            {/*            return <AccountHistoryItem*/}
-            {/*                idx={accountHistory.idx}*/}
-            {/*                amount={accountHistory.amount}*/}
-            {/*                content={accountHistory.content}*/}
-            {/*                type={accountHistory.type}*/}
-            {/*                createdAt={accountHistory.createdAt}*/}
-            {/*                accountHistoryCategory={accountHistory.accountHistoryCategory}*/}
-            {/*                key={accountHistory.idx}*/}
-            {/*            />*/}
-            {/*        })*/}
-            {/*    }*/}
-            {/*</InfiniteScroll>*/}
-
             <div css={styles.accountHistoryListWrap}>
                 {
                     accountHistoryList.map((accountHistory, i) => {
