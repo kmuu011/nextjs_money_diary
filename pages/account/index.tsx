@@ -12,6 +12,9 @@ const Account: NextPage = () => {
     const [totalCount, setTotalCount] = useState<number>(0);
     const [page, setPage] = useState<number>(1);
     const [last, setLast] = useState<number>(0);
+    const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
+
+    let io: IntersectionObserver;
 
     const createAccount = async (): Promise<void> => {
         const response = await createAccountApi({
@@ -31,7 +34,7 @@ const Account: NextPage = () => {
 
         if (last !== 0 && last < selectPage) return;
 
-        const response = await selectAccountApi({page: selectPage, count: 12});
+        const response = await selectAccountApi({page: selectPage, count: 8});
 
         if (response?.status !== 200) {
             alert(response?.data.message);
@@ -48,9 +51,32 @@ const Account: NextPage = () => {
         setLast(response.data.last);
     }
 
+    const nextPage = () => {
+        setPage(page+1);
+
+        if(io && lastElement){
+            io.unobserve(lastElement);
+        }
+    }
+
     useEffect(() => {
         getAccountList();
-    }, []);
+    }, [page]);
+
+    useEffect(() => {
+        io = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting){
+                    nextPage();
+                }
+            })
+        })
+
+        if(io && lastElement){
+            io.observe(lastElement);
+        }
+
+    }, [lastElement]);
 
     return (
         <div
@@ -68,26 +94,23 @@ const Account: NextPage = () => {
             </div>
 
             <div css={styles.accountListWrap}>
-                <InfiniteScroll
-                    initialLoad={false}
-                    pageStart={1}
-                    loadMore={() => getAccountList(true)}
-                    hasMore={true}
-                >
+                <div>
                     {
-                        accountList.map((account) => {
+                        accountList.map((account, i) => {
                             return <AccountItem
                                 index={account.idx}
                                 accountName={account.accountName}
+                                totalAmount={account.totalAmount}
                                 invisibleAmount={account.invisibleAmount}
                                 order={account.order}
-                                totalAmount={account.totalAmount}
-                                key={account.idx}
                                 reloadAccountList={getAccountList}
+                                isLast={i === accountList.length-1}
+                                setLastElement={setLastElement}
+                                key={account.idx}
                             />
                         })
                     }
-                </InfiniteScroll>
+                </div>
                 <div
                     css={styles.accountLastItem}
                     onClick={createAccount}

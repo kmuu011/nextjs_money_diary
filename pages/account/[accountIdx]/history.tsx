@@ -31,7 +31,7 @@ const AccountHistory: NextPage = () => {
     const [last, setLast] = useState<number>(0);
     const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
 
-    let io:IntersectionObserver;
+    let io: IntersectionObserver;
 
     const getAccountInfo = async (): Promise<void> => {
         if (isNaN(accountIdx)) return;
@@ -83,6 +83,7 @@ const AccountHistory: NextPage = () => {
 
     const nextPage = () => {
         setPage(page+1);
+
         if(io && lastElement){
             io.unobserve(lastElement);
         }
