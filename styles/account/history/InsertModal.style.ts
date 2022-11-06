@@ -11,7 +11,7 @@ export const accountHistoryInsertBody = (show: boolean) => css`
   border-radius: var(--border-radius);
   @media (max-width: 500px) {
     margin: 0 5%;
-    width: 90%;
+    width: 80%;
   }
 
   padding: 25px;
@@ -19,7 +19,7 @@ export const accountHistoryInsertBody = (show: boolean) => css`
   background-color: var(--background-color);
   height: 410px;
   width: 400px;
-  bottom: ${show ? '-35%' : '-80%'};
+  bottom: ${show ? '-25%' : '-80%'};
 
   transition: all .3s, height .3s cubic-bezier(0, 0, 1, 1) .3s;
   box-shadow: var(--body-box-shadow);

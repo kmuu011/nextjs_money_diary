@@ -13,7 +13,8 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
     {
         index, accountName,
         totalAmount, invisibleAmount, order,
-        reloadAccountList
+        reloadAccountList,
+        isLast, setLastElement
     }
 ) => {
     const [showMore, setShowMore] = useState(false);
@@ -65,19 +66,25 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
     }
 
     return (
-        <Link href={`/account/${index}/history`}>
-            <div
-                css={styles.accountItem}
+        <div
+            ref={isLast ? setLastElement : null}
+        >
+            <Link
+                href={`/account/${index}/history`}
             >
-                <div css={styles.accountName}>
-                    {accountName}
-                </div>
-                <div css={styles.accountAmount}>
-                    {commaParser(totalAmount)}원
-                </div>
+                <div
+                    css={styles.accountItem}
+                >
+                    <div css={styles.accountName}>
+                        {accountName}
+                    </div>
+                    <div css={styles.accountAmount}>
+                        {commaParser(totalAmount)}원
+                    </div>
 
-            </div>
-        </Link>
+                </div>
+            </Link>
+        </div>
     )
 }
 
