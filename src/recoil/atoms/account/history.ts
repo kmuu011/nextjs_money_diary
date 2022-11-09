@@ -15,5 +15,10 @@ export const showAccountHistoryUpdateModalAtom = atom({
 export const selectedAccountHistoryInfoAtom = atom<AccountHistoryItemType>({
     key: getAtomKey('selectedAccountHistoryInfoAtom'),
     default: undefined
+});
+
+export const updatedAccountHistoryIdxAtom = atom<number>({
+    key: getAtomKey('accountHistoryUpdatedAtom'),
+    default: undefined
 })
 

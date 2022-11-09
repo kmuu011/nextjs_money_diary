@@ -28,6 +28,13 @@ export const updateAccountHistoryApi = async (
     return await callApi<UpdateAccountHistoryDto>('patch', `account/${accountIdx}/history/${accountHistoryIdx}`, payload);
 }
 
+export const selectOneAccountHistoryApi = async (
+    accountIdx: number,
+    accountHistoryIdx: number,
+): Promise<AxiosResponse | undefined> => {
+    return await callApi('get', `account/${accountIdx}/history/${accountHistoryIdx}`);
+}
+
 export const deleteAccountHistoryApi = async (accountIdx: number): Promise<AxiosResponse | undefined> => {
     return await callApi('delete', `account/${accountIdx}/history/`);
 }

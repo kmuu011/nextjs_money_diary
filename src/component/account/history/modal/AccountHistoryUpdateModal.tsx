@@ -1,9 +1,9 @@
 import {FunctionComponent, useEffect, useState} from "react";
-import {useRecoilState, useRecoilValue} from "recoil";
+import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
 
 import {
     selectedAccountHistoryInfoAtom,
-    showAccountHistoryUpdateModalAtom
+    showAccountHistoryUpdateModalAtom, updatedAccountHistoryIdxAtom
 } from "../../../../recoil/atoms/account/history";
 import {modalBackground} from "../../../../../styles/common/Common.style";
 import * as styles from "../../../../../styles/account/history/InsertModal.style";
@@ -31,6 +31,8 @@ const AccountHistoryUpdateModal: FunctionComponent<{
     ] = useRecoilState(showAccountHistoryUpdateModalAtom);
 
     const selectedAccountHistoryInfo: AccountHistoryItemType = useRecoilValue(selectedAccountHistoryInfoAtom);
+
+    const setUpdatedAccountHistoryIdx = useSetRecoilState(updatedAccountHistoryIdxAtom);
 
     const [type, setType] = useState<number>(0);
     const [amount, setAmount] = useState<number>(0);
@@ -88,6 +90,7 @@ const AccountHistoryUpdateModal: FunctionComponent<{
 
         if(response?.status === 200){
             setShowAccountHistoryUpdateModal(false);
+            setUpdatedAccountHistoryIdx(selectedAccountHistoryInfo.idx);
         }
     };
 
