@@ -6,6 +6,6 @@ export interface AccountHistoryItemType {
     amount: number
     content: string
     type: number
-    createdAt: string
-    updatedAt: string
+    createdAt: Date
+    updatedAt: Date
 }

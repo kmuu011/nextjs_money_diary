@@ -12,10 +12,14 @@ import CircleButton from "../../../src/component/common/button/CircleButton";
 import {circleButtonWrap} from "../../../styles/common/Common.style";
 import {CircleButtonProps} from "../../../src/interface/props/common";
 import addWhiteButton from "../../../public/static/button/add/addWhite.svg";
-import {useRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {commaParser, freezeBackground} from "../../../src/utils/utils";
-import {showAccountHistoryInsertModalAtom} from "../../../src/recoil/atoms/account/history";
+import {
+    showAccountHistoryInsertModalAtom,
+    showAccountHistoryUpdateModalAtom
+} from "../../../src/recoil/atoms/account/history";
 import AccountHistoryInsertModal from "../../../src/component/account/history/modal/AccountHistoryInsertModal";
+import AccountHistoryUpdateModal from "../../../src/component/account/history/modal/AccountHistoryUpdateModal";
 
 const AccountHistory: NextPage = () => {
     const accountIdx: number = Number(useRouter().query.accountIdx);
@@ -23,6 +27,8 @@ const AccountHistory: NextPage = () => {
         showAccountHistoryInsertModal,
         setShowAccountHistoryInsertModal
     ] = useRecoilState(showAccountHistoryInsertModalAtom);
+
+    const showAccountHistoryUpdateModal= useRecoilValue(showAccountHistoryUpdateModalAtom);
 
     const [accountInfo, setAccountInfo] = useState<AccountItemType>();
     const [accountHistoryList, setAccountHistoryList] = useState<AccountHistoryItemType[]>([]);
@@ -82,9 +88,9 @@ const AccountHistory: NextPage = () => {
     }
 
     const nextPage = () => {
-        setPage(page+1);
+        setPage(page + 1);
 
-        if(io && lastElement){
+        if (io && lastElement) {
             io.unobserve(lastElement);
         }
     }
@@ -103,15 +109,19 @@ const AccountHistory: NextPage = () => {
     }, [showAccountHistoryInsertModal]);
 
     useEffect(() => {
+        freezeBackground(showAccountHistoryUpdateModal, window, document);
+    }, [showAccountHistoryUpdateModal]);
+
+    useEffect(() => {
         io = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if(entry.isIntersecting){
+                if (entry.isIntersecting) {
                     nextPage();
                 }
             })
         })
 
-        if(io && lastElement){
+        if (io && lastElement) {
             io.observe(lastElement);
         }
 
@@ -131,6 +141,10 @@ const AccountHistory: NextPage = () => {
                 reloadAccountHistoryList={getAccountHistoryList}
             />
 
+            <AccountHistoryUpdateModal
+                reloadAccountInfo={getAccountInfo}
+            />
+
             <div css={circleButtonWrap}>
                 <CircleButton {...circleButtonProps}/>
             </div>
@@ -147,14 +161,9 @@ const AccountHistory: NextPage = () => {
                 {
                     accountHistoryList.map((accountHistory, i) => {
                         return <AccountHistoryItem
-                            idx={accountHistory.idx}
-                            amount={accountHistory.amount}
-                            content={accountHistory.content}
-                            type={accountHistory.type}
-                            createdAt={accountHistory.createdAt}
-                            accountHistoryCategory={accountHistory.accountHistoryCategory}
+                            accountHistoryInfo={accountHistory}
                             key={accountHistory.idx}
-                            isLast={accountHistoryList.length-1 === i}
+                            isLast={accountHistoryList.length - 1 === i}
                             setLastElement={setLastElement}
                         />
                     })

@@ -7,21 +7,35 @@ import cancelImage from "../../../public/static/button/cancel/cancel.svg";
 import Image from "next/image";
 import {AccountHistoryItemProps} from "../../../interface/props/account/history/history";
 import {commaParser, dateToObject} from "../../../utils/utils";
+import {useRecoilState, useSetRecoilState} from "recoil";
+import {
+    selectedAccountHistoryInfoAtom,
+    showAccountHistoryUpdateModalAtom
+} from "../../../recoil/atoms/account/history";
 
 const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
     {
-        idx, amount, content,
-        type, createdAt,
-        accountHistoryCategory,
+        accountHistoryInfo,
         isLast,
-        setLastElement
+        setLastElement,
     }
 ) => {
     const [showMore, setShowMore] = useState(false);
-    const dateObj = dateToObject(new Date(createdAt));
+    const dateObj = dateToObject(new Date(accountHistoryInfo.createdAt));
+    const [
+        showAccountHistoryUpdateModal,
+        setShowAccountHistoryUpdateModal
+    ] = useRecoilState(showAccountHistoryUpdateModalAtom);
+
+    const setAccountHistoryInfo = useSetRecoilState(selectedAccountHistoryInfoAtom);
 
     const showMoreMenu = (): void => {
-        setShowMore(true)
+        setShowMore(true);
+    }
+
+    const openAccountUpdateModal = (): void => {
+        setAccountHistoryInfo(accountHistoryInfo);
+        setShowAccountHistoryUpdateModal(!showAccountHistoryUpdateModal);
     }
 
     // const updateAccountHistory = async (): Promise<void> => {
@@ -59,6 +73,7 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
         <div
             css={styles.accountHistoryItem}
             ref={isLast ? setLastElement : null}
+            onClick={openAccountUpdateModal}
         >
             <div css={styles.historyDate}>
                 {`${dateObj.year}.${dateObj.month}.${dateObj.date} 
@@ -69,13 +84,13 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
             <div css={styles.historyInfoWrap}>
                 <div css={styles.leftInfo}>
                     <div css={styles.categoryName}>
-                        {accountHistoryCategory.name}
+                        {accountHistoryInfo.accountHistoryCategory.name}
                     </div>
-                    <div>{content}</div>
+                    <div>{accountHistoryInfo.content}</div>
                 </div>
                 <div css={styles.rightInfo}>
-                    <div css={styles.historyContent(type)}>
-                        {commaParser(amount, type)}원
+                    <div css={styles.historyContent(accountHistoryInfo.type)}>
+                        {commaParser(accountHistoryInfo.amount, accountHistoryInfo.type)}원
                     </div>
                 </div>
             </div>

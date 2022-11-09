@@ -71,7 +71,15 @@ export const dateToObject = (dateValue?: Date): DateObjectType => {
     const minute = dateValue.getMinutes().toString().padStart(2, '0');
     const second = dateValue.getSeconds().toString().padStart(2, '0');
 
-    return {year, month, date, day, dayStr, hour, minute, second}
+    return {year, month, date, day, dayStr, hour, minute, second};
+}
+
+export const toDateParser = (dateValue?: Date): string => {
+    dateValue = dateValue ? dateValue : new Date();
+
+    const dateObj:DateObjectType = dateToObject(new Date(dateValue));
+
+    return `${dateObj.year}-${dateObj.month}-${dateObj.date}T${dateObj.hour}:${dateObj.minute}`;
 }
 
 export const commaParser = (value: number, type?: number): string => {
