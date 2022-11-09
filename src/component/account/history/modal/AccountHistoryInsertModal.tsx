@@ -80,9 +80,19 @@ const AccountHistoryInsertModal: FunctionComponent<{
         await reloadAccountInfo();
         await reloadAccountHistoryList(false, true);
 
+        initialSetter();
+
         if(response?.status === 201){
             setShowAccountHistoryInsertModal(false);
         }
+    }
+
+    const initialSetter = (): void => {
+        setType(0);
+        setAmount(0);
+        setCategory(0);
+        setContent('');
+        setCreatedAt(toDateParser());
     }
 
     useEffect(() => {
@@ -106,6 +116,7 @@ const AccountHistoryInsertModal: FunctionComponent<{
                     <div>
                         <input
                             placeholder={"금액"}
+                            value={amount}
                             type={"number"}
                             onChange={(e) => setAmount(parseInt(e.target.value))}
                         />
@@ -147,6 +158,7 @@ const AccountHistoryInsertModal: FunctionComponent<{
                         <textarea
                             placeholder={"내용"}
                             onChange={(e) => setContent(e.target.value)}
+                            value={content}
                         />
                     </div>
                     <div css={styles.dateWrap}>
