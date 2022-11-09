@@ -15,7 +15,7 @@ export interface CreateAccountHistoryDto {
 export interface UpdateAccountHistoryDto {
     amount: number
     content: string
-    type: string
+    type: number
     accountHistoryCategoryIdx: number
     createdAt?: string
 }

@@ -21,9 +21,18 @@ export const createAccountHistoryApi = async (
 }
 
 export const updateAccountHistoryApi = async (
-    accountIdx: number, payload: UpdateAccountHistoryDto
+    accountIdx: number,
+    accountHistoryIdx: number,
+    payload: UpdateAccountHistoryDto
 ): Promise<AxiosResponse | undefined> => {
-    return await callApi<UpdateAccountHistoryDto>('patch', `account/${accountIdx}/history/`, payload);
+    return await callApi<UpdateAccountHistoryDto>('patch', `account/${accountIdx}/history/${accountHistoryIdx}`, payload);
+}
+
+export const selectOneAccountHistoryApi = async (
+    accountIdx: number,
+    accountHistoryIdx: number,
+): Promise<AxiosResponse | undefined> => {
+    return await callApi('get', `account/${accountIdx}/history/${accountHistoryIdx}`);
 }
 
 export const deleteAccountHistoryApi = async (accountIdx: number): Promise<AxiosResponse | undefined> => {

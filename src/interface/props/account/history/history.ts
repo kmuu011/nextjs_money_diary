@@ -1,13 +1,8 @@
-import {AccountHistoryCategoryItemType} from "../../../type/account/history/category";
 import {Dispatch, SetStateAction} from "react";
+import {AccountHistoryItemType} from "../../../type/account/history/history";
 
 export interface AccountHistoryItemProps {
-    idx: number
-    amount: number
-    content: string
-    type: number
-    createdAt: string
-    accountHistoryCategory: AccountHistoryCategoryItemType
+    accountHistoryInfo: AccountHistoryItemType,
     isLast: boolean
     setLastElement: Dispatch<SetStateAction<HTMLDivElement | null>>
 }
