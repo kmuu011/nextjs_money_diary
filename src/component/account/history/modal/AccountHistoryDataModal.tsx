@@ -1,16 +1,22 @@
 import {FunctionComponent, useEffect, useState} from "react";
-import {useRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
 
-import {showAccountHistoryInsertModalAtom} from "../../../../recoil/atoms/account/history";
+import {
+    accountHistoryModalTypeAtom,
+    selectedAccountHistoryInfoAtom,
+    showAccountHistoryDataModalAtom,
+    updatedAccountHistoryIdxAtom
+} from "../../../../recoil/atoms/account/history";
 import {modalBackground} from "../../../../../styles/common/Common.style";
 import * as styles from "../../../../../styles/account/history/InsertModal.style";
 import {AccountHistoryCategoryItemType} from "../../../../interface/type/account/history/category";
 import {selectAccountHistoryCategoryApi} from "../../../../api/account/history/category";
-import {createAccountHistoryApi} from "../../../../api/account/history/history";
+import {createAccountHistoryApi, updateAccountHistoryApi} from "../../../../api/account/history/history";
 import {useRouter} from "next/router";
 import {toDateParser} from "../../../../utils/utils";
+import {AccountHistoryItemType} from "../../../../interface/type/account/history/history";
 
-const AccountHistoryInsertModal: FunctionComponent<{
+const AccountHistoryDataModal: FunctionComponent<{
     reloadAccountInfo: Function,
     reloadAccountHistoryList: Function
 }> = (
@@ -24,7 +30,12 @@ const AccountHistoryInsertModal: FunctionComponent<{
     const [
         showAccountHistoryInsertModal,
         setShowAccountHistoryInsertModal
-    ] = useRecoilState(showAccountHistoryInsertModalAtom);
+    ] = useRecoilState(showAccountHistoryDataModalAtom);
+
+    const modalType = useRecoilValue(accountHistoryModalTypeAtom);
+
+    const selectedAccountHistoryInfo: AccountHistoryItemType = useRecoilValue(selectedAccountHistoryInfoAtom);
+    const setUpdatedAccountHistoryIdx = useSetRecoilState(updatedAccountHistoryIdxAtom);
 
     const [type, setType] = useState<number>(0);
     const [amount, setAmount] = useState<number>(0);
@@ -45,7 +56,7 @@ const AccountHistoryInsertModal: FunctionComponent<{
         setCategory(response.data[0].idx);
     };
 
-    const insertAccountHistory = async () => {
+    const validation = () => {
         if (amount < 1) {
             alert('금액을 정확히 입력해주세요.');
             return;
@@ -65,6 +76,10 @@ const AccountHistoryInsertModal: FunctionComponent<{
             alert('일자가 올바르지 않습니다.');
             return;
         }
+    }
+
+    const insertAccountHistory = async () => {
+        validation();
 
         const response = await createAccountHistoryApi(
             accountIdx,
@@ -82,8 +97,31 @@ const AccountHistoryInsertModal: FunctionComponent<{
 
         initialSetter();
 
-        if(response?.status === 201){
+        if (response?.status === 201) {
             setShowAccountHistoryInsertModal(false);
+        }
+    }
+
+    const accountHistoryUpdate = async () => {
+        validation();
+
+        const response = await updateAccountHistoryApi(
+            accountIdx,
+            selectedAccountHistoryInfo.idx,
+            {
+                amount,
+                type,
+                content,
+                accountHistoryCategoryIdx: category,
+                createdAt
+            }
+        );
+
+        await reloadAccountInfo();
+
+        if(response?.status === 200){
+            setShowAccountHistoryInsertModal(false);
+            setUpdatedAccountHistoryIdx(selectedAccountHistoryInfo.idx);
         }
     }
 
@@ -98,6 +136,15 @@ const AccountHistoryInsertModal: FunctionComponent<{
     useEffect(() => {
         getCategoryList()
     }, [type]);
+
+    useEffect(() => {
+        setType(selectedAccountHistoryInfo?.type || 0);
+        setAmount(selectedAccountHistoryInfo?.amount || 0);
+        setContent(selectedAccountHistoryInfo?.content || '');
+        setCategory(selectedAccountHistoryInfo?.accountHistoryCategory.idx || 0);
+        setCreatedAt(toDateParser(selectedAccountHistoryInfo?.createdAt || toDateParser()));
+
+    }, [selectedAccountHistoryInfo]);
 
     return (
         <div css={modalBackground(showAccountHistoryInsertModal)}
@@ -142,6 +189,11 @@ const AccountHistoryInsertModal: FunctionComponent<{
                                 setCategory(Number(e.target.value))
                             }}
                         >
+                            <option
+                                value={0} key={0}
+                            >
+                                카테고리
+                            </option>
                             {
                                 categoryList.map(c => {
                                     return <option
@@ -172,11 +224,20 @@ const AccountHistoryInsertModal: FunctionComponent<{
                     <div
                         css={styles.buttonWrap}
                     >
-                        <button
-                            onClick={insertAccountHistory}
-                        >
-                            등록하기
-                        </button>
+
+                        {
+                            modalType === 0 ?
+                                <button
+                                    onClick={insertAccountHistory}
+                                >
+                                    등록하기
+                                </button> :
+                                <button
+                                    onClick={accountHistoryUpdate}
+                                >
+                                    수정하기
+                                </button>
+                        }
                     </div>
                 </div>
             </div>
@@ -184,4 +245,4 @@ const AccountHistoryInsertModal: FunctionComponent<{
     )
 }
 
-export default AccountHistoryInsertModal;
+export default AccountHistoryDataModal;

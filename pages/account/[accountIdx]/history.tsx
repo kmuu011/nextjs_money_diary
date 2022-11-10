@@ -12,23 +12,23 @@ import CircleButton from "../../../src/component/common/button/CircleButton";
 import {circleButtonWrap} from "../../../styles/common/Common.style";
 import {CircleButtonProps} from "../../../src/interface/props/common";
 import addWhiteButton from "../../../public/static/button/add/addWhite.svg";
-import {useRecoilState, useRecoilValue} from "recoil";
+import {useRecoilState, useResetRecoilState, useSetRecoilState} from "recoil";
 import {commaParser, freezeBackground} from "../../../src/utils/utils";
 import {
-    showAccountHistoryInsertModalAtom,
-    showAccountHistoryUpdateModalAtom
+    accountHistoryModalTypeAtom, selectedAccountHistoryInfoAtom,
+    showAccountHistoryDataModalAtom,
 } from "../../../src/recoil/atoms/account/history";
-import AccountHistoryInsertModal from "../../../src/component/account/history/modal/AccountHistoryInsertModal";
-import AccountHistoryUpdateModal from "../../../src/component/account/history/modal/AccountHistoryUpdateModal";
+import AccountHistoryDataModal from "../../../src/component/account/history/modal/AccountHistoryDataModal";
 
 const AccountHistory: NextPage = () => {
     const accountIdx: number = Number(useRouter().query.accountIdx);
     const [
         showAccountHistoryInsertModal,
         setShowAccountHistoryInsertModal
-    ] = useRecoilState(showAccountHistoryInsertModalAtom);
+    ] = useRecoilState(showAccountHistoryDataModalAtom);
 
-    const showAccountHistoryUpdateModal= useRecoilValue(showAccountHistoryUpdateModalAtom);
+    const setModalType = useSetRecoilState(accountHistoryModalTypeAtom);
+    const resetSelectedAccountHistoryInfo = useResetRecoilState(selectedAccountHistoryInfoAtom);
 
     const [accountInfo, setAccountInfo] = useState<AccountItemType>();
     const [accountHistoryList, setAccountHistoryList] = useState<AccountHistoryItemType[]>([]);
@@ -84,6 +84,7 @@ const AccountHistory: NextPage = () => {
     }
 
     const openAccountInertModal = () => {
+        setModalType(0);
         setShowAccountHistoryInsertModal(true);
     }
 
@@ -106,11 +107,12 @@ const AccountHistory: NextPage = () => {
 
     useEffect(() => {
         freezeBackground(showAccountHistoryInsertModal, window, document);
-    }, [showAccountHistoryInsertModal]);
 
-    useEffect(() => {
-        freezeBackground(showAccountHistoryUpdateModal, window, document);
-    }, [showAccountHistoryUpdateModal]);
+        if(!showAccountHistoryInsertModal){
+            resetSelectedAccountHistoryInfo();
+        }
+
+    }, [showAccountHistoryInsertModal]);
 
     useEffect(() => {
         io = new IntersectionObserver((entries) => {
@@ -136,13 +138,9 @@ const AccountHistory: NextPage = () => {
         <div css={styles.container}>
             <SetHead/>
 
-            <AccountHistoryInsertModal
+            <AccountHistoryDataModal
                 reloadAccountInfo={getAccountInfo}
                 reloadAccountHistoryList={getAccountHistoryList}
-            />
-
-            <AccountHistoryUpdateModal
-                reloadAccountInfo={getAccountInfo}
             />
 
             <div css={circleButtonWrap}>

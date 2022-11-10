@@ -1,12 +1,13 @@
 import {css} from "@emotion/react";
+import {defaultBodyCss} from "../../common/Common.style";
 
 export const container = css`
+  ${defaultBodyCss};
+
   display: flex;
   justify-content: center;
   text-align: center;
-  margin: 0 auto;
   padding: 14px 0 14px 0;
-  width: 100%;
   min-height: 600px;
 `;
 
