@@ -1,5 +1,5 @@
 import {AxiosResponse} from "axios";
-import {SelectQueryDto} from "../../../interface/dto/common";
+import {CursorSelectQueryDto} from "../../../interface/dto/common";
 import {callApi} from "../../../utils/axios";
 import {
     CreateAccountHistoryDto,
@@ -7,10 +7,10 @@ import {
 } from "../../../interface/dto/account/history/history";
 
 export const selectAccountHistoryApi = async (
-    payload: SelectQueryDto,
+    payload: CursorSelectQueryDto,
     accountIdx: number
 ): Promise<AxiosResponse | undefined> => {
-    return await callApi<SelectQueryDto>('get', `account/${accountIdx}/history`, payload);
+    return await callApi<CursorSelectQueryDto>('get', `account/${accountIdx}/history`, payload);
 }
 
 export const createAccountHistoryApi = async (
@@ -35,6 +35,9 @@ export const selectOneAccountHistoryApi = async (
     return await callApi('get', `account/${accountIdx}/history/${accountHistoryIdx}`);
 }
 
-export const deleteAccountHistoryApi = async (accountIdx: number): Promise<AxiosResponse | undefined> => {
-    return await callApi('delete', `account/${accountIdx}/history/`);
+export const deleteAccountHistoryApi = async (
+    accountIdx: number,
+    accountHistoryIdx: number
+): Promise<AxiosResponse | undefined> => {
+    return await callApi('delete', `account/${accountIdx}/history/${accountHistoryIdx}`);
 }

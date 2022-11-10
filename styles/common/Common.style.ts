@@ -61,3 +61,13 @@ export const footer = css`
 export const logo = css`
   margin-left: 0.5rem;
 `;
+
+export const deleteButton = css`
+  background-color: var(--color-red);
+`;
+
+export const cancelButton = css`
+  background-color: var(--background-color);
+  color: var(--color-3);
+  border-color: var(--color-3);
+`;

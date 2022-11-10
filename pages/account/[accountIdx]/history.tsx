@@ -12,10 +12,12 @@ import CircleButton from "../../../src/component/common/button/CircleButton";
 import {circleButtonWrap} from "../../../styles/common/Common.style";
 import {CircleButtonProps} from "../../../src/interface/props/common";
 import addWhiteButton from "../../../public/static/button/add/addWhite.svg";
-import {useRecoilState, useResetRecoilState, useSetRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState} from "recoil";
 import {commaParser, freezeBackground} from "../../../src/utils/utils";
 import {
-    accountHistoryModalTypeAtom, selectedAccountHistoryInfoAtom,
+    accountHistoryModalTypeAtom, createdAccountHistoryInfoAtom,
+    deletedAccountHistoryIdxAtom,
+    selectedAccountHistoryInfoAtom,
     showAccountHistoryDataModalAtom,
 } from "../../../src/recoil/atoms/account/history";
 import AccountHistoryDataModal from "../../../src/component/account/history/modal/AccountHistoryDataModal";
@@ -29,12 +31,14 @@ const AccountHistory: NextPage = () => {
 
     const setModalType = useSetRecoilState(accountHistoryModalTypeAtom);
     const resetSelectedAccountHistoryInfo = useResetRecoilState(selectedAccountHistoryInfoAtom);
+    const createdAccountHistoryInfo: AccountHistoryItemType = useRecoilValue(createdAccountHistoryInfoAtom);
+    const deletedAccountHistoryIdx = useRecoilValue(deletedAccountHistoryIdxAtom);
 
     const [accountInfo, setAccountInfo] = useState<AccountItemType>();
     const [accountHistoryList, setAccountHistoryList] = useState<AccountHistoryItemType[]>([]);
     const [totalCount, setTotalCount] = useState<number>(0);
-    const [page, setPage] = useState<number>(1);
-    const [last, setLast] = useState<number>(0);
+    const [cursorIdx, setCursorIdx] = useState<number>(-1);
+    const [last, setLast] = useState<boolean>(false);
     const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
 
     let io: IntersectionObserver;
@@ -54,16 +58,12 @@ const AccountHistory: NextPage = () => {
         setAccountInfo(response.data);
     }
 
-    const getAccountHistoryList = async (nextPage?: boolean, initial?: boolean): Promise<void> => {
+    const getAccountHistoryList = async (): Promise<void> => {
         if (isNaN(accountIdx)) return;
-
-        const selectPage = initial ? 1 : page;
-
-        if (last !== 0 && last < selectPage) return;
 
         const response = await selectAccountHistoryApi(
             {
-                page: selectPage,
+                cursorIdx,
                 count: 12,
             },
             accountIdx
@@ -76,11 +76,9 @@ const AccountHistory: NextPage = () => {
 
         setTotalCount(response.data.totalCount);
 
-        setAccountHistoryList(initial ?
-            response.data.items : [...accountHistoryList, ...response.data.items]
-        );
+        setAccountHistoryList([...accountHistoryList, ...response.data.items]);
 
-        setLast(response.data.last);
+        setLast(response.data.items.length === 0);
     }
 
     const openAccountInertModal = () => {
@@ -89,12 +87,19 @@ const AccountHistory: NextPage = () => {
     }
 
     const nextPage = () => {
-        setPage(page + 1);
+        if (last) return;
+
+        setCursorIdx(accountHistoryList[accountHistoryList.length-1]?.idx || -1);
 
         if (io && lastElement) {
             io.unobserve(lastElement);
         }
     }
+
+    const circleButtonProps: CircleButtonProps = {
+        image: addWhiteButton,
+        action: openAccountInertModal
+    };
 
     useEffect(() => {
         getAccountInfo();
@@ -102,8 +107,8 @@ const AccountHistory: NextPage = () => {
     }, [accountIdx]);
 
     useEffect(() => {
-        getAccountHistoryList(true);
-    }, [page])
+        getAccountHistoryList();
+    }, [cursorIdx])
 
     useEffect(() => {
         freezeBackground(showAccountHistoryInsertModal, window, document);
@@ -129,10 +134,18 @@ const AccountHistory: NextPage = () => {
 
     }, [lastElement]);
 
-    const circleButtonProps: CircleButtonProps = {
-        image: addWhiteButton,
-        action: openAccountInertModal
-    };
+    useEffect(() => {
+        accountHistoryList.splice(accountHistoryList.findIndex(v => v.idx === deletedAccountHistoryIdx), 1);
+        setAccountHistoryList(accountHistoryList);
+    }, [deletedAccountHistoryIdx]);
+
+    useEffect(() => {
+        if(createdAccountHistoryInfo === undefined) return;
+        setAccountHistoryList([
+            createdAccountHistoryInfo,
+            ...accountHistoryList
+        ]);
+    }, [createdAccountHistoryInfo]);
 
     return (
         <div css={styles.container}>

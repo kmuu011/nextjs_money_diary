@@ -7,7 +7,7 @@ export const accountHistoryInsertWrap = (show: boolean) => css`
   justify-content: center;
 `;
 
-export const accountHistoryInsertBody = (show: boolean) => css`
+export const accountHistoryInsertBody = (show: boolean, type: number) => css`
   border-radius: var(--border-radius);
   @media (max-width: 500px) {
     margin: 0 5%;
@@ -17,11 +17,11 @@ export const accountHistoryInsertBody = (show: boolean) => css`
   padding: 25px;
   position: relative;
   background-color: var(--background-color);
-  height: 410px;
+  height: ${type === 0 ? 410 : 470}px;
   width: 400px;
   bottom: ${show ? '-25%' : '-80%'};
 
-  transition: all .3s, height .3s cubic-bezier(0, 0, 1, 1) .3s;
+  transition: all .3s, height .1s;
   box-shadow: var(--body-box-shadow);
 `;
 
@@ -89,7 +89,7 @@ export const categoryWrap = css`
 
 export const dateWrap = css`
   margin-top: 10px;
-  
+
   input {
     width: 100%;
     height: var(--default-input-height-size);
@@ -101,3 +101,12 @@ export const dateWrap = css`
 export const buttonWrap = css`
   margin-top: 10px;
 `;
+
+export const deleteButtonWrap = (show: boolean) => css`
+  margin-top: 10px;
+  ${show ? `
+  display:flex;
+  column-gap: 10px
+  ` : ''}
+`;
+

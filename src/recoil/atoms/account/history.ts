@@ -12,8 +12,18 @@ export const selectedAccountHistoryInfoAtom = atom<AccountHistoryItemType>({
     default: undefined
 });
 
+export const createdAccountHistoryInfoAtom = atom<AccountHistoryItemType>({
+    key: getAtomKey('createdAccountHistoryInfoAtom'),
+    default: undefined
+});
+
 export const updatedAccountHistoryIdxAtom = atom<number>({
     key: getAtomKey('accountHistoryUpdatedAtom'),
+    default: undefined
+});
+
+export const deletedAccountHistoryIdxAtom = atom<number>({
+    key: getAtomKey('deletedAccountHistoryIdxAtom'),
     default: undefined
 });
 

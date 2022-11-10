@@ -2,16 +2,20 @@ import {FunctionComponent, useEffect, useState} from "react";
 import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
 
 import {
-    accountHistoryModalTypeAtom,
+    accountHistoryModalTypeAtom, createdAccountHistoryInfoAtom, deletedAccountHistoryIdxAtom,
     selectedAccountHistoryInfoAtom,
     showAccountHistoryDataModalAtom,
     updatedAccountHistoryIdxAtom
 } from "../../../../recoil/atoms/account/history";
-import {modalBackground} from "../../../../../styles/common/Common.style";
+import {cancelButton, deleteButton, modalBackground} from "../../../../../styles/common/Common.style";
 import * as styles from "../../../../../styles/account/history/InsertModal.style";
 import {AccountHistoryCategoryItemType} from "../../../../interface/type/account/history/category";
 import {selectAccountHistoryCategoryApi} from "../../../../api/account/history/category";
-import {createAccountHistoryApi, updateAccountHistoryApi} from "../../../../api/account/history/history";
+import {
+    createAccountHistoryApi,
+    deleteAccountHistoryApi,
+    updateAccountHistoryApi
+} from "../../../../api/account/history/history";
 import {useRouter} from "next/router";
 import {toDateParser} from "../../../../utils/utils";
 import {AccountHistoryItemType} from "../../../../interface/type/account/history/history";
@@ -28,14 +32,20 @@ const AccountHistoryDataModal: FunctionComponent<{
     const accountIdx: number = Number(useRouter().query.accountIdx);
 
     const [
-        showAccountHistoryInsertModal,
-        setShowAccountHistoryInsertModal
+        showDelete,
+        setShowDelete
+    ] = useState(false);
+    const [
+        showAccountHistoryDataModal,
+        setShowAccountHistoryDataModal
     ] = useRecoilState(showAccountHistoryDataModalAtom);
 
     const modalType = useRecoilValue(accountHistoryModalTypeAtom);
 
     const selectedAccountHistoryInfo: AccountHistoryItemType = useRecoilValue(selectedAccountHistoryInfoAtom);
+    const setCreatedAccountHistoryInfo = useSetRecoilState(createdAccountHistoryInfoAtom);
     const setUpdatedAccountHistoryIdx = useSetRecoilState(updatedAccountHistoryIdxAtom);
+    const setDeletedAccountHistoryIdx = useSetRecoilState(deletedAccountHistoryIdxAtom);
 
     const [type, setType] = useState<number>(0);
     const [amount, setAmount] = useState<number>(0);
@@ -76,10 +86,12 @@ const AccountHistoryDataModal: FunctionComponent<{
             alert('일자가 올바르지 않습니다.');
             return;
         }
+
+        return true;
     }
 
     const insertAccountHistory = async () => {
-        validation();
+        if(!validation()) return;
 
         const response = await createAccountHistoryApi(
             accountIdx,
@@ -93,17 +105,17 @@ const AccountHistoryDataModal: FunctionComponent<{
         );
 
         await reloadAccountInfo();
-        await reloadAccountHistoryList(false, true);
 
         initialSetter();
 
         if (response?.status === 201) {
-            setShowAccountHistoryInsertModal(false);
+            setShowAccountHistoryDataModal(false);
+            setCreatedAccountHistoryInfo(response.data);
         }
     }
 
     const accountHistoryUpdate = async () => {
-        validation();
+        if(!validation()) return;
 
         const response = await updateAccountHistoryApi(
             accountIdx,
@@ -117,11 +129,24 @@ const AccountHistoryDataModal: FunctionComponent<{
             }
         );
 
-        await reloadAccountInfo();
-
-        if(response?.status === 200){
-            setShowAccountHistoryInsertModal(false);
+        if (response?.status === 200) {
+            await reloadAccountInfo();
+            setShowAccountHistoryDataModal(false);
             setUpdatedAccountHistoryIdx(selectedAccountHistoryInfo.idx);
+        }
+    }
+
+    const accountHistoryDelete = async () => {
+        const response = await deleteAccountHistoryApi(
+            accountIdx,
+            selectedAccountHistoryInfo.idx
+        );
+
+        if(response?.status === 200) {
+            await reloadAccountInfo();
+            setDeletedAccountHistoryIdx(selectedAccountHistoryInfo.idx);
+            setShowAccountHistoryDataModal(false);
+            setShowDelete(false);
         }
     }
 
@@ -147,19 +172,19 @@ const AccountHistoryDataModal: FunctionComponent<{
     }, [selectedAccountHistoryInfo]);
 
     return (
-        <div css={modalBackground(showAccountHistoryInsertModal)}
+        <div css={modalBackground(showAccountHistoryDataModal)}
              onClick={(e) => {
                  const element: HTMLDivElement = e.target as HTMLDivElement;
 
                  if (element.id === 'accountInsertModal') {
-                     setShowAccountHistoryInsertModal(false);
+                     setShowAccountHistoryDataModal(false);
                  }
              }}>
             <div
-                css={styles.accountHistoryInsertWrap(showAccountHistoryInsertModal)}
+                css={styles.accountHistoryInsertWrap(showAccountHistoryDataModal)}
                 id={"accountInsertModal"}
             >
-                <div css={styles.accountHistoryInsertBody(showAccountHistoryInsertModal)}>
+                <div css={styles.accountHistoryInsertBody(showAccountHistoryDataModal, modalType)}>
                     <div>
                         <input
                             placeholder={"금액"}
@@ -224,7 +249,6 @@ const AccountHistoryDataModal: FunctionComponent<{
                     <div
                         css={styles.buttonWrap}
                     >
-
                         {
                             modalType === 0 ?
                                 <button
@@ -232,11 +256,38 @@ const AccountHistoryDataModal: FunctionComponent<{
                                 >
                                     등록하기
                                 </button> :
-                                <button
-                                    onClick={accountHistoryUpdate}
-                                >
-                                    수정하기
-                                </button>
+                                <div>
+                                    <div>
+                                        <button
+                                            onClick={accountHistoryUpdate}
+                                        >
+                                            수정하기
+                                        </button>
+                                    </div>
+                                    {
+                                        !showDelete ?
+                                            <div css={styles.deleteButtonWrap(showDelete)}>
+                                                <button
+                                                    onClick={() => setShowDelete(true)}
+                                                >
+                                                    삭제하기
+                                                </button>
+                                            </div>
+                                            :
+                                            <div css={styles.deleteButtonWrap(showDelete)}>
+                                                <button
+                                                    css={deleteButton}
+                                                    onClick={accountHistoryDelete}
+                                                >삭제
+                                                </button>
+                                                <button
+                                                    css={cancelButton}
+                                                    onClick={() => setShowDelete(false)}
+                                                >취소
+                                                </button>
+                                            </div>
+                                    }
+                                </div>
                         }
                     </div>
                 </div>
