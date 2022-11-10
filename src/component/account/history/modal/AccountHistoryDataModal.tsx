@@ -22,11 +22,9 @@ import {AccountHistoryItemType} from "../../../../interface/type/account/history
 
 const AccountHistoryDataModal: FunctionComponent<{
     reloadAccountInfo: Function,
-    reloadAccountHistoryList: Function
 }> = (
     {
         reloadAccountInfo,
-        reloadAccountHistoryList
     }
 ) => {
     const accountIdx: number = Number(useRouter().query.accountIdx);

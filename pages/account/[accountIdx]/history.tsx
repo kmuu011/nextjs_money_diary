@@ -153,7 +153,6 @@ const AccountHistory: NextPage = () => {
 
             <AccountHistoryDataModal
                 reloadAccountInfo={getAccountInfo}
-                reloadAccountHistoryList={getAccountHistoryList}
             />
 
             <div css={circleButtonWrap}>
