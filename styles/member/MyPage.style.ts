@@ -1,9 +1,12 @@
 import {css} from "@emotion/react";
+import {defaultBodyCss} from "../common/Common.style";
 
 export const container = css`
+  ${defaultBodyCss};
+
   text-align: center;
-  margin: 0 auto;
-  width: 450px;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const title = css`

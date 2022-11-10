@@ -2,7 +2,6 @@ import '../styles/globals.scss';
 import '../public/static/font/NanumSquareRound/style.scss';
 import type {AppProps} from 'next/app';
 import {Fragment, useEffect} from "react";
-import Footer from "../src/component/common/Footer";
 import GlobalNavigation from "../src/component/common/navigation/GlobalNavigation";
 import NavigationMenu from "../src/component/common/sideBar/SideBar";
 

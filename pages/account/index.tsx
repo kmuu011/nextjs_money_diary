@@ -4,7 +4,6 @@ import {useEffect, useState} from "react";
 import SetHead from "../../src/component/common/Head";
 import {createAccountApi, selectAccountApi} from "../../src/api/account/account";
 import {AccountItemType} from "../../src/interface/type/account/account";
-import InfiniteScroll from 'react-infinite-scroller';
 import AccountItem from "../../src/component/account/AccountItem";
 
 const Account: NextPage = () => {
@@ -30,11 +29,9 @@ const Account: NextPage = () => {
     }
 
     const getAccountList = async (nextPage?: boolean, initial?: boolean): Promise<void> => {
-        const selectPage = initial ? 1 : nextPage ? page + 1 : page;
+        const selectPage = initial ? 1 : page;
 
-        if (last !== 0 && last < selectPage) return;
-
-        const response = await selectAccountApi({page: selectPage, count: 8});
+        const response = await selectAccountApi({page: selectPage, count: 4});
 
         if (response?.status !== 200) {
             alert(response?.data.message);
@@ -52,6 +49,7 @@ const Account: NextPage = () => {
     }
 
     const nextPage = () => {
+        if(last !== 0 && last < page+1) return;
         setPage(page+1);
 
         if(io && lastElement){
@@ -59,8 +57,12 @@ const Account: NextPage = () => {
         }
     }
 
+    // useEffect(() => {
+    //     getAccountList();
+    // }, []);
+
     useEffect(() => {
-        getAccountList();
+        getAccountList(true);
     }, [page]);
 
     useEffect(() => {

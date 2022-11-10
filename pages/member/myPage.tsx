@@ -6,7 +6,7 @@ import SetHead from "../../src/component/common/Head";
 import {tokenCheck} from "../../src/api/member";
 import {MemberInfoDto} from "../../src/interface/dto/member";
 import ProfileImageModifyModal from "../../src/component/member/myPage/modal/ProfileImageModify";
-import {useRecoilState} from "recoil";
+import {useSetRecoilState} from "recoil";
 import {showMemberInfoModifyModalAtom, showProfileImageModifyModalAtom} from "../../src/recoil/atoms/member";
 import Image, {StaticImageData} from "next/image";
 import noImage from "../../public/violet.png";
@@ -15,8 +15,8 @@ import MemberInfoModifyModal from "../../src/component/member/myPage/modal/Membe
 
 const MyPage: NextPage = () => {
     const [memberInfo, setMemberInfo] = useState<MemberInfoDto>();
-    const [showProfileImageModifyModal, setShowProfileImageModifyModal] = useRecoilState(showProfileImageModifyModalAtom);
-    const [showMemberInfoModifyModal, setShowMemberInfoModifyModal] = useRecoilState(showMemberInfoModifyModalAtom)
+    const setShowProfileImageModifyModal = useSetRecoilState(showProfileImageModifyModalAtom);
+    const setShowMemberInfoModifyModal = useSetRecoilState(showMemberInfoModifyModalAtom)
     const [imageSrc, setImageSrc] = useState<string | StaticImageData>(noImage);
 
     useEffect(() => {

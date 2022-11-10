@@ -1,9 +1,11 @@
 import {css} from "@emotion/react";
 
 export const container = css`
-  text-align: center;
-  margin: 0 auto;
-  width: 450px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  box-shadow: var(--body-box-shadow);
+  padding: 10%;
 `;
 
 export const title = css`

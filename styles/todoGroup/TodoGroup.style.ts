@@ -1,11 +1,11 @@
 import {css} from "@emotion/react";
+import {defaultBodyCss} from "../common/Common.style";
 
 export const container = css`
+  ${defaultBodyCss};
+
   text-align: center;
-  margin: 0 auto;
   padding: 14px 0;
-  width: 100%;
-  min-height: 600px;
 `;
 
 export const circleButtonWrap = css`
