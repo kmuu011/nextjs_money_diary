@@ -75,11 +75,25 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
                 <div
                     css={styles.accountItem}
                 >
-                    <div css={styles.accountName}>
-                        {accountName}
+                    <div css={styles.accountInfoWrap}>
+                        <div css={styles.accountName}>
+                            {accountName}
+                        </div>
+                        <div css={styles.accountAmount}>
+                            {commaParser(totalAmount)}원
+                        </div>
                     </div>
-                    <div css={styles.accountAmount}>
-                        {commaParser(totalAmount)}원
+                    <div css={styles.accountButtonWrap}>
+                        <div>
+                            위
+                        </div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div>
+                            아래
+                        </div>
                     </div>
 
                 </div>

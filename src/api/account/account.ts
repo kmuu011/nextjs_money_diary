@@ -1,10 +1,10 @@
 import {AxiosResponse} from "axios";
-import {SelectQueryDto} from "../../interface/dto/common";
+import {CursorSelectQueryDto} from "../../interface/dto/common";
 import {callApi} from "../../utils/axios";
 import {CreateAccountDto, UpdateAccountDto} from "../../interface/dto/account/account";
 
-export const selectAccountApi = async (payload: SelectQueryDto): Promise<AxiosResponse | undefined> => {
-    return await callApi<SelectQueryDto>('get', 'account', payload);
+export const selectAccountApi = async (payload: CursorSelectQueryDto): Promise<AxiosResponse | undefined> => {
+    return await callApi<CursorSelectQueryDto>('get', 'account', payload);
 }
 
 export const selectOneAccountApi = async (accountIdx: number): Promise<AxiosResponse | undefined> => {
