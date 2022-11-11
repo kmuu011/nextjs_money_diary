@@ -38,8 +38,8 @@ export const accountListWrap = css`
 
 export const accountItem = css`
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
   border-bottom: 1px solid var(--color-1);
   overflow-y: auto;
@@ -51,6 +51,20 @@ export const accountItem = css`
   div {
     padding: var(--small-padding-size) 0;
   }
+`;
+
+export const accountInfoWrap = css`
+  display: flex;
+  width: 70%;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+export const accountButtonWrap = css`
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 `;
 
 export const accountLastItem = css`

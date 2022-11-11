@@ -1,12 +1,10 @@
 import {Dispatch, SetStateAction} from "react";
+import {AccountItemType} from "../../type/account/account";
 
 export interface AccountItemProps {
-    index: number
-    accountName: string
-    totalAmount: number
-    invisibleAmount: number
-    order: number
-    reloadAccountList: Function
+    accountInfo: AccountItemType
     isLast: boolean
     setLastElement: Dispatch<SetStateAction<HTMLDivElement | null>>
+    updateAccount: Function
+    deleteAccount: Function
 }

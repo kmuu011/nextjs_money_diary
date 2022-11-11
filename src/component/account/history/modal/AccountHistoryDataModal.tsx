@@ -1,16 +1,15 @@
 import {FunctionComponent, useEffect, useState} from "react";
-import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState} from "recoil";
 
 import {
-    accountHistoryModalTypeAtom, createdAccountHistoryInfoAtom, deletedAccountHistoryIdxAtom,
+    accountHistoryCategoryAtom,
+    accountHistoryModalTypeAtom, accountHistoryTypeAtom, createdAccountHistoryInfoAtom, deletedAccountHistoryIdxAtom,
     selectedAccountHistoryInfoAtom,
     showAccountHistoryDataModalAtom,
     updatedAccountHistoryIdxAtom
 } from "../../../../recoil/atoms/account/history";
 import {cancelButton, deleteButton, modalBackground} from "../../../../../styles/common/Common.style";
 import * as styles from "../../../../../styles/account/history/InsertModal.style";
-import {AccountHistoryCategoryItemType} from "../../../../interface/type/account/history/category";
-import {selectAccountHistoryCategoryApi} from "../../../../api/account/history/category";
 import {
     createAccountHistoryApi,
     deleteAccountHistoryApi,
@@ -19,6 +18,7 @@ import {
 import {useRouter} from "next/router";
 import {toDateParser} from "../../../../utils/utils";
 import {AccountHistoryItemType} from "../../../../interface/type/account/history/history";
+import AccountHistoryCategorySelect from "../AccountHistoryCategorySelect";
 
 const AccountHistoryDataModal: FunctionComponent<{
     reloadAccountInfo: Function,
@@ -45,24 +45,12 @@ const AccountHistoryDataModal: FunctionComponent<{
     const setUpdatedAccountHistoryIdx = useSetRecoilState(updatedAccountHistoryIdxAtom);
     const setDeletedAccountHistoryIdx = useSetRecoilState(deletedAccountHistoryIdxAtom);
 
-    const [type, setType] = useState<number>(0);
+    const [type, setType] = useRecoilState(accountHistoryTypeAtom);
     const [amount, setAmount] = useState<number>(0);
     const [content, setContent] = useState<string>('');
-    const [category, setCategory] = useState<number>(0);
-    const [categoryList, setCategoryList] = useState<AccountHistoryCategoryItemType[]>([]);
+    const [category, setCategory] = useRecoilState(accountHistoryCategoryAtom);
+    const resetCategory = useResetRecoilState(accountHistoryCategoryAtom);
     const [createdAt, setCreatedAt] = useState<string>(toDateParser());
-
-    const getCategoryList = async () => {
-        const response = await selectAccountHistoryCategoryApi({type});
-
-        if (response?.status !== 200) {
-            alert(response?.data.message);
-            return;
-        }
-
-        setCategoryList(response.data);
-        setCategory(response.data[0].idx);
-    };
 
     const validation = () => {
         if (amount < 1) {
@@ -151,14 +139,10 @@ const AccountHistoryDataModal: FunctionComponent<{
     const initialSetter = (): void => {
         setType(0);
         setAmount(0);
-        setCategory(0);
+        resetCategory();
         setContent('');
         setCreatedAt(toDateParser());
     }
-
-    useEffect(() => {
-        getCategoryList()
-    }, [type]);
 
     useEffect(() => {
         setType(selectedAccountHistoryInfo?.type || 0);
@@ -194,39 +178,25 @@ const AccountHistoryDataModal: FunctionComponent<{
                     <div css={styles.typeWrap}>
                         <div
                             css={styles.incomeType(type === 0)}
-                            onClick={() => setType(0)}
+                            onClick={() => {
+                                setType(0);
+                                resetCategory();
+                            }}
                         >
                             지출
                         </div>
                         <div
                             css={styles.outcomeType(type === 1)}
-                            onClick={() => setType(1)}
+                            onClick={() => {
+                                setType(1);
+                                resetCategory();
+                            }}
                         >
                             수입
                         </div>
                     </div>
                     <div css={styles.categoryWrap}>
-                        <select
-                            value={category}
-                            onChange={(e) => {
-                                setCategory(Number(e.target.value))
-                            }}
-                        >
-                            <option
-                                value={0} key={0}
-                            >
-                                카테고리
-                            </option>
-                            {
-                                categoryList.map(c => {
-                                    return <option
-                                        value={c.idx} key={c.idx}
-                                    >
-                                        {c.name}
-                                    </option>
-                                })
-                            }
-                        </select>
+                        <AccountHistoryCategorySelect/>
                     </div>
 
                     <div css={styles.contentInput}>

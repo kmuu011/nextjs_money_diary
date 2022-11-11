@@ -32,3 +32,13 @@ export const accountHistoryModalTypeAtom = atom<number>({
     default: undefined
 });
 
+export const accountHistoryTypeAtom = atom<number>({
+    key: getAtomKey('accountHistoryCategoryAtom'),
+    default: undefined
+});
+
+export const accountHistoryCategoryAtom = atom<number>({
+    key: getAtomKey('accountHistoryCategoryAtom'),
+    default: 0
+});
+

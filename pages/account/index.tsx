@@ -2,15 +2,15 @@ import type {NextPage} from 'next';
 import * as styles from '../../styles/account/Account.style';
 import {useEffect, useState} from "react";
 import SetHead from "../../src/component/common/Head";
-import {createAccountApi, selectAccountApi} from "../../src/api/account/account";
+import {createAccountApi, deleteAccountApi, selectAccountApi, updateAccountApi} from "../../src/api/account/account";
 import {AccountItemType} from "../../src/interface/type/account/account";
 import AccountItem from "../../src/component/account/AccountItem";
 
 const Account: NextPage = () => {
     const [accountList, setAccountList] = useState<AccountItemType[]>([]);
     const [totalCount, setTotalCount] = useState<number>(0);
-    const [page, setPage] = useState<number>(1);
-    const [last, setLast] = useState<number>(0);
+    const [cursor, setCursor] = useState<number>(0);
+    const [last, setLast] = useState<boolean>(false);
     const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
 
     let io: IntersectionObserver;
@@ -25,13 +25,15 @@ const Account: NextPage = () => {
             return;
         }
 
-        await getAccountList(undefined, true);
+        setAccountList([
+            ...accountList,
+            ...[response.data]
+        ]);
+        setTotalCount(totalCount+1);
     }
 
-    const getAccountList = async (nextPage?: boolean, initial?: boolean): Promise<void> => {
-        const selectPage = initial ? 1 : page;
-
-        const response = await selectAccountApi({page: selectPage, count: 4});
+    const getAccountList = async (): Promise<void> => {
+        const response = await selectAccountApi({cursor, count: 4});
 
         if (response?.status !== 200) {
             alert(response?.data.message);
@@ -39,31 +41,23 @@ const Account: NextPage = () => {
         }
 
         setTotalCount(response.data.totalCount);
-
-        setAccountList(initial ?
-            response.data.items : [...accountList, ...response.data.items]
-        );
-
-        setPage(response.data.page);
-        setLast(response.data.last);
+        setAccountList([...accountList, ...response.data.items]);
+        setLast(response.data.items.length === 0);
     }
 
     const nextPage = () => {
-        if(last !== 0 && last < page+1) return;
-        setPage(page+1);
+        if(last) return;
 
         if(io && lastElement){
             io.unobserve(lastElement);
         }
+
+        setCursor(accountList[accountList.length-1].order);
     }
 
-    // useEffect(() => {
-    //     getAccountList();
-    // }, []);
-
     useEffect(() => {
-        getAccountList(true);
-    }, [page]);
+        getAccountList();
+    }, [cursor]);
 
     useEffect(() => {
         io = new IntersectionObserver((entries) => {
@@ -79,6 +73,23 @@ const Account: NextPage = () => {
         }
 
     }, [lastElement]);
+
+    const updateAccount = async (
+        accountIdx: number,
+        order: number
+    ) => {
+        const response = await updateAccountApi(
+            accountIdx,
+            {
+                order
+            }
+        );
+    };
+
+    const deleteAccount = async (accountIdx: number) => {
+        const response = await deleteAccountApi(accountIdx);
+    }
+
 
     return (
         <div
@@ -100,15 +111,12 @@ const Account: NextPage = () => {
                     {
                         accountList.map((account, i) => {
                             return <AccountItem
-                                index={account.idx}
-                                accountName={account.accountName}
-                                totalAmount={account.totalAmount}
-                                invisibleAmount={account.invisibleAmount}
-                                order={account.order}
-                                reloadAccountList={getAccountList}
+                                key={account.idx}
+                                accountInfo={account}
                                 isLast={i === accountList.length-1}
                                 setLastElement={setLastElement}
-                                key={account.idx}
+                                updateAccount={updateAccount}
+                                deleteAccount={deleteAccount}
                             />
                         })
                     }
