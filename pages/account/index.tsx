@@ -2,7 +2,7 @@ import type {NextPage} from 'next';
 import * as styles from '../../styles/account/Account.style';
 import {useEffect, useState} from "react";
 import SetHead from "../../src/component/common/Head";
-import {createAccountApi, selectAccountApi} from "../../src/api/account/account";
+import {createAccountApi, deleteAccountApi, selectAccountApi, updateAccountApi} from "../../src/api/account/account";
 import {AccountItemType} from "../../src/interface/type/account/account";
 import AccountItem from "../../src/component/account/AccountItem";
 
@@ -74,6 +74,23 @@ const Account: NextPage = () => {
 
     }, [lastElement]);
 
+    const updateAccount = async (
+        accountIdx: number,
+        order: number
+    ) => {
+        const response = await updateAccountApi(
+            accountIdx,
+            {
+                order
+            }
+        );
+    };
+
+    const deleteAccount = async (accountIdx: number) => {
+        const response = await deleteAccountApi(accountIdx);
+    }
+
+
     return (
         <div
             css={styles.container}
@@ -94,15 +111,12 @@ const Account: NextPage = () => {
                     {
                         accountList.map((account, i) => {
                             return <AccountItem
-                                index={account.idx}
-                                accountName={account.accountName}
-                                totalAmount={account.totalAmount}
-                                invisibleAmount={account.invisibleAmount}
-                                order={account.order}
-                                reloadAccountList={getAccountList}
+                                key={account.idx}
+                                accountInfo={account}
                                 isLast={i === accountList.length-1}
                                 setLastElement={setLastElement}
-                                key={account.idx}
+                                updateAccount={updateAccount}
+                                deleteAccount={deleteAccount}
                             />
                         })
                     }

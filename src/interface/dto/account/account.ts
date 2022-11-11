@@ -3,7 +3,7 @@ export interface CreateAccountDto {
 }
 
 export interface UpdateAccountDto {
-    accountName: string
-    order: number
-    invisibleAmount: number
+    accountName?: string
+    order?: number
+    invisibleAmount?: number
 }
