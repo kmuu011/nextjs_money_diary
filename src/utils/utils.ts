@@ -82,12 +82,18 @@ export const toDateParser = (dateValue?: Date): string => {
     return `${dateObj.year}-${dateObj.month}-${dateObj.date}T${dateObj.hour}:${dateObj.minute}`;
 }
 
-export const commaParser = (value: number, type?: number): string => {
+export const commaParser = (
+    value: number,
+    type?: number,
+    invisible?: boolean
+): string => {
     const sign: string = type !== undefined ? signType[type] : '';
 
-    if(value > 0) {
-        return sign + Number(value).toLocaleString();
-    }else{
-        return Number(value).toLocaleString();
-    }
+    const output = (value > 0 ? sign : '') + Number(value).toLocaleString();
+
+    return invisible ?
+        output
+            .replace(/\-/g, '')
+            .replace(/[0-9]/g, '-')
+        : output;
 }

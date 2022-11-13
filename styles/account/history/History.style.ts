@@ -19,6 +19,7 @@ export const accountHistoryListWrap = css`
 `;
 
 export const accountHistoryTotalStatisticWrap = css`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -27,9 +28,23 @@ export const accountHistoryTotalStatisticWrap = css`
   height: var(--large-card-height-size);
   padding: var(--default-padding-size);
 
-  div {
-    padding: var(--medium-padding-size) 0;
-  }
+`;
+
+export const accountTopOptionWrap = css`
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: var(--default-padding-size);
+`;
+
+export const accountOptionButton = css`
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-real-white);
+  height: 50px;
+  width: 50px;
 `;
 
 export const accountName = css`
@@ -38,6 +53,7 @@ export const accountName = css`
 `;
 
 export const accountTotalAmount = css`
+  margin-top: var(--medium-padding-size);
   color: var(--color-real-white);
   font-size: var(--large-font-size);
 `;

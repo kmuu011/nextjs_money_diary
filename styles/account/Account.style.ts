@@ -18,10 +18,6 @@ export const accountTotalStatisticWrap = css`
   background-color: var(--color-1);
   height: var(--very-large-card-height-size);
   padding: var(--default-padding-size);
-
-  div {
-    padding: var(--medium-padding-size) 0;
-  }
 `;
 
 export const allAccountTotalAmountDesc = css`
@@ -30,6 +26,7 @@ export const allAccountTotalAmountDesc = css`
 `;
 
 export const allAccountTotalAmount = css`
+  margin-top: var(--medium-padding-size);
   color: var(--color-real-white);
   font-size: var(--large-font-size);
 `;
@@ -37,7 +34,7 @@ export const allAccountTotalAmount = css`
 export const allAccountOptionButtonWrap = css`
   display: flex;
   column-gap: var(--default-padding-size);
-  padding: 0 var(--default-padding-size) !important;
+  padding: var(--default-padding-size) !important;
   position: absolute;
   bottom: 0;
   right: 0;

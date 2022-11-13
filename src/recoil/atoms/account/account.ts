@@ -11,3 +11,7 @@ export const showAccountDeleteButtonAtom = atom<boolean>({
     default: false
 });
 
+export const showAccountUpdateModalAtom = atom<boolean>({
+    key: getAtomKey('showAccountDeleteButtonAtom'),
+    default: false
+});

@@ -7,7 +7,7 @@ import {useRouter} from "next/router";
 import SetHead from "../../../src/component/common/Head";
 import AccountHistoryItem from "../../../src/component/account/history/AccountHistoryItem";
 import {AccountItemType} from "../../../src/interface/type/account/account";
-import {selectOneAccountApi} from "../../../src/api/account/account";
+import {selectOneAccountApi, updateAccountApi} from "../../../src/api/account/account";
 import CircleButton from "../../../src/component/common/button/CircleButton";
 import {circleButtonWrap} from "../../../styles/common/Common.style";
 import {CircleButtonProps} from "../../../src/interface/props/common";
@@ -21,6 +21,10 @@ import {
     showAccountHistoryDataModalAtom,
 } from "../../../src/recoil/atoms/account/history";
 import AccountHistoryDataModal from "../../../src/component/account/history/modal/AccountHistoryDataModal";
+import Image from "next/image";
+import optionButton from "../../../public/static/button/setting/setting.svg";
+import {showAccountUpdateModalAtom} from "../../../src/recoil/atoms/account/account";
+import AccountUpdateModal from "../../../src/component/account/modal/AccountUpdateModal";
 
 const AccountHistory: NextPage = () => {
     const accountIdx: number = Number(useRouter().query.accountIdx);
@@ -28,6 +32,8 @@ const AccountHistory: NextPage = () => {
         showAccountHistoryInsertModal,
         setShowAccountHistoryInsertModal
     ] = useRecoilState(showAccountHistoryDataModalAtom);
+
+    const setShowAccountUpdateModal = useSetRecoilState(showAccountUpdateModalAtom);
 
     const setModalType = useSetRecoilState(accountHistoryModalTypeAtom);
     const resetSelectedAccountHistoryInfo = useResetRecoilState(selectedAccountHistoryInfoAtom);
@@ -85,11 +91,37 @@ const AccountHistory: NextPage = () => {
     const nextPage = () => {
         if (last) return;
 
-        setStartCursorIdx(accountHistoryList[accountHistoryList.length-1]?.idx || -1);
+        setStartCursorIdx(accountHistoryList[accountHistoryList.length - 1]?.idx || -1);
 
         if (io && lastElement) {
             io.unobserve(lastElement);
         }
+    }
+
+    const accountUpdate = async (
+        accountName: string,
+        invisibleAmount: number
+    ) => {
+        if(accountName.replace(/\s/g, '') === ''){
+            alert('가계부 명칭을 입력해주세요.');
+            return;
+        }
+
+        const response = await updateAccountApi(
+            accountIdx,
+            {
+                accountName,
+                invisibleAmount
+            }
+        );
+
+        if (response?.status !== 200) {
+            alert(response?.data.message);
+            return;
+        }
+
+        getAccountInfo();
+        setShowAccountUpdateModal(false);
     }
 
     const circleButtonProps: CircleButtonProps = {
@@ -109,7 +141,7 @@ const AccountHistory: NextPage = () => {
     useEffect(() => {
         freezeBackground(showAccountHistoryInsertModal, window, document);
 
-        if(!showAccountHistoryInsertModal){
+        if (!showAccountHistoryInsertModal) {
             resetSelectedAccountHistoryInfo();
         }
 
@@ -136,7 +168,7 @@ const AccountHistory: NextPage = () => {
     }, [deletedAccountHistoryIdx]);
 
     useEffect(() => {
-        if(createdAccountHistoryInfo === undefined) return;
+        if (createdAccountHistoryInfo === undefined) return;
         setAccountHistoryList([
             createdAccountHistoryInfo,
             ...accountHistoryList
@@ -151,11 +183,26 @@ const AccountHistory: NextPage = () => {
                 reloadAccountInfo={getAccountInfo}
             />
 
+            <AccountUpdateModal
+                accountInfo={accountInfo}
+                accountUpdate={accountUpdate}
+            />
+
             <div css={circleButtonWrap}>
                 <CircleButton {...circleButtonProps}/>
             </div>
 
             <div css={styles.accountHistoryTotalStatisticWrap}>
+                <div
+                    css={styles.accountTopOptionWrap}
+                >
+                    <button
+                        onClick={() => setShowAccountUpdateModal(true)}
+                        css={styles.accountOptionButton}
+                    >
+                        <Image src={optionButton} width={40} height={40} alt={"설정 버튼"}/>
+                    </button>
+                </div>
                 <div css={styles.accountName}>
                     {accountInfo?.accountName}
                 </div>
