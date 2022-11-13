@@ -36,7 +36,7 @@ const AccountHistory: NextPage = () => {
 
     const [accountInfo, setAccountInfo] = useState<AccountItemType>();
     const [accountHistoryList, setAccountHistoryList] = useState<AccountHistoryItemType[]>([]);
-    const [cursor, setCursorIdx] = useState<number>(-1);
+    const [startCursor, setStartCursorIdx] = useState<number>(-1);
     const [last, setLast] = useState<boolean>(false);
     const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
 
@@ -62,7 +62,7 @@ const AccountHistory: NextPage = () => {
 
         const response = await selectAccountHistoryApi(
             {
-                cursor,
+                startCursor,
                 count: 12,
             },
             accountIdx
@@ -85,7 +85,7 @@ const AccountHistory: NextPage = () => {
     const nextPage = () => {
         if (last) return;
 
-        setCursorIdx(accountHistoryList[accountHistoryList.length-1]?.idx || -1);
+        setStartCursorIdx(accountHistoryList[accountHistoryList.length-1]?.idx || -1);
 
         if (io && lastElement) {
             io.unobserve(lastElement);
@@ -104,7 +104,7 @@ const AccountHistory: NextPage = () => {
 
     useEffect(() => {
         getAccountHistoryList();
-    }, [cursor]);
+    }, [startCursor]);
 
     useEffect(() => {
         freezeBackground(showAccountHistoryInsertModal, window, document);

@@ -35,7 +35,7 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
 
         updateAccount(
             accountInfo.idx,
-            newOrder
+            newOrder,
         );
     };
 

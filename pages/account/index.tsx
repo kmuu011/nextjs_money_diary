@@ -9,11 +9,30 @@ import AccountItem from "../../src/component/account/AccountItem";
 const Account: NextPage = () => {
     const [accountList, setAccountList] = useState<AccountItemType[]>([]);
     const [totalCount, setTotalCount] = useState<number>(0);
-    const [cursor, setCursor] = useState<number>(0);
+    const [startCursor, setStartCursor] = useState<number>(0);
     const [last, setLast] = useState<boolean>(false);
     const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
 
     let io: IntersectionObserver;
+
+    useEffect(() => {
+        getAccountList();
+    }, [startCursor]);
+
+    useEffect(() => {
+        io = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting){
+                    nextPage();
+                }
+            })
+        })
+
+        if(io && lastElement){
+            io.observe(lastElement);
+        }
+
+    }, [lastElement]);
 
     const createAccount = async (): Promise<void> => {
         const response = await createAccountApi({
@@ -32,8 +51,14 @@ const Account: NextPage = () => {
         setTotalCount(totalCount+1);
     }
 
-    const getAccountList = async (): Promise<void> => {
-        const response = await selectAccountApi({cursor, count: 4});
+    const getAccountList = async (reset?: boolean): Promise<void> => {
+        const query = {
+            startCursor: reset ? 0 : startCursor,
+            endCursor: reset ? accountList[accountList.length-1]?.order : undefined,
+            count: 4
+        }
+
+        const response = await selectAccountApi(query);
 
         if (response?.status !== 200) {
             alert(response?.data.message);
@@ -41,7 +66,11 @@ const Account: NextPage = () => {
         }
 
         setTotalCount(response.data.totalCount);
-        setAccountList([...accountList, ...response.data.items]);
+        setAccountList(
+            reset ? response.data.items
+                :
+            [...accountList, ...response.data.items]
+        );
         setLast(response.data.items.length === 0);
     }
 
@@ -52,44 +81,34 @@ const Account: NextPage = () => {
             io.unobserve(lastElement);
         }
 
-        setCursor(accountList[accountList.length-1].order);
+        setStartCursor(accountList[accountList.length-1].order);
     }
-
-    useEffect(() => {
-        getAccountList();
-    }, [cursor]);
-
-    useEffect(() => {
-        io = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting){
-                    nextPage();
-                }
-            })
-        })
-
-        if(io && lastElement){
-            io.observe(lastElement);
-        }
-
-    }, [lastElement]);
 
     const updateAccount = async (
         accountIdx: number,
-        order: number
+        newOrder: number,
     ) => {
         const response = await updateAccountApi(
             accountIdx,
             {
-                order
+                order: newOrder
             }
         );
+
+        getAccountList(true);
+
     };
 
     const deleteAccount = async (accountIdx: number) => {
         const response = await deleteAccountApi(accountIdx);
-    }
 
+        if(response?.status !== 200){
+            alert(response?.data.message);
+            return;
+        }
+
+        getAccountList(true);
+    }
 
     return (
         <div
