@@ -10,6 +10,7 @@ export const container = css`
 `;
 
 export const accountTotalStatisticWrap = css`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -31,6 +32,40 @@ export const allAccountTotalAmountDesc = css`
 export const allAccountTotalAmount = css`
   color: var(--color-real-white);
   font-size: var(--large-font-size);
+`;
+
+export const allAccountOptionButtonWrap = css`
+  display: flex;
+  column-gap: var(--default-padding-size);
+  padding: 0 var(--default-padding-size) !important;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  
+  button {
+    display: flex;
+    background-color: var(--color-real-white);
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
+export const accountDeleteConfirmButtonWrap = css`
+  display: flex;
+  column-gap: var(--default-padding-size);
+  
+  button {
+    width: 56px;
+    height: var(--default-button-height-size);
+    color: var(--color-real-white);
+  }
+`;
+
+export const accountDeleteButton = css`
+  width: 56px;
+  height: var(--default-button-height-size);
+  color: var(--color-real-white);
+  background-color: var(--color-red);
 `;
 
 export const accountListWrap = css`
@@ -65,6 +100,18 @@ export const accountButtonWrap = css`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  text-align: center;
+`;
+
+export const accountOrderUpButton = css`
+  color: var(--color-4);
+  font-size: 50px;
+`;
+
+export const accountOrderDownButton = css`
+  transform: rotate(180deg);
+  color: var(--color-4);
+  font-size: 50px;
 `;
 
 export const accountLastItem = css`

@@ -77,7 +77,7 @@ const AccountHistory: NextPage = () => {
         setLast(response.data.items.length === 0);
     }
 
-    const openAccountInertModal = () => {
+    const openAccountInsertModal = () => {
         setModalType(0);
         setShowAccountHistoryInsertModal(true);
     }
@@ -94,7 +94,7 @@ const AccountHistory: NextPage = () => {
 
     const circleButtonProps: CircleButtonProps = {
         image: addWhiteButton,
-        action: openAccountInertModal
+        action: openAccountInsertModal
     };
 
     useEffect(() => {

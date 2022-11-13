@@ -1,12 +1,10 @@
 import {FunctionComponent, SyntheticEvent, useState} from "react";
 import * as styles from "../../../styles/account/Account.style";
 import Link from "next/link";
-import moreImage from "../../../public/static/button/more/more.svg";
-import confirmImage from "../../../public/static/button/confirm/confirm.svg";
-import cancelImage from "../../../public/static/button/cancel/cancel.svg";
-import Image from "next/image";
 import {AccountItemProps} from "../../interface/props/account/account";
 import {commaParser} from "../../utils/utils";
+import {useRecoilValue} from "recoil";
+import {showAccountDeleteButtonAtom, showAccountOrderChangeButtonAtom} from "../../recoil/atoms/account/account";
 
 const AccountItem: FunctionComponent<AccountItemProps> = (
     {
@@ -17,21 +15,27 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
         deleteAccount
     }
 ) => {
+    const showAccountOrderChangeButton = useRecoilValue(showAccountOrderChangeButtonAtom);
+    const showAccountDeleteButton = useRecoilValue(showAccountDeleteButtonAtom);
+    const [
+        showDeleteConfirmWrap,
+        setShowDeleteConfirmWrap
+    ] = useState(false);
 
     const updateAccountOrder = (e: SyntheticEvent, order: number, up: boolean) => {
         e.stopPropagation();
 
-        if(up && order === 1){
+        if (up && order === 1) {
             alert('더이상 위로 순서를 변경할 수 없습니다.');
             return;
         }
 
-        if(!up && isLast){
+        if (!up && isLast) {
             alert('더이상 아래로 순서를 변경할 수 없습니다.');
             return;
         }
 
-        const newOrder: number = up ? accountInfo.order-1 : accountInfo.order+1;
+        const newOrder: number = up ? accountInfo.order - 1 : accountInfo.order + 1;
 
         updateAccount(
             accountInfo.idx,
@@ -64,22 +68,64 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
                         </div>
                     </div>
                     <div css={styles.accountButtonWrap}>
-                        <div
-                            onClick={(e) => updateAccountOrder(e, accountInfo.order, true)}
-                        >
-                            위
-                        </div>
-                        <div></div>
-                        <div
-                            onClick={(e) => deleteAccountItem(e)}
-                        >삭제</div>
-                        <div></div>
-                        <div></div>
-                        <div
-                            onClick={(e) => updateAccountOrder(e, accountInfo.order, false)}
-                        >
-                            아래
-                        </div>
+                        {
+                            showAccountOrderChangeButton ?
+                                <div>
+                                    <div
+                                        css={styles.accountOrderUpButton}
+                                        onClick={(e) => updateAccountOrder(e, accountInfo.order, true)}
+                                    >
+                                        ⌃
+                                    </div>
+                                    <div></div>
+                                    <div
+                                        css={styles.accountOrderDownButton}
+                                        onClick={(e) => updateAccountOrder(e, accountInfo.order, false)}
+                                    >
+                                        ⌃
+                                    </div>
+                                </div>
+                                : <div></div>
+                        }
+                        {
+                            showAccountDeleteButton ?
+                                <div>
+                                    <div></div>
+                                    <div>
+                                        {
+                                            showDeleteConfirmWrap ? <div css={styles.accountDeleteConfirmButtonWrap}>
+                                                    <button
+                                                        css={styles.accountDeleteButton}
+                                                        onClick={(e) => deleteAccountItem(e)}
+                                                    >
+                                                        삭제
+                                                    </button>
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setShowDeleteConfirmWrap(false);
+                                                        }}
+                                                    >
+                                                        취소
+                                                    </button>
+                                                </div>
+                                                :
+                                                <button
+                                                    css={styles.accountDeleteButton}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        setShowDeleteConfirmWrap(true)
+                                                    }}
+                                                >
+                                                    삭제
+                                                </button>
+
+                                        }
+                                    </div>
+                                    <div></div>
+                                </div>
+                                : <div></div>
+                        }
                     </div>
 
                 </div>

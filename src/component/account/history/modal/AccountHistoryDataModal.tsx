@@ -19,6 +19,7 @@ import {useRouter} from "next/router";
 import {toDateParser} from "../../../../utils/utils";
 import {AccountHistoryItemType} from "../../../../interface/type/account/history/history";
 import AccountHistoryCategorySelect from "../AccountHistoryCategorySelect";
+import {selectAccountHistoryCategoryApi} from "../../../../api/account/history/category";
 
 const AccountHistoryDataModal: FunctionComponent<{
     reloadAccountInfo: Function,
@@ -77,6 +78,28 @@ const AccountHistoryDataModal: FunctionComponent<{
     }
 
     const insertAccountHistory = async () => {
+        // const categoryList = [
+        //     await selectAccountHistoryCategoryApi({type:0}),
+        //     await selectAccountHistoryCategoryApi({type:1})
+        // ];
+        // for(let i=0 ; i<200 ; i++){
+        //     const type = Math.round(Math.random()*1);
+        //
+        //     const index = Math.floor(Math.random()*categoryList[type]?.data.length);
+        //
+        //     const categoryIdx = categoryList[type]?.data[index].idx;
+        //
+        //     await createAccountHistoryApi(accountIdx,
+        //         {
+        //             amount: Math.ceil(Math.random()*300000),
+        //             content: '가계 내역' + (i+1),
+        //             type,
+        //             accountHistoryCategoryIdx: categoryIdx,
+        //             createdAt
+        //         })
+        // }
+        // return;
+
         if(!validation()) return;
 
         const response = await createAccountHistoryApi(

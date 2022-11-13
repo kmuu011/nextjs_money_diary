@@ -5,6 +5,11 @@ import SetHead from "../../src/component/common/Head";
 import {createAccountApi, deleteAccountApi, selectAccountApi, updateAccountApi} from "../../src/api/account/account";
 import {AccountItemType} from "../../src/interface/type/account/account";
 import AccountItem from "../../src/component/account/AccountItem";
+import {useRecoilState} from "recoil";
+import {showAccountDeleteButtonAtom, showAccountOrderChangeButtonAtom} from "../../src/recoil/atoms/account/account";
+import swapButton from "../../public/static/button/swap/swap_white.svg";
+import deleteSweepButton from "../../public/static/button/delete/delete_sweep.svg";
+import Image from "next/image";
 
 const Account: NextPage = () => {
     const [accountList, setAccountList] = useState<AccountItemType[]>([]);
@@ -12,6 +17,16 @@ const Account: NextPage = () => {
     const [startCursor, setStartCursor] = useState<number>(0);
     const [last, setLast] = useState<boolean>(false);
     const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
+
+    const [
+        showAccountOrderChangeButton,
+        setShowAccountOrderChangeButton
+    ] = useRecoilState(showAccountOrderChangeButtonAtom);
+
+    const [
+        showAccountDeleteButton,
+        setShowAccountDeleteButton
+    ] = useRecoilState(showAccountDeleteButtonAtom);
 
     let io: IntersectionObserver;
 
@@ -95,6 +110,11 @@ const Account: NextPage = () => {
             }
         );
 
+        if(response?.status !== 200){
+            alert(response?.data.message);
+            return;
+        }
+
         getAccountList(true);
 
     };
@@ -122,6 +142,30 @@ const Account: NextPage = () => {
                 </div>
                 <div css={styles.allAccountTotalAmount}>
                     1,500,000원
+                </div>
+                <div
+                    css={styles.allAccountOptionButtonWrap}
+                >
+                    <div
+                        onClick={() => {
+                            setShowAccountOrderChangeButton(!showAccountOrderChangeButton);
+                            setShowAccountDeleteButton(false);
+                        }}
+                    >
+                        <button>
+                            <Image src={swapButton} alt={"삭제 버튼"} width={40} height={40}/>
+                        </button>
+                    </div>
+                    <div
+                        onClick={() => {
+                            setShowAccountDeleteButton(!showAccountDeleteButton);
+                            setShowAccountOrderChangeButton(false);
+                        }}
+                    >
+                        <button>
+                            <Image src={deleteSweepButton} alt={"순서변경 버튼"} width={40} height={40}/>
+                        </button>
+                    </div>
                 </div>
             </div>
 
