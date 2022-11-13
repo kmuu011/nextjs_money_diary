@@ -25,7 +25,6 @@ const AccountUpdateModal: FunctionComponent<{
 
     useEffect(() => {
         if(showAccountUpdateModal){
-            console.log(accountInfo)
             setAccountName(accountInfo?.accountName || '')
             setInvisibleAmount(accountInfo?.invisibleAmount === 1);
         }
