@@ -17,8 +17,10 @@ export const callApi = async <T>(
         config.url += '?';
 
         Object.keys(data).forEach((k: string, i: number) => {
-            config.url += k + '=' + Object.values(data)[i] +
-                ((Object.keys(data).length-1 !== i) ? '&' : '')
+            if(Object.values(data)[i]) {
+                config.url += k + '=' + Object.values(data)[i] +
+                    ((Object.keys(data).length - 1 !== i) ? '&' : '')
+            }
         });
     }
 

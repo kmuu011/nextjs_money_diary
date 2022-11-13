@@ -4,6 +4,7 @@ export interface SelectQueryDto {
 }
 
 export interface CursorSelectQueryDto {
-    cursor: number
+    startCursor: number
+    endCursor?: number | undefined
     count: number
 }
