@@ -3,7 +3,7 @@ import * as styles from "../../../styles/account/Account.style";
 import Link from "next/link";
 import {AccountItemProps} from "../../interface/props/account/account";
 import {commaParser} from "../../utils/utils";
-import {useRecoilState, useRecoilValue, useResetRecoilState} from "recoil";
+import {useRecoilState} from "recoil";
 import {showAccountDeleteButtonAtom, showAccountOrderChangeButtonAtom} from "../../recoil/atoms/account/account";
 
 const AccountItem: FunctionComponent<AccountItemProps> = (
