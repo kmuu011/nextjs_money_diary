@@ -9,7 +9,7 @@ import {
     updatedAccountHistoryIdxAtom
 } from "../../../../recoil/atoms/account/history";
 import {cancelButton, deleteButton, modalBackground} from "../../../../../styles/common/Common.style";
-import * as styles from "../../../../../styles/account/history/InsertModal.style";
+import * as styles from "../../../../../styles/account/history/AccountHistoryDataModal.style";
 import {
     createAccountHistoryApi,
     deleteAccountHistoryApi,
@@ -59,11 +59,6 @@ const AccountHistoryDataModal: FunctionComponent<{
             return;
         }
 
-        if (content.replace(/\s/g, '') === '') {
-            alert('내용을 입력해주세요.');
-            return;
-        }
-
         if (category === 0) {
             alert('카테고리를 지정해주세요.');
             return;
@@ -82,7 +77,7 @@ const AccountHistoryDataModal: FunctionComponent<{
         //     await selectAccountHistoryCategoryApi({type:0}),
         //     await selectAccountHistoryCategoryApi({type:1})
         // ];
-        // for(let i=0 ; i<200 ; i++){
+        // for(let i=0 ; i<100 ; i++){
         //     const type = Math.round(Math.random()*1);
         //
         //     const index = Math.floor(Math.random()*categoryList[type]?.data.length);
@@ -186,10 +181,10 @@ const AccountHistoryDataModal: FunctionComponent<{
                  }
              }}>
             <div
-                css={styles.accountHistoryInsertWrap(showAccountHistoryDataModal)}
+                css={styles.accountHistoryDataWrap}
                 id={"accountInsertModal"}
             >
-                <div css={styles.accountHistoryInsertBody(showAccountHistoryDataModal, modalType)}>
+                <div css={styles.accountHistoryDataBody(showAccountHistoryDataModal, modalType)}>
                     <div>
                         <input
                             placeholder={"금액"}

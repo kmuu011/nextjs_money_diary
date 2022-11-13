@@ -1,20 +1,20 @@
 import {css} from "@emotion/react";
 
-export const accountHistoryInsertWrap = (show: boolean) => css`
+export const accountHistoryDataWrap = css`
   height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
 `;
 
-export const accountHistoryInsertBody = (show: boolean, type: number) => css`
+export const accountHistoryDataBody = (show: boolean, type: number) => css`
   border-radius: var(--border-radius);
   @media (max-width: 500px) {
     margin: 0 5%;
     width: 80%;
   }
 
-  padding: 25px;
+  padding: var(--default-modal-padding-size);
   position: relative;
   background-color: var(--background-color);
   height: ${type === 0 ? 410 : 470}px;

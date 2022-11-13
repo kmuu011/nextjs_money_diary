@@ -4,7 +4,7 @@ import {showSideBarAtom} from "../../../recoil/atoms/common";
 import SideMenu from "./SideMenu";
 import {logout} from "../../../api/member";
 
-import settingsImage from "../../../../public/static/button/setting/settings.svg";
+import settingsImage from "../../../../public/static/button/setting/setting.svg";
 import todoImage from "../../../../public/static/button/todo/list.svg";
 import {menuWrap} from "../../../../styles/common/sideBar/SideBar.style";
 import {hideSideMenuBar} from "../../../utils/utils";
