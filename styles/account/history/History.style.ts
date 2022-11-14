@@ -27,7 +27,6 @@ export const accountHistoryTotalStatisticWrap = css`
   background-color: var(--color-1);
   height: var(--large-card-height-size);
   padding: var(--default-padding-size);
-
 `;
 
 export const accountTopOptionWrap = css`

@@ -27,7 +27,7 @@ import {showAccountUpdateModalAtom} from "../../../src/recoil/atoms/account/acco
 import AccountUpdateModal from "../../../src/component/account/modal/AccountUpdateModal";
 
 const AccountHistory: NextPage = () => {
-    const accountIdx: number = Number(useRouter().query.accountIdx);
+    const accountIdx = Number(useRouter().query.accountIdx);
     const [
         showAccountHistoryInsertModal,
         setShowAccountHistoryInsertModal
@@ -102,7 +102,7 @@ const AccountHistory: NextPage = () => {
         accountName: string,
         invisibleAmount: number
     ) => {
-        if(accountName.replace(/\s/g, '') === ''){
+        if (accountName.replace(/\s/g, '') === '') {
             alert('가계부 명칭을 입력해주세요.');
             return;
         }
@@ -128,6 +128,7 @@ const AccountHistory: NextPage = () => {
         image: addWhiteButton,
         action: openAccountInsertModal
     };
+
 
     useEffect(() => {
         getAccountInfo();

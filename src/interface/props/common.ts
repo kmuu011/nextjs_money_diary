@@ -14,8 +14,9 @@ export interface SideSubMenuProps {
 export interface SideMenuProps {
     image: StaticImageData
     title: string
-    children: SideSubMenuProps[]
+    subMenuList?: SideSubMenuProps[]
     path?: string
+    url?: string
 }
 
 export interface CircleButtonProps {

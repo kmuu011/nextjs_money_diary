@@ -6,8 +6,8 @@ import Image, {StaticImageData} from "next/image";
 import noImage from "../../../../../public/violet.png";
 import {deleteProfileImageApi, updateProfileImageApi} from "../../../../api/member";
 import {hostDomain} from "../../../../config";
-import {ProfileImageModifyModalProps} from "../../../../interface/type/props";
 import {AxiosResponse} from "axios";
+import {ProfileImageModifyModalProps} from "../../../../interface/props/member";
 
 const ProfileImageModifyModal: FunctionComponent<ProfileImageModifyModalProps> = (
     {

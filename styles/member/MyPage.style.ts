@@ -59,6 +59,9 @@ export const profileInfoValue = css`
 `;
 
 export const buttonWrap = css`
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
   margin-top: 35px;
   width: 80%;
 `;
