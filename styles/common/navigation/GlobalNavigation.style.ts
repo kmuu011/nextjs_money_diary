@@ -12,7 +12,7 @@ export const container = css`
   border-bottom: 1px solid var(--color-1);
   box-shadow: var(--body-box-shadow);
   background-color: var(--background-color);
-  z-index: 99;
+  z-index: 9;
 
   img {
     cursor: pointer;

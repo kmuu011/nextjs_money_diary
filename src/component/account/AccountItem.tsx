@@ -3,7 +3,7 @@ import * as styles from "../../../styles/account/Account.style";
 import Link from "next/link";
 import {AccountItemProps} from "../../interface/props/account/account";
 import {commaParser} from "../../utils/utils";
-import {useRecoilValue} from "recoil";
+import {useRecoilState} from "recoil";
 import {showAccountDeleteButtonAtom, showAccountOrderChangeButtonAtom} from "../../recoil/atoms/account/account";
 
 const AccountItem: FunctionComponent<AccountItemProps> = (
@@ -15,8 +15,14 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
         deleteAccount
     }
 ) => {
-    const showAccountOrderChangeButton = useRecoilValue(showAccountOrderChangeButtonAtom);
-    const showAccountDeleteButton = useRecoilValue(showAccountDeleteButtonAtom);
+    const [
+        showAccountOrderChangeButton,
+        setShowAccountOrderChangeButton
+    ] = useRecoilState(showAccountOrderChangeButtonAtom);
+    const [
+        showAccountDeleteButton,
+        setShowAccountDeleteButton
+    ] = useRecoilState(showAccountDeleteButtonAtom);
     const [
         showDeleteConfirmWrap,
         setShowDeleteConfirmWrap
@@ -52,6 +58,10 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
     return (
         <div
             ref={isLast ? setLastElement : null}
+            onClick={() => {
+                setShowAccountOrderChangeButton(false);
+                setShowAccountDeleteButton(false);
+            }}
         >
             <Link
                 href={`/account/${accountInfo.idx}/history`}

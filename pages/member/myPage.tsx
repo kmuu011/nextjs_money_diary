@@ -3,7 +3,7 @@ import type {NextPage} from 'next';
 import * as styles from "../../styles/member/MyPage.style";
 import {useEffect, useState} from "react";
 import SetHead from "../../src/component/common/Head";
-import {tokenCheck} from "../../src/api/member";
+import {logout, tokenCheck} from "../../src/api/member";
 import {MemberInfoDto} from "../../src/interface/dto/member";
 import ProfileImageModifyModal from "../../src/component/member/myPage/modal/ProfileImageModify";
 import {useSetRecoilState} from "recoil";
@@ -99,6 +99,7 @@ const MyPage: NextPage = () => {
 
                 <div css={styles.buttonWrap}>
                     <button onClick={() => setShowMemberInfoModifyModal(true)}>수정하기</button>
+                    <button onClick={() => logout()}>로그아웃</button>
                 </div>
             </div>
 

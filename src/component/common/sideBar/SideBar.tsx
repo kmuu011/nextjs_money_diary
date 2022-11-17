@@ -2,11 +2,11 @@ import {FunctionComponent} from "react";
 import {useRecoilState} from "recoil";
 import {showSideBarAtom} from "../../../recoil/atoms/common";
 import SideMenu from "./SideMenu";
-import {logout} from "../../../api/member";
 
 import settingsImage from "../../../../public/static/button/setting/setting.svg";
+import memberImage from "../../../../public/static/button/member/member.svg";
 import todoImage from "../../../../public/static/button/todo/list.svg";
-import {menuWrap} from "../../../../styles/common/sideBar/SideBar.style";
+import * as styles from "../../../../styles/common/sideBar/SideBar.style";
 import {hideSideMenuBar} from "../../../utils/utils";
 import {SideMenuProps} from "../../../interface/props/common";
 import {modalBackground} from "../../../../styles/common/Common.style";
@@ -18,7 +18,7 @@ const GlobalNavigation: FunctionComponent = () => {
         {
             image: todoImage,
             title: '가계부',
-            children: [
+            subMenuList: [
                 {title: '목록 보기', url: '/account', action: () => hideSideMenuBar(setShowSideBar)}
             ],
             path: '/account'
@@ -26,20 +26,25 @@ const GlobalNavigation: FunctionComponent = () => {
         {
             image: todoImage,
             title: '할일',
-            children: [
+            subMenuList: [
                 {title: '목록 보기', url: '/todoGroup', action: () => hideSideMenuBar(setShowSideBar)}
             ],
             path: '/todoGroup'
         },
         {
-            image: settingsImage,
-            title: '설정',
-            children: [
+            image: memberImage,
+            title: '사용자',
+            subMenuList: [
                 {title: '마이페이지', url: '/member/myPage', action: () => hideSideMenuBar(setShowSideBar)},
-                {title: '로그아웃', action: logout},
             ],
             path: '/member'
-        }
+        },
+        {
+            image: settingsImage,
+            title: '설정',
+            path: '/setting',
+            url: '/setting',
+        },
     ];
 
     return (
@@ -52,13 +57,14 @@ const GlobalNavigation: FunctionComponent = () => {
                      setShowSideBar(false);
                  }
              }}>
-            <div css={menuWrap(showSideBar)}>
+            <div css={styles.menuWrap(showSideBar)}>
                 {menuList.map((menu, i) => {
                     return <SideMenu
                         image={menu.image}
                         title={menu.title}
-                        children={menu.children}
+                        subMenuList={menu.subMenuList}
                         path={menu.path}
+                        url={menu.url}
                         key={i}
                     />
                 })}

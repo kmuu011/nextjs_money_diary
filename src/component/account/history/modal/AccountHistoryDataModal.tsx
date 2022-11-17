@@ -47,14 +47,14 @@ const AccountHistoryDataModal: FunctionComponent<{
     const setDeletedAccountHistoryIdx = useSetRecoilState(deletedAccountHistoryIdxAtom);
 
     const [type, setType] = useRecoilState(accountHistoryTypeAtom);
-    const [amount, setAmount] = useState<number>(0);
+    const [amount, setAmount] = useState<number | string>('');
     const [content, setContent] = useState<string>('');
     const [category, setCategory] = useRecoilState(accountHistoryCategoryAtom);
     const resetCategory = useResetRecoilState(accountHistoryCategoryAtom);
     const [createdAt, setCreatedAt] = useState<string>(toDateParser());
 
     const validation = () => {
-        if (amount < 1) {
+        if (!amount || amount < 1) {
             alert('금액을 정확히 입력해주세요.');
             return;
         }
@@ -100,7 +100,7 @@ const AccountHistoryDataModal: FunctionComponent<{
         const response = await createAccountHistoryApi(
             accountIdx,
             {
-                amount,
+                amount: Number(amount),
                 content,
                 type,
                 accountHistoryCategoryIdx: category,
@@ -125,7 +125,7 @@ const AccountHistoryDataModal: FunctionComponent<{
             accountIdx,
             selectedAccountHistoryInfo.idx,
             {
-                amount,
+                amount: Number(amount),
                 type,
                 content,
                 accountHistoryCategoryIdx: category,
@@ -164,7 +164,7 @@ const AccountHistoryDataModal: FunctionComponent<{
 
     useEffect(() => {
         setType(selectedAccountHistoryInfo?.type || 0);
-        setAmount(selectedAccountHistoryInfo?.amount || 0);
+        setAmount(selectedAccountHistoryInfo?.amount || '');
         setContent(selectedAccountHistoryInfo?.content || '');
         setCategory(selectedAccountHistoryInfo?.accountHistoryCategory.idx || 0);
         setCreatedAt(toDateParser(selectedAccountHistoryInfo?.createdAt || toDateParser()));
