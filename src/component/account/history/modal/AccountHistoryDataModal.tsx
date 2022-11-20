@@ -20,6 +20,7 @@ import {toDateParser} from "../../../../utils/utils";
 import {AccountHistoryItemType} from "../../../../interface/type/account/history/history";
 import AccountHistoryCategorySelect from "../AccountHistoryCategorySelect";
 import {selectAccountHistoryCategoryApi} from "../../../../api/account/history/category";
+import AccountHistoryType from "../AccountHistoryType";
 
 const AccountHistoryDataModal: FunctionComponent<{
     reloadAccountInfo: Function,
@@ -95,7 +96,7 @@ const AccountHistoryDataModal: FunctionComponent<{
         // }
         // return;
 
-        if(!validation()) return;
+        if (!validation()) return;
 
         const response = await createAccountHistoryApi(
             accountIdx,
@@ -119,7 +120,7 @@ const AccountHistoryDataModal: FunctionComponent<{
     }
 
     const accountHistoryUpdate = async () => {
-        if(!validation()) return;
+        if (!validation()) return;
 
         const response = await updateAccountHistoryApi(
             accountIdx,
@@ -146,7 +147,7 @@ const AccountHistoryDataModal: FunctionComponent<{
             selectedAccountHistoryInfo.idx
         );
 
-        if(response?.status === 200) {
+        if (response?.status === 200) {
             await reloadAccountInfo();
             setDeletedAccountHistoryIdx(selectedAccountHistoryInfo.idx);
             setShowAccountHistoryDataModal(false);
@@ -168,7 +169,6 @@ const AccountHistoryDataModal: FunctionComponent<{
         setContent(selectedAccountHistoryInfo?.content || '');
         setCategory(selectedAccountHistoryInfo?.accountHistoryCategory.idx || 0);
         setCreatedAt(toDateParser(selectedAccountHistoryInfo?.createdAt || toDateParser()));
-
     }, [selectedAccountHistoryInfo]);
 
     return (
@@ -193,26 +193,7 @@ const AccountHistoryDataModal: FunctionComponent<{
                             onChange={(e) => setAmount(parseInt(e.target.value))}
                         />
                     </div>
-                    <div css={styles.typeWrap}>
-                        <div
-                            css={styles.incomeType(type === 0)}
-                            onClick={() => {
-                                setType(0);
-                                resetCategory();
-                            }}
-                        >
-                            지출
-                        </div>
-                        <div
-                            css={styles.outcomeType(type === 1)}
-                            onClick={() => {
-                                setType(1);
-                                resetCategory();
-                            }}
-                        >
-                            수입
-                        </div>
-                    </div>
+                    <AccountHistoryType/>
                     <div css={styles.categoryWrap}>
                         <AccountHistoryCategorySelect/>
                     </div>

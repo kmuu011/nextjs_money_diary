@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const optionList = [
     {
-        title: "가계부 옵션",
+        title: "가계부 설정",
         subOptionList: [
             {
                 title: "카테고리 설정",
@@ -13,7 +13,8 @@ const optionList = [
             }
         ]
     },
-]
+];
+
 const Setting: NextPage = () => {
 
     return (
@@ -22,14 +23,14 @@ const Setting: NextPage = () => {
 
             <div css={styles.settingListWrap}>
                 {
-                    optionList.map(option =>
-                        <div css={styles.settingWrap}>
+                    optionList.map((option, optionIndex) =>
+                        <div css={styles.settingWrap} key={optionIndex}>
                             <div css={styles.optionTitle}>
                                 {option.title}
                             </div>
                             {
-                                option.subOptionList.map(subOption =>
-                                    <Link href={subOption.url}>
+                                option.subOptionList.map((subOption, subOptionIndex) =>
+                                    <Link href={subOption.url} key={subOptionIndex}>
                                         <div css={styles.subOptionWrap}>
                                             <div css={styles.subOptionTitle}>
                                                 {subOption.title}

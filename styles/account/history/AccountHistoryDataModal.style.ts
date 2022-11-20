@@ -36,34 +36,20 @@ export const contentInput = css`
   }
 `;
 
-export const typeWrap = css`
+export const typeWrap = (radius: boolean) => css`
   margin-top: 10px;
   padding: 2px;
   background-color: var(--color-2);
-  border-radius: var(--border-radius);
+  ${radius ? `border-radius: var(--border-radius);` : ``}
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 `;
 
-export const incomeType = (checked: boolean) => css`
-  border-top-left-radius: var(--border-radius);
-  border-bottom-left-radius: var(--border-radius);
-  height: var(--default-input-height-size);
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background-color: ${checked ? `var(--color-2)` : `var(--color-real-white)`};
-  color: ${checked ? `#fff` : `var(--default-font-color)`};
-  font-size: var(--small-default-font-size);
-`;
-
-export const outcomeType = (checked: boolean) => css`
-  border-top-right-radius: var(--border-radius);
-  border-bottom-right-radius: var(--border-radius);
+export const historyType = (checked: boolean, radius: boolean) => css`
+  ${radius ? `border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);` : ''}
   height: var(--default-input-height-size);
   width: 100%;
   display: flex;
