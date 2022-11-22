@@ -4,6 +4,7 @@ export interface AccountHistoryCategoryItemType {
     type: number
     color: string
     name: string
+    order: number
     createdAt: string
     updatedAt: string
 }

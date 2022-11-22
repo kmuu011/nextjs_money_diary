@@ -1,7 +1,7 @@
 import type {NextPage} from 'next';
 import * as styles from "../../../../styles/setting/account/history/AccountHistoryCategorySetting.style";
 import SetHead from "../../../../src/component/common/Head";
-import {useRecoilState, useSetRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
 import {accountHistoryTypeAtom} from "../../../../src/recoil/atoms/account/history";
 import AccountHistoryType from "../../../../src/component/account/history/AccountHistoryType";
 import {useEffect, useState} from "react";
@@ -10,14 +10,20 @@ import {
     createAccountHistoryCategoryApi,
     selectAccountHistoryCategoryApi
 } from "../../../../src/api/account/history/category";
-import {showSettingAccountHistoryDataModal} from "../../../../src/recoil/atoms/setting/account/history/category";
+import {
+    selectedAccountHistoryCategoryInfoAtom,
+    showSettingAccountHistoryCategoryDataModalAtom,
+} from "../../../../src/recoil/atoms/setting/account/history/category";
 import {CreateAccountHistoryCategoryDto} from "../../../../src/interface/dto/account/history/category";
+import AccountHistoryCategoryDataModal
+    from "../../../../src/component/account/history/category/AccountHistoryCategoryDataModal";
 
 const AccountHistoryCategorySetting: NextPage = () => {
     const [type, setType] = useRecoilState(accountHistoryTypeAtom);
     const [categoryList, setCategoryList] = useState<AccountHistoryCategoryItemType[]>([]);
-    const setShowSettingAccountHistoryCategoryDataModal = useSetRecoilState(showSettingAccountHistoryDataModal);
+    const setShowSettingAccountHistoryCategoryDataModal = useSetRecoilState(showSettingAccountHistoryCategoryDataModalAtom);
     const [categoryTotalCount, setCategoryTotalCount] = useState<number>(0);
+    const setSelectedAccountHistoryCategoryInfo = useSetRecoilState(selectedAccountHistoryCategoryInfoAtom);
 
     useEffect(() => {
         setType(0);
@@ -41,10 +47,6 @@ const AccountHistoryCategorySetting: NextPage = () => {
         setCategoryTotalCount(response.data.length);
     };
 
-    const openCategoryDataModal = (): void => {
-        setShowSettingAccountHistoryCategoryDataModal(true);
-    }
-
     const insertCategory = async () => {
         const payload: CreateAccountHistoryCategoryDto = {
             type,
@@ -66,6 +68,9 @@ const AccountHistoryCategorySetting: NextPage = () => {
     return (
         <div css={styles.container}>
             <SetHead/>
+            <AccountHistoryCategoryDataModal
+                getCategoryList={getCategoryList}
+            />
 
             <div css={styles.categorySettingWrap}>
                 <AccountHistoryType radius={false}/>
@@ -76,6 +81,10 @@ const AccountHistoryCategorySetting: NextPage = () => {
                             return <div
                                 css={styles.categoryItem}
                                 key={categoryItem.idx}
+                                onClick={() => {
+                                    setShowSettingAccountHistoryCategoryDataModal(true);
+                                    setSelectedAccountHistoryCategoryInfo(categoryItem);
+                                }}
                             >
                                 {categoryItem.name}
                             </div>
@@ -97,4 +106,4 @@ const AccountHistoryCategorySetting: NextPage = () => {
     )
 }
 
-export default AccountHistoryCategorySetting
+export default AccountHistoryCategorySetting;

@@ -10,7 +10,6 @@ export const container = css`
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--color-1);
-  box-shadow: var(--body-box-shadow);
   background-color: var(--background-color);
   z-index: 9;
 
