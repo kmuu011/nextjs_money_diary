@@ -193,7 +193,9 @@ const AccountHistoryDataModal: FunctionComponent<{
                             onChange={(e) => setAmount(parseInt(e.target.value))}
                         />
                     </div>
-                    <AccountHistoryType/>
+                    <div css={styles.historyTypeWrap}>
+                        <AccountHistoryType/>
+                    </div>
                     <div css={styles.categoryWrap}>
                         <AccountHistoryCategorySelect/>
                     </div>

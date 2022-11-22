@@ -1,13 +1,13 @@
 import {css} from "@emotion/react";
 
-export const accountHistoryDataWrap = css`
+export const accountHistoryCategoryDataWrap = css`
   height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
 `;
 
-export const accountHistoryDataBody = (show: boolean, type: number) => css`
+export const accountHistoryCategoryDataBody = (show: boolean) => css`
   border-radius: var(--border-radius);
   @media (max-width: 500px) {
     margin: 0 5%;
@@ -17,7 +17,7 @@ export const accountHistoryDataBody = (show: boolean, type: number) => css`
   padding: var(--default-modal-padding-size);
   position: relative;
   background-color: var(--background-color);
-  height: ${type === 0 ? 410 : 470}px;
+  height: 410px;
   width: 400px;
   bottom: ${show ? '-25%' : '-80%'};
 
