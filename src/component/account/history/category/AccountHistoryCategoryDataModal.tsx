@@ -1,14 +1,17 @@
 import {FunctionComponent, useEffect, useState} from "react";
 import {useRecoilState, useRecoilValue} from "recoil";
 
-import {modalBackground} from "../../../../../styles/common/Common.style";
+import {cancelButton, deleteButton, modalBackground} from "../../../../../styles/common/Common.style";
 import {
     selectedAccountHistoryCategoryInfoAtom,
     showSettingAccountHistoryCategoryDataModalAtom,
 } from "../../../../recoil/atoms/setting/account/history/category";
 import * as styles from "../../../../../styles/account/history/category/AccountHistoryCategoryDataModal.style";
 import {UpdateAccountHistoryCategoryDto} from "../../../../interface/dto/account/history/category";
-import {updateAccountHistoryCategoryApi} from "../../../../api/account/history/category";
+import {
+    deleteAccountHistoryCategoryApi,
+    updateAccountHistoryCategoryApi
+} from "../../../../api/account/history/category";
 
 const AccountHistoryCategoryDataModal: FunctionComponent<{
     getCategoryList: Function
@@ -17,8 +20,9 @@ const AccountHistoryCategoryDataModal: FunctionComponent<{
         getCategoryList
     }
 ) => {
-    const [categoryName, setCategoryName] = useState('');
+    const [categoryName, setCategoryName] = useState<string>('');
     const selectedAccountHistoryCategoryInfo = useRecoilValue(selectedAccountHistoryCategoryInfoAtom);
+    const [showDelete, setShowDelete] = useState<boolean>(false);
 
     useEffect(() => {
         setCategoryName(selectedAccountHistoryCategoryInfo?.name || "");
@@ -68,6 +72,19 @@ const AccountHistoryCategoryDataModal: FunctionComponent<{
         getCategoryList();
     }
 
+    const deleteAccountHistoryCategory = async () => {
+        const response = await deleteAccountHistoryCategoryApi(selectedAccountHistoryCategoryInfo.idx);
+
+        if (response?.status !== 200) {
+            alert(response?.data.message);
+            return;
+        }
+
+        setShowAccountHistoryCategoryDataModal(false);
+        setShowDelete(false);
+        getCategoryList();
+    }
+
     return (
         <div css={modalBackground(showAccountHistoryCategoryDataModal)}
              onClick={(e) => {
@@ -75,6 +92,7 @@ const AccountHistoryCategoryDataModal: FunctionComponent<{
 
                  if (element.id === 'accountHistoryCategoryDataModal') {
                      setShowAccountHistoryCategoryDataModal(false);
+                     setShowDelete(false);
                  }
              }}>
             <div
@@ -91,6 +109,9 @@ const AccountHistoryCategoryDataModal: FunctionComponent<{
                         />
                     </div>
 
+                    <div css={styles.colorInputWrap}>
+                        <input type={"color"}/>
+                    </div>
                     <div>
                         <div onClick={() => updateAccountHistoryCategory(1, 'up')}>Up</div>
                         <div onClick={() => updateAccountHistoryCategory(1, 'down')}>Down</div>
@@ -102,6 +123,31 @@ const AccountHistoryCategoryDataModal: FunctionComponent<{
                         >
                             수정
                         </button>
+                    </div>
+
+                    <div>
+                        {
+                            !showDelete ?
+                                <div css={styles.deleteButtonWrap(showDelete)}>
+                                    <button
+                                        onClick={() => setShowDelete(true)}
+                                    >
+                                        삭제
+                                    </button>
+                                </div>
+                                :
+                                <div css={styles.deleteButtonWrap(showDelete)}>
+                                    <button
+                                        css={deleteButton}
+                                        onClick={deleteAccountHistoryCategory}
+                                    >삭제</button>
+                                    <button
+                                        css={cancelButton}
+                                        onClick={() => setShowDelete(false)}
+                                    >취소</button>
+                                </div>
+
+                        }
                     </div>
                 </div>
             </div>

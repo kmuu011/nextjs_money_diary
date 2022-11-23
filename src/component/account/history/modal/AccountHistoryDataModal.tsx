@@ -178,6 +178,7 @@ const AccountHistoryDataModal: FunctionComponent<{
 
                  if (element.id === 'accountInsertModal') {
                      setShowAccountHistoryDataModal(false);
+                     setShowDelete(false);
                  }
              }}>
             <div
