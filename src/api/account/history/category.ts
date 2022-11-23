@@ -26,3 +26,12 @@ export const updateAccountHistoryCategoryApi = async (
         `account/history/category/${categoryIdx}`, payload
     );
 }
+
+export const deleteAccountHistoryCategoryApi = async (
+    categoryIdx: number
+): Promise<AxiosResponse | undefined> => {
+    return await callApi(
+        'delete',
+        `account/history/category/${categoryIdx}`
+    );
+}

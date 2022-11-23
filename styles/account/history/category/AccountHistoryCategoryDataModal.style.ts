@@ -25,14 +25,11 @@ export const accountHistoryCategoryDataBody = (show: boolean) => css`
   box-shadow: var(--body-box-shadow);
 `;
 
-export const contentInput = css`
+export const colorInputWrap = css`
   margin-top: 10px;
 
-  textarea {
-    width: 100%;
-    height: 100px;
-    padding: 10px;
-    font-size: var(--small-default-font-size);
+  input {
+    width: 100px;
   }
 `;
 
