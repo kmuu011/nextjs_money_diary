@@ -1,7 +1,7 @@
 import type {NextPage} from 'next';
 import * as styles from "../../../../styles/setting/account/history/AccountHistoryCategorySetting.style";
 import SetHead from "../../../../src/component/common/Head";
-import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
+import {useRecoilState, useSetRecoilState} from "recoil";
 import {accountHistoryTypeAtom} from "../../../../src/recoil/atoms/account/history";
 import AccountHistoryType from "../../../../src/component/account/history/AccountHistoryType";
 import {useEffect, useState} from "react";
@@ -70,6 +70,7 @@ const AccountHistoryCategorySetting: NextPage = () => {
             <SetHead/>
             <AccountHistoryCategoryDataModal
                 getCategoryList={getCategoryList}
+                categoryTotalCount={categoryTotalCount}
             />
 
             <div css={styles.categorySettingWrap}>

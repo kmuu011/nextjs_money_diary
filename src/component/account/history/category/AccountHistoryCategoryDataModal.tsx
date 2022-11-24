@@ -14,10 +14,12 @@ import {
 } from "../../../../api/account/history/category";
 
 const AccountHistoryCategoryDataModal: FunctionComponent<{
-    getCategoryList: Function
+    getCategoryList: Function,
+    categoryTotalCount: number
 }> = (
     {
-        getCategoryList
+        getCategoryList,
+        categoryTotalCount
     }
 ) => {
     const [categoryName, setCategoryName] = useState<string>('');
@@ -49,6 +51,15 @@ const AccountHistoryCategoryDataModal: FunctionComponent<{
                 payload.name = categoryName;
                 break;
             case 1:
+                if(selectedAccountHistoryCategoryInfo.order === 1 && value === 'up'){
+                    alert('더이상 위로 순서를 변경할 수 없습니다.');
+                    return;
+                }
+
+                if(value === 'down' && selectedAccountHistoryCategoryInfo.order+1 > categoryTotalCount){
+                    alert('더이상 아래로 순서를 변경할 수 없습니다.');
+                    return;
+                }
                 payload.order = value === 'up' ?
                     selectedAccountHistoryCategoryInfo.order - 1
                     : selectedAccountHistoryCategoryInfo.order + 1;
@@ -112,12 +123,22 @@ const AccountHistoryCategoryDataModal: FunctionComponent<{
                     <div css={styles.colorInputWrap}>
                         <input type={"color"}/>
                     </div>
-                    <div>
-                        <div onClick={() => updateAccountHistoryCategory(1, 'up')}>Up</div>
-                        <div onClick={() => updateAccountHistoryCategory(1, 'down')}>Down</div>
+                    <div css={styles.orderChangeButtonWrap}>
+                        <div
+                            css={styles.orderChangeUpButton}
+                            onClick={() => updateAccountHistoryCategory(1, 'up')}
+                        >
+                            ⌃
+                        </div>
+                        <div
+                            css={styles.orderChangeDownButton}
+                            onClick={() => updateAccountHistoryCategory(1, 'down')}
+                        >
+                            ⌃
+                        </div>
                     </div>
 
-                    <div>
+                    <div css={styles.buttonWrap}>
                         <button
                             onClick={() => updateAccountHistoryCategory(0)}
                         >
