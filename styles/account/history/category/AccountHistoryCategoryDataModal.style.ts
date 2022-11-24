@@ -17,7 +17,7 @@ export const accountHistoryCategoryDataBody = (show: boolean) => css`
   padding: var(--default-modal-padding-size);
   position: relative;
   background-color: var(--background-color);
-  height: 410px;
+  height: 350px;
   width: 400px;
   bottom: ${show ? '-25%' : '-80%'};
 
@@ -29,62 +29,33 @@ export const colorInputWrap = css`
   margin-top: 10px;
 
   input {
-    width: 100px;
+    width: 100%;
+    height: 100px;
   }
 `;
 
-export const typeWrap = (radius: boolean) => css`
-  padding: 2px;
-  background-color: var(--color-2);
-  ${radius ? `border-radius: var(--border-radius);` : ``}
+export const orderChangeButtonWrap = css`
+  margin-top: 10px;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
 `;
 
-export const historyType = (checked: boolean, radius: boolean) => css`
-  ${radius ? `border-top-left-radius: var(--border-radius);
-  border-bottom-left-radius: var(--border-radius);` : ''}
-  height: var(--default-input-height-size);
+export const orderChangeUpButtonWarp = css`
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 45px;
+  padding-top: 16px;
+  color: var(--color-4);
+`;
+
+export const orderChangeDownButtonWarp = css`
+  ${orderChangeUpButtonWarp};
+  transform: rotate(180deg);
+`;
+
+export const orderChangeButton = css`
   cursor: pointer;
-  background-color: ${checked ? `var(--color-2)` : `var(--color-real-white)`};
-  color: ${checked ? `#fff` : `var(--default-font-color)`};
-  font-size: var(--small-default-font-size);
 `;
 
-export const historyTypeWrap = css`
-  margin-top: 10px;
-`;
-
-export const categoryWrap = css`
-  margin-top: 10px;
-
-  select {
-    padding: 0 8px;
-    height: var(--default-input-height-size);
-    width: 100%;
-    font-size: var(--small-default-font-size);
-    color: var(--color-2);
-  }
-`;
-
-export const dateWrap = css`
-  margin-top: 10px;
-
-  input {
-    width: 100%;
-    height: var(--default-input-height-size);
-    font-size: var(--small-default-font-size);
-    padding: 0 8px;
-  }
-`;
-
-export const buttonWrap = css`
+export const updateButtonWrap = css`
   margin-top: 10px;
 `;
 

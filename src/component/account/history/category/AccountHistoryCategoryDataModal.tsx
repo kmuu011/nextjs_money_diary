@@ -1,5 +1,5 @@
 import {FunctionComponent, useEffect, useState} from "react";
-import {useRecoilState, useRecoilValue} from "recoil";
+import {useRecoilState, useRecoilValue, useResetRecoilState} from "recoil";
 
 import {cancelButton, deleteButton, modalBackground} from "../../../../../styles/common/Common.style";
 import {
@@ -12,6 +12,7 @@ import {
     deleteAccountHistoryCategoryApi,
     updateAccountHistoryCategoryApi
 } from "../../../../api/account/history/category";
+import {updateButtonWrap} from "../../../../../styles/account/history/category/AccountHistoryCategoryDataModal.style";
 
 const AccountHistoryCategoryDataModal: FunctionComponent<{
     getCategoryList: Function,
@@ -24,11 +25,14 @@ const AccountHistoryCategoryDataModal: FunctionComponent<{
 ) => {
     const [categoryName, setCategoryName] = useState<string>('');
     const selectedAccountHistoryCategoryInfo = useRecoilValue(selectedAccountHistoryCategoryInfoAtom);
+    const resetSelectedAccountHistoryCategoryInfo = useResetRecoilState(selectedAccountHistoryCategoryInfoAtom);
     const [showDelete, setShowDelete] = useState<boolean>(false);
+    const [color, setColor] = useState<string>('#000000');
 
     useEffect(() => {
         setCategoryName(selectedAccountHistoryCategoryInfo?.name || "");
-    }, [selectedAccountHistoryCategoryInfo])
+        setColor(selectedAccountHistoryCategoryInfo?.color || "#000000");
+    }, [selectedAccountHistoryCategoryInfo]);
 
     const [
         showAccountHistoryCategoryDataModal,
@@ -49,14 +53,15 @@ const AccountHistoryCategoryDataModal: FunctionComponent<{
                     return;
                 }
                 payload.name = categoryName;
+                payload.color = color;
                 break;
             case 1:
-                if(selectedAccountHistoryCategoryInfo.order === 1 && value === 'up'){
+                if (selectedAccountHistoryCategoryInfo.order === 1 && value === 'up') {
                     alert('더이상 위로 순서를 변경할 수 없습니다.');
                     return;
                 }
 
-                if(value === 'down' && selectedAccountHistoryCategoryInfo.order+1 > categoryTotalCount){
+                if (value === 'down' && selectedAccountHistoryCategoryInfo.order + 1 > categoryTotalCount) {
                     alert('더이상 아래로 순서를 변경할 수 없습니다.');
                     return;
                 }
@@ -104,6 +109,7 @@ const AccountHistoryCategoryDataModal: FunctionComponent<{
                  if (element.id === 'accountHistoryCategoryDataModal') {
                      setShowAccountHistoryCategoryDataModal(false);
                      setShowDelete(false);
+                     resetSelectedAccountHistoryCategoryInfo();
                  }
              }}>
             <div
@@ -121,24 +127,38 @@ const AccountHistoryCategoryDataModal: FunctionComponent<{
                     </div>
 
                     <div css={styles.colorInputWrap}>
-                        <input type={"color"}/>
+                        <input
+                            type={"color"}
+                            value={color}
+                            onChange={(e) => {
+                                setColor(e.target.value);
+                            }}
+                        />
                     </div>
                     <div css={styles.orderChangeButtonWrap}>
                         <div
-                            css={styles.orderChangeUpButton}
-                            onClick={() => updateAccountHistoryCategory(1, 'up')}
+                            css={styles.orderChangeUpButtonWarp}
                         >
-                            ⌃
+                            <span
+                                css={styles.orderChangeButton}
+                                onClick={() => updateAccountHistoryCategory(1, 'up')}
+                            >
+                                ⌃
+                            </span>
                         </div>
                         <div
-                            css={styles.orderChangeDownButton}
-                            onClick={() => updateAccountHistoryCategory(1, 'down')}
+                            css={styles.orderChangeDownButtonWarp}
                         >
-                            ⌃
+                            <span
+                                css={styles.orderChangeButton}
+                                onClick={() => updateAccountHistoryCategory(1, 'down')}
+                            >
+                                ⌃
+                            </span>
                         </div>
                     </div>
 
-                    <div css={styles.buttonWrap}>
+                    <div css={styles.updateButtonWrap}>
                         <button
                             onClick={() => updateAccountHistoryCategory(0)}
                         >
@@ -161,11 +181,13 @@ const AccountHistoryCategoryDataModal: FunctionComponent<{
                                     <button
                                         css={deleteButton}
                                         onClick={deleteAccountHistoryCategory}
-                                    >삭제</button>
+                                    >삭제
+                                    </button>
                                     <button
                                         css={cancelButton}
                                         onClick={() => setShowDelete(false)}
-                                    >취소</button>
+                                    >취소
+                                    </button>
                                 </div>
 
                         }
