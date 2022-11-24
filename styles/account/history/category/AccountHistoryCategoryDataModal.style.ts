@@ -37,22 +37,28 @@ export const colorInputWrap = css`
 export const orderChangeButtonWrap = css`
   margin-top: 10px;
   display: flex;
+  align-items: center;
 `;
 
 export const orderChangeUpButtonWarp = css`
   width: 100%;
   font-size: 45px;
-  padding-top: 16px;
   color: var(--color-4);
+  display: flex;
+  justify-content: center;
+
+  img {
+    cursor: pointer;
+    transform: rotate(-90deg);
+  }
 `;
 
 export const orderChangeDownButtonWarp = css`
   ${orderChangeUpButtonWarp};
-  transform: rotate(180deg);
-`;
 
-export const orderChangeButton = css`
-  cursor: pointer;
+  img {
+    transform: rotate(90deg);
+  }
 `;
 
 export const updateButtonWrap = css`

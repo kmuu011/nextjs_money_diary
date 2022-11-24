@@ -12,7 +12,9 @@ import {
     deleteAccountHistoryCategoryApi,
     updateAccountHistoryCategoryApi
 } from "../../../../api/account/history/category";
-import {updateButtonWrap} from "../../../../../styles/account/history/category/AccountHistoryCategoryDataModal.style";
+
+import arrowImg from "../../../../../public/static/button/arrow/arrow_forward.svg";
+import Image from "next/image";
 
 const AccountHistoryCategoryDataModal: FunctionComponent<{
     getCategoryList: Function,
@@ -57,12 +59,12 @@ const AccountHistoryCategoryDataModal: FunctionComponent<{
                 break;
             case 1:
                 if (selectedAccountHistoryCategoryInfo.order === 1 && value === 'up') {
-                    alert('더이상 위로 순서를 변경할 수 없습니다.');
+                    alert('더이상 순서를 위로 변경할 수 없습니다.');
                     return;
                 }
 
                 if (value === 'down' && selectedAccountHistoryCategoryInfo.order + 1 > categoryTotalCount) {
-                    alert('더이상 아래로 순서를 변경할 수 없습니다.');
+                    alert('더이상 순서를 아래로 변경할 수 없습니다.');
                     return;
                 }
                 payload.order = value === 'up' ?
@@ -139,22 +141,22 @@ const AccountHistoryCategoryDataModal: FunctionComponent<{
                         <div
                             css={styles.orderChangeUpButtonWarp}
                         >
-                            <span
-                                css={styles.orderChangeButton}
+                            <Image
+                                src={arrowImg}
                                 onClick={() => updateAccountHistoryCategory(1, 'up')}
-                            >
-                                ⌃
-                            </span>
+                                width={50}
+                                height={50}
+                            />
                         </div>
                         <div
                             css={styles.orderChangeDownButtonWarp}
                         >
-                            <span
-                                css={styles.orderChangeButton}
+                            <Image
+                                src={arrowImg}
                                 onClick={() => updateAccountHistoryCategory(1, 'down')}
-                            >
-                                ⌃
-                            </span>
+                                width={50}
+                                height={50}
+                            />
                         </div>
                     </div>
 
