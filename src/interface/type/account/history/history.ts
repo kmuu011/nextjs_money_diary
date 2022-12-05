@@ -9,3 +9,8 @@ export interface AccountHistoryItemType {
     createdAt: Date
     updatedAt: Date
 }
+
+export interface AccountHistoryCalendarDateData {
+    income: number
+    outcome: number
+}

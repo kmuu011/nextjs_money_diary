@@ -1,7 +1,11 @@
 import {AxiosResponse} from "axios";
 import {CursorSelectQueryDto} from "../../interface/dto/common";
 import {callApi} from "../../utils/axios";
-import {CreateAccountDto, UpdateAccountDto} from "../../interface/dto/account/account";
+import {
+    CreateAccountDto,
+    SelectAccountMonthSummaryDto,
+    UpdateAccountDto
+} from "../../interface/dto/account/account";
 
 export const selectAccountApi = async (payload: CursorSelectQueryDto): Promise<AxiosResponse | undefined> => {
     return await callApi<CursorSelectQueryDto>('get', 'account', payload);
@@ -23,4 +27,10 @@ export const updateAccountApi = async (
 
 export const deleteAccountApi = async (accountIdx: number): Promise<AxiosResponse | undefined> => {
     return await callApi('delete', `account/${accountIdx}`);
+}
+
+export const selectMonthSummaryDataApi = async (
+    payload: SelectAccountMonthSummaryDto
+): Promise<AxiosResponse | undefined> => {
+    return await callApi('get', `account/monthSummary`, payload);
 }

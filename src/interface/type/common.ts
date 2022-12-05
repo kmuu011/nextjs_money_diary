@@ -1,5 +1,5 @@
 export interface DateObjectType {
-    year: number;
+    year: string;
     month: string;
     date: string;
     day: number;
