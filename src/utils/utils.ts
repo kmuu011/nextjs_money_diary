@@ -1,9 +1,12 @@
 import {SetterOrUpdater} from "recoil";
 import {DateObjectType} from "../interface/type/common";
+import {CalendarDateDataType} from "../interface/type/calendar/calendar";
 
 const dummyStr: string = 'QWERTYUIOPASDFGHJKLZXCVBNM0123456789';
 const dayStrList: string[] = ['일', '월', '화', '수', '목', '금', '토'];
 const signType: string[] = ['-', '+'];
+
+const oneDateMillisecond = 60 * 60 * 24 * 1000;
 
 export const hideSideMenuBar = (setShowSideBar: SetterOrUpdater<boolean>): void => {
     setShowSideBar(false);
@@ -62,7 +65,7 @@ export const freezeBackground = (
 export const dateToObject = (dateValue?: Date): DateObjectType => {
     dateValue = dateValue ? dateValue : new Date();
 
-    const year = dateValue.getFullYear();
+    const year = dateValue.getFullYear().toString();
     const month = (Number(dateValue.getMonth()) + 1).toString().padStart(2, '0');
     const date = dateValue.getDate().toString().padStart(2, '0');
     const day = dateValue.getDay();
@@ -77,7 +80,7 @@ export const dateToObject = (dateValue?: Date): DateObjectType => {
 export const toDateParser = (dateValue?: Date): string => {
     dateValue = dateValue ? dateValue : new Date();
 
-    const dateObj:DateObjectType = dateToObject(new Date(dateValue));
+    const dateObj: DateObjectType = dateToObject(new Date(dateValue));
 
     return `${dateObj.year}-${dateObj.month}-${dateObj.date}T${dateObj.hour}:${dateObj.minute}`;
 }
@@ -97,3 +100,44 @@ export const commaParser = (
             .replace(/[0-9]/g, '-')
         : output;
 }
+
+export const calendarMatrixCreator = <T>(year: string, month: string) => {
+    const thisMonthFirstDate = new Date(`${year}-${month}-01`);
+    const nextMonthFirstDate = new Date(thisMonthFirstDate.getTime());
+    nextMonthFirstDate.setMonth(nextMonthFirstDate.getMonth() + 1);
+    const thisMonthLastDate = new Date(nextMonthFirstDate.getTime());
+    thisMonthLastDate.setDate(thisMonthLastDate.getDate() - 1);
+
+    const startTimeStamp = thisMonthFirstDate.getTime() - (thisMonthFirstDate.getDay() * oneDateMillisecond);
+    const endTimeStamp = thisMonthLastDate.getTime() + ((6 - thisMonthLastDate.getDay()) * oneDateMillisecond);
+
+    const calendarDateMatrix: [CalendarDateDataType<T>[]] = [[]];
+
+    const nowDateObj: DateObjectType = dateToObject();
+
+    let cnt = -1;
+    let week: CalendarDateDataType<T>[] = [];
+    while (true) {
+        cnt++;
+        if (startTimeStamp + (oneDateMillisecond * cnt) > endTimeStamp) break;
+
+        const dateObj = dateToObject(new Date(startTimeStamp + (oneDateMillisecond * cnt)));
+
+        week.push({
+            isToday: nowDateObj.year + nowDateObj.month + nowDateObj.date === dateObj.year + dateObj.month + dateObj.date,
+            isThisMonth: dateObj.year + dateObj.month === dateObj.year + month,
+            year: dateObj.year,
+            month: dateObj.month,
+            date: dateObj.date
+        });
+
+        if (week.length === 7) {
+            calendarDateMatrix.push(week);
+            week = [];
+        }
+    }
+
+    calendarDateMatrix.splice(0, 1);
+
+    return calendarDateMatrix;
+};

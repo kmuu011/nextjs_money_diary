@@ -103,12 +103,18 @@ export const accountButtonWrap = css`
 export const accountOrderUpButton = css`
   color: var(--color-4);
   font-size: 50px;
+  img{
+    transform: rotate(-90deg);
+  }
 `;
 
 export const accountOrderDownButton = css`
   transform: rotate(180deg);
   color: var(--color-4);
   font-size: 50px;
+  img{
+    transform: rotate(-90deg);
+  }
 `;
 
 export const accountLastItem = css`

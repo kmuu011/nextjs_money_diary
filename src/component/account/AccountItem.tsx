@@ -5,6 +5,8 @@ import {AccountItemProps} from "../../interface/props/account/account";
 import {commaParser} from "../../utils/utils";
 import {useRecoilState} from "recoil";
 import {showAccountDeleteButtonAtom, showAccountOrderChangeButtonAtom} from "../../recoil/atoms/account/account";
+import arrowImg from "../../../public/static/button/arrow/arrow_forward.svg";
+import Image from "next/image";
 
 const AccountItem: FunctionComponent<AccountItemProps> = (
     {
@@ -32,12 +34,12 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
         e.stopPropagation();
 
         if (up && order === 1) {
-            alert('더이상 위로 순서를 변경할 수 없습니다.');
+            alert('더이상 순서를 위로 변경할 수 없습니다.');
             return;
         }
 
         if (!up && isLast) {
-            alert('더이상 아래로 순서를 변경할 수 없습니다.');
+            alert('더이상 순서를 아래로 변경할 수 없습니다.');
             return;
         }
 
@@ -90,16 +92,20 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
                                 <div>
                                     <div
                                         css={styles.accountOrderUpButton}
-                                        onClick={(e) => updateAccountOrder(e, accountInfo.order, true)}
                                     >
-                                        ⌃
+                                        <Image
+                                            onClick={(e) => updateAccountOrder(e, accountInfo.order, true)}
+                                            src={arrowImg} width={50} height={50}
+                                        />
                                     </div>
                                     <div></div>
                                     <div
                                         css={styles.accountOrderDownButton}
-                                        onClick={(e) => updateAccountOrder(e, accountInfo.order, false)}
                                     >
-                                        ⌃
+                                        <Image
+                                            onClick={(e) => updateAccountOrder(e, accountInfo.order, false)}
+                                            src={arrowImg} width={50} height={50}
+                                        />
                                     </div>
                                 </div>
                                 : <div></div>

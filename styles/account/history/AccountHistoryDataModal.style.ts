@@ -19,7 +19,7 @@ export const accountHistoryDataBody = (show: boolean, type: number) => css`
   background-color: var(--background-color);
   height: ${type === 0 ? 410 : 470}px;
   width: 400px;
-  bottom: ${show ? '-25%' : '-80%'};
+  bottom: ${show ? '-15%' : '-80%'};
 
   transition: all .3s, height .1s;
   box-shadow: var(--body-box-shadow);

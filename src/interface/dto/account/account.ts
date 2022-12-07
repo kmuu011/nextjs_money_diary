@@ -7,3 +7,11 @@ export interface UpdateAccountDto {
     order?: number
     invisibleAmount?: number
 }
+
+export interface SelectAccountMonthSummaryDto {
+    year: string
+    month: string
+    startDate: string
+    endDate: string
+    multipleAccountIdx?: string
+}
