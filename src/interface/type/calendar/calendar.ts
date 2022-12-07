@@ -4,5 +4,5 @@ export interface CalendarDateDataType<T> {
     year: string
     month: string
     date: string
-    data?: T | undefined
+    data?: T
 }

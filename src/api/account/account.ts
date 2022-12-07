@@ -32,5 +32,5 @@ export const deleteAccountApi = async (accountIdx: number): Promise<AxiosRespons
 export const selectMonthSummaryDataApi = async (
     payload: SelectAccountMonthSummaryDto
 ): Promise<AxiosResponse | undefined> => {
-    return await callApi('get', `account/monthSummary`, payload);
+    return await callApi('get', `account/monthCostSummary`, payload);
 }
