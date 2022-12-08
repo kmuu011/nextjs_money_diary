@@ -1,15 +1,34 @@
 import {css} from "@emotion/react";
+import {defaultBodyCss} from "../common/Common.style";
 
 export const container = css`
+  ${defaultBodyCss};
+  position: relative;
+  text-align: center;
+  margin: 0 auto;
+  box-shadow: var(--body-box-shadow);
   background-color: var(--color-real-white);
 `;
 
-export const headWrap = css`
+export const calendarHeaderWrap = css`
+`;
+
+export const monthControllerWrap = css`
   display: flex;
   justify-content: center;
   flex-direction: row;
   font-size: var(--default-font-size);
   column-gap: 8px;
+`;
+
+export const calendarFrameWrap = css`
+  border-bottom: 1px solid var(--color-1);
+`;
+
+export const calendarAccountHistoryListWrap = css`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 export const calendarWeekWrap = css`

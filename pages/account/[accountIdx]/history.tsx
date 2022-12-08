@@ -70,8 +70,8 @@ const AccountHistory: NextPage = () => {
             {
                 startCursor,
                 count: 12,
-            },
-            accountIdx
+                multipleAccountIdx: accountIdx.toString()
+            }
         );
 
         if (response?.status !== 200) {
@@ -129,7 +129,6 @@ const AccountHistory: NextPage = () => {
         action: openAccountInsertModal
     };
 
-
     useEffect(() => {
         getAccountInfo();
         getAccountHistoryList();
@@ -182,6 +181,7 @@ const AccountHistory: NextPage = () => {
 
             <AccountHistoryDataModal
                 reloadAccountInfo={getAccountInfo}
+                isHistoryList={true}
             />
 
             <AccountUpdateModal

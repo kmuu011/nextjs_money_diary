@@ -6,7 +6,6 @@ export const container = css`
   position: relative;
   text-align: center;
   margin: 0 auto;
-  width: 100%;
   box-shadow: var(--body-box-shadow);
 `;
 

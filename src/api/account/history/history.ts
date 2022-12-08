@@ -2,15 +2,14 @@ import {AxiosResponse} from "axios";
 import {CursorSelectQueryDto} from "../../../interface/dto/common";
 import {callApi} from "../../../utils/axios";
 import {
-    CreateAccountHistoryDto,
+    CreateAccountHistoryDto, SelectAccountHistoryDto,
     UpdateAccountHistoryDto
 } from "../../../interface/dto/account/history/history";
 
 export const selectAccountHistoryApi = async (
-    payload: CursorSelectQueryDto,
-    accountIdx: number
+    payload: SelectAccountHistoryDto,
 ): Promise<AxiosResponse | undefined> => {
-    return await callApi<CursorSelectQueryDto>('get', `account/${accountIdx}/history`, payload);
+    return await callApi<CursorSelectQueryDto>('get', `account/history`, payload);
 }
 
 export const createAccountHistoryApi = async (
