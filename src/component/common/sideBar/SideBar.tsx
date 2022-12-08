@@ -10,16 +10,20 @@ import * as styles from "../../../../styles/common/sideBar/SideBar.style";
 import {hideSideMenuBar} from "../../../utils/utils";
 import {SideMenuProps} from "../../../interface/props/common";
 import {modalBackground} from "../../../../styles/common/Common.style";
+import {useRouter} from "next/router";
 
 const GlobalNavigation: FunctionComponent = () => {
     const [showSideBar, setShowSideBar] = useRecoilState(showSideBarAtom);
+
+    const accountIdx = useRouter().query.accountIdx;
 
     const menuList: SideMenuProps[] = [
         {
             image: todoImage,
             title: '가계부',
             subMenuList: [
-                {title: '목록 보기', url: '/account', action: () => hideSideMenuBar(setShowSideBar)}
+                {title: '목록 보기', url: '/account', action: () => hideSideMenuBar(setShowSideBar)},
+                {title: '월별 보기', url: '/account/calendar?accountIdx=' + accountIdx, action: () => hideSideMenuBar(setShowSideBar)},
             ],
             path: '/account'
         },

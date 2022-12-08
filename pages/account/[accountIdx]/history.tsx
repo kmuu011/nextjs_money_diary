@@ -28,6 +28,7 @@ import AccountUpdateModal from "../../../src/component/account/modal/AccountUpda
 
 const AccountHistory: NextPage = () => {
     const accountIdx = Number(useRouter().query.accountIdx);
+
     const [
         showAccountHistoryInsertModal,
         setShowAccountHistoryInsertModal

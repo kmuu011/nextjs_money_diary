@@ -21,3 +21,13 @@ export const calendarDataMatrixAtom = atom<[CalendarDateDataType<AccountHistoryC
     default: [[]]
 });
 
+export const multipleAccountIdxAtom = atom<string | undefined>({
+    key: getAtomKey('multipleAccountIdxAtom'),
+    default: undefined
+});
+
+export const multipleAccountHistoryCategoryIdxAtom = atom<string>({
+    key: getAtomKey('multipleAccountHistoryCategoryIdxAtom'),
+    default: undefined
+});
+

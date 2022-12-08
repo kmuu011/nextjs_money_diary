@@ -44,7 +44,7 @@ const CalendarFrame: FunctionComponent = () => {
     useEffect(() => {
         if (!selectedDay) return;
 
-        selectedDay.style.backgroundColor = `var(--color-1)`;
+        selectedDay.style.backgroundColor = `var(--color-2)`;
     }, [selectedDay]);
 
     return (

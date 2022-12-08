@@ -11,6 +11,11 @@ export const container = css`
 `;
 
 export const calendarHeaderWrap = css`
+  margin-top: var(--default-padding-size);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const monthControllerWrap = css`
@@ -21,7 +26,24 @@ export const monthControllerWrap = css`
   column-gap: 8px;
 `;
 
+export const monthCostSummaryWrap = css`
+  margin: var(--default-padding-size) 0;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-around;
+  
+  #outcome{
+    color: var(--color-red);
+  }
+  
+  #income {
+    color: var(--color-blue);
+  }
+`;
+
 export const calendarFrameWrap = css`
+  margin-top: var(--default-padding-size);
   border-bottom: 1px solid var(--color-1);
 `;
 
@@ -29,6 +51,9 @@ export const calendarAccountHistoryListWrap = css`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  align-content: flex-start;
+  height: 80vh;
+  overflow-y: auto;
 `;
 
 export const calendarWeekWrap = css`
@@ -43,7 +68,7 @@ export const calendarDay = css`
 `;
 
 export const calendarBodyWrap = css`
-  margin-top: 10px;
+  margin-top: 8px;
 `;
 
 export const calendarBodyWeekWrap = css`
@@ -59,6 +84,7 @@ export const calendarBodyDayWrap = (
 ) => css`
   width: ${100 / 7}%;
   height: 50px;
+  padding: 1px 0;
   
   div {
     margin-top: 2px;
@@ -84,7 +110,7 @@ export const calendarBodyDayWrap = (
     align-items: center;
   }
   
-  ${isToday ? `background-color: var(--background-color);` : ``}
+  ${isToday ? `background-color: var(--color-1);` : ``}
 
   ${isThisMonth ?
           `` : `div{color: var(--color-disable) !important;}`}

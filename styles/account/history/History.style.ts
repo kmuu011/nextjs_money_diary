@@ -15,6 +15,7 @@ export const accountHistoryListWrap = css`
   column-gap: 14px;
   flex-direction: row;
   flex-wrap: wrap;
+  align-content: flex-start
 `;
 
 export const accountHistoryTotalStatisticWrap = css`

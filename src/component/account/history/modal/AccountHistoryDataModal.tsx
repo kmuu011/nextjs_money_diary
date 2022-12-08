@@ -95,7 +95,8 @@ const AccountHistoryDataModal: FunctionComponent<{
         //             content: '가계 내역' + (i+1),
         //             type,
         //             accountHistoryCategoryIdx: categoryIdx,
-        //             createdAt: '2022-12-' + (Math.round(Math.random()*30)+1).toString().padStart(2,'0') + 'T14:36'
+        //             // createdAt: '2022-12-' + (Math.round(Math.random()*30)+1).toString().padStart(2,'0') + 'T14:36'
+        //             createdAt: '2022-12-02T14:36'
         //         })
         // }
         // return;
