@@ -7,6 +7,7 @@ export const container = css`
   margin: 0 auto;
   overflow-y: auto;
   box-shadow: var(--body-box-shadow);
+  background-color: var(--color-real-white);
 `;
 
 export const accountTotalStatisticWrap = css`
@@ -146,7 +147,6 @@ export const accountAmount = css`
 export const accountAddPlus = css`
   font-size: 40px;
   color: var(--color-2);
-
 `;
 
 export const accountAddText = css`

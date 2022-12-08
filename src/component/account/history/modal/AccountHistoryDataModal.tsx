@@ -23,10 +23,14 @@ import {selectAccountHistoryCategoryApi} from "../../../../api/account/history/c
 import AccountHistoryType from "../AccountHistoryType";
 
 const AccountHistoryDataModal: FunctionComponent<{
-    reloadAccountInfo: Function,
+    reloadAccountInfo?: Function,
+    isHistoryList?: boolean,
+    isCalendar?: boolean
 }> = (
     {
         reloadAccountInfo,
+        isHistoryList,
+        isCalendar
     }
 ) => {
     const accountIdx: number = Number(useRouter().query.accountIdx);
@@ -91,7 +95,8 @@ const AccountHistoryDataModal: FunctionComponent<{
         //             content: '가계 내역' + (i+1),
         //             type,
         //             accountHistoryCategoryIdx: categoryIdx,
-        //             createdAt
+        //             // createdAt: '2022-12-' + (Math.round(Math.random()*30)+1).toString().padStart(2,'0') + 'T14:36'
+        //             createdAt: '2022-12-02T14:36'
         //         })
         // }
         // return;
@@ -109,7 +114,9 @@ const AccountHistoryDataModal: FunctionComponent<{
             }
         );
 
-        await reloadAccountInfo();
+        if (reloadAccountInfo) {
+            await reloadAccountInfo();
+        }
 
         initialSetter();
 
@@ -123,7 +130,7 @@ const AccountHistoryDataModal: FunctionComponent<{
         if (!validation()) return;
 
         const response = await updateAccountHistoryApi(
-            accountIdx,
+            selectedAccountHistoryInfo.account.idx,
             selectedAccountHistoryInfo.idx,
             {
                 amount: Number(amount),
@@ -135,21 +142,29 @@ const AccountHistoryDataModal: FunctionComponent<{
         );
 
         if (response?.status === 200) {
-            await reloadAccountInfo();
-            setShowAccountHistoryDataModal(false);
+            if (reloadAccountInfo) {
+                await reloadAccountInfo();
+            }
+
             setUpdatedAccountHistoryIdx(selectedAccountHistoryInfo.idx);
+
+            setShowAccountHistoryDataModal(false);
         }
     }
 
     const accountHistoryDelete = async () => {
         const response = await deleteAccountHistoryApi(
-            accountIdx,
+            selectedAccountHistoryInfo.account.idx,
             selectedAccountHistoryInfo.idx
         );
 
         if (response?.status === 200) {
-            await reloadAccountInfo();
+            if (reloadAccountInfo) {
+                await reloadAccountInfo();
+            }
+
             setDeletedAccountHistoryIdx(selectedAccountHistoryInfo.idx);
+
             setShowAccountHistoryDataModal(false);
             setShowDelete(false);
         }

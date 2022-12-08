@@ -1,7 +1,11 @@
 export interface SelectAccountHistoryDto {
-    page: number
+    startCursor: number
+    endCursor?: number | undefined
     count: number
-    accountHistoryCategoryIdx?: number
+    multipleAccountIdx?: string
+    type?: number
+    multipleAccountHistoryCategoryIdx? :string
+    date?: string
 }
 
 export interface CreateAccountHistoryDto {

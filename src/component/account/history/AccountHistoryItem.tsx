@@ -55,7 +55,7 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
 
     const selectOneAccountHistory = async () => {
         const response = await selectOneAccountHistoryApi(
-            accountIdx,
+            accountHistoryInfo.account.idx,
             accountHistoryInfo.idx
         );
 
@@ -82,7 +82,6 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
         if (updatedAccountHistoryIdx !== accountHistoryInfo.idx) return;
 
         selectOneAccountHistory();
-
     }, [updatedAccountHistoryIdx]);
 
     // const updateAccountHistory = async (): Promise<void> => {

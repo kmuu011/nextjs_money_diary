@@ -21,6 +21,8 @@ export const subMenuWrap = (isOpen: boolean, length: number) => css`
 
 export const menuItem = (isSub: boolean, path?: string) => {
     const pathName = useRouter().pathname;
+    const hasQuery = path?.indexOf('?') !== -1;
+    path = hasQuery ? path?.substring(0, path?.indexOf('?')) : path;
     let backGroundColor, isActive;
 
     if (isSub) {
