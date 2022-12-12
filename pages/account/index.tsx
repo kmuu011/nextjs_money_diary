@@ -5,7 +5,7 @@ import SetHead from "../../src/component/common/Head";
 import {createAccountApi, deleteAccountApi, selectAccountApi, updateAccountApi} from "../../src/api/account/account";
 import {AccountItemType} from "../../src/interface/type/account/account";
 import AccountItem from "../../src/component/account/AccountItem";
-import {useRecoilState} from "recoil";
+import {useRecoilState, useResetRecoilState} from "recoil";
 import {showAccountDeleteButtonAtom, showAccountOrderChangeButtonAtom} from "../../src/recoil/atoms/account/account";
 import swapButton from "../../public/static/button/swap/swap_white.svg";
 import deleteSweepButton from "../../public/static/button/delete/delete_sweep.svg";
@@ -31,25 +31,6 @@ const Account: NextPage = () => {
     ] = useRecoilState(showAccountDeleteButtonAtom);
 
     let io: IntersectionObserver;
-
-    useEffect(() => {
-        getAccountList();
-    }, [startCursor]);
-
-    useEffect(() => {
-        io = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting){
-                    nextPage();
-                }
-            })
-        })
-
-        if(io && lastElement){
-            io.observe(lastElement);
-        }
-
-    }, [lastElement]);
 
     const createAccount = async (): Promise<void> => {
         const response = await createAccountApi({
@@ -132,6 +113,26 @@ const Account: NextPage = () => {
 
         getAccountList(true);
     }
+
+    useEffect(() => {
+        getAccountList();
+
+    }, [startCursor]);
+
+    useEffect(() => {
+        io = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting){
+                    nextPage();
+                }
+            })
+        })
+
+        if(io && lastElement){
+            io.observe(lastElement);
+        }
+
+    }, [lastElement]);
 
     return (
         <div

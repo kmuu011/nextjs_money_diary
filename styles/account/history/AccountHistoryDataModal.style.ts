@@ -7,7 +7,7 @@ export const accountHistoryDataWrap = css`
   justify-content: center;
 `;
 
-export const accountHistoryDataBody = (show: boolean, type: number) => css`
+export const accountHistoryDataBody = (show: boolean, type: number, isCalendar?: boolean) => css`
   border-radius: var(--border-radius);
   @media (max-width: 500px) {
     margin: 0 5%;
@@ -17,7 +17,7 @@ export const accountHistoryDataBody = (show: boolean, type: number) => css`
   padding: var(--default-modal-padding-size);
   position: relative;
   background-color: var(--background-color);
-  height: ${type === 0 ? 410 : 470}px;
+  height: ${(type === 0 ? 410 : 470) + (isCalendar ? 55 : 0)}px;
   width: 400px;
   bottom: ${show ? '-15%' : '-80%'};
 
@@ -84,6 +84,18 @@ export const dateWrap = css`
     height: var(--default-input-height-size);
     font-size: var(--small-default-font-size);
     padding: 0 8px;
+  }
+`;
+
+export const accountSelectWrap = css`
+  margin-top: 10px;
+
+  select {
+    padding: 0 8px;
+    height: var(--default-input-height-size);
+    width: 100%;
+    font-size: var(--small-default-font-size);
+    color: var(--color-2);
   }
 `;
 

@@ -2,14 +2,13 @@ import {FunctionComponent, useEffect, useState} from "react";
 import * as styles from "../../../../styles/account/history/History.style";
 import {AccountHistoryItemProps} from "../../../interface/props/account/history/history";
 import {commaParser, dateToObject} from "../../../utils/utils";
-import {useRecoilState, useSetRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
 import {
     accountHistoryModalTypeAtom,
-    selectedAccountHistoryInfoAtom, 
-    showAccountHistoryDataModalAtom,
+    selectedAccountHistoryInfoAtom,
+    showAccountHistoryDataModalAtom, updatedAccountHistoryAccountIdxAtom,
     updatedAccountHistoryIdxAtom
 } from "../../../recoil/atoms/account/history";
-import {useRouter} from "next/router";
 import {selectOneAccountHistoryApi} from "../../../api/account/history/history";
 import {DateObjectType} from "../../../interface/type/common";
 
@@ -20,8 +19,6 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
         setLastElement,
     }
 ) => {
-    const accountIdx: number = Number(useRouter().query.accountIdx);
-
     const [
         accountHistoryData,
         setAccountHistoryData
@@ -41,6 +38,7 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
     const setModalType = useSetRecoilState(accountHistoryModalTypeAtom);
 
     const setSelectedAccountHistoryInfo = useSetRecoilState(selectedAccountHistoryInfoAtom);
+    const updatedAccountHistoryAccountIdx = useRecoilValue(updatedAccountHistoryAccountIdxAtom);
 
     const openAccountUpdateModal = (): void => {
         setModalType(1);
@@ -55,7 +53,7 @@ const AccountHistoryItem: FunctionComponent<AccountHistoryItemProps> = (
 
     const selectOneAccountHistory = async () => {
         const response = await selectOneAccountHistoryApi(
-            accountHistoryInfo.account.idx,
+            updatedAccountHistoryAccountIdx || accountHistoryInfo.account.idx,
             accountHistoryInfo.idx
         );
 
