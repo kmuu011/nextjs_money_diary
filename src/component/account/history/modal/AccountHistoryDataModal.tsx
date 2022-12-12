@@ -3,9 +3,13 @@ import {useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState} 
 
 import {
     accountHistoryCategoryAtom,
-    accountHistoryModalTypeAtom, accountHistoryTypeAtom, createdAccountHistoryInfoAtom, deletedAccountHistoryIdxAtom,
+    accountHistoryModalTypeAtom,
+    accountHistoryTypeAtom,
+    createdAccountHistoryInfoAtom,
+    dateForSelectAccountHistoryAtom,
+    deletedAccountHistoryIdxAtom,
     selectedAccountHistoryInfoAtom,
-    showAccountHistoryDataModalAtom,
+    showAccountHistoryDataModalAtom, updatedAccountHistoryAccountIdxAtom,
     updatedAccountHistoryIdxAtom
 } from "../../../../recoil/atoms/account/history";
 import {cancelButton, deleteButton, modalBackground} from "../../../../../styles/common/Common.style";
@@ -21,6 +25,8 @@ import {AccountHistoryItemType} from "../../../../interface/type/account/history
 import AccountHistoryCategorySelect from "../AccountHistoryCategorySelect";
 import {selectAccountHistoryCategoryApi} from "../../../../api/account/history/category";
 import AccountHistoryType from "../AccountHistoryType";
+import AccountSelect from "../../AccountSelect";
+import {selectedAccountIdxAtom} from "../../../../recoil/atoms/account/account";
 
 const AccountHistoryDataModal: FunctionComponent<{
     reloadAccountInfo?: Function,
@@ -34,6 +40,7 @@ const AccountHistoryDataModal: FunctionComponent<{
     }
 ) => {
     const accountIdx: number = Number(useRouter().query.accountIdx);
+    const selectedAccountIdx = useRecoilValue(selectedAccountIdxAtom);
 
     const [
         showDelete,
@@ -49,14 +56,19 @@ const AccountHistoryDataModal: FunctionComponent<{
     const selectedAccountHistoryInfo: AccountHistoryItemType = useRecoilValue(selectedAccountHistoryInfoAtom);
     const setCreatedAccountHistoryInfo = useSetRecoilState(createdAccountHistoryInfoAtom);
     const setUpdatedAccountHistoryIdx = useSetRecoilState(updatedAccountHistoryIdxAtom);
+    const setUpdatedAccountHistoryAccountIdx = useSetRecoilState(updatedAccountHistoryAccountIdxAtom);
     const setDeletedAccountHistoryIdx = useSetRecoilState(deletedAccountHistoryIdxAtom);
+
+    const dateForSelect = useRecoilValue(dateForSelectAccountHistoryAtom);
+
+    const nowDate = toDateParser();
 
     const [type, setType] = useRecoilState(accountHistoryTypeAtom);
     const [amount, setAmount] = useState<number | string>('');
     const [content, setContent] = useState<string>('');
     const [category, setCategory] = useRecoilState(accountHistoryCategoryAtom);
     const resetCategory = useResetRecoilState(accountHistoryCategoryAtom);
-    const [createdAt, setCreatedAt] = useState<string>(toDateParser());
+    const [createdAt, setCreatedAt] = useState<string>(nowDate);
 
     const validation = () => {
         if (!amount || amount < 1) {
@@ -71,6 +83,11 @@ const AccountHistoryDataModal: FunctionComponent<{
 
         if (isNaN(new Date(createdAt).getTime())) {
             alert('일자가 올바르지 않습니다.');
+            return;
+        }
+
+        if (isCalendar && !selectedAccountIdx) {
+            alert('가계부를 지정해주세요.');
             return;
         }
 
@@ -104,7 +121,7 @@ const AccountHistoryDataModal: FunctionComponent<{
         if (!validation()) return;
 
         const response = await createAccountHistoryApi(
-            accountIdx,
+            (isCalendar ? selectedAccountIdx : accountIdx),
             {
                 amount: Number(amount),
                 content,
@@ -114,31 +131,47 @@ const AccountHistoryDataModal: FunctionComponent<{
             }
         );
 
+        if (response?.status !== 201) {
+            alert(response?.data.message);
+            return;
+        }
+
         if (reloadAccountInfo) {
             await reloadAccountInfo();
         }
 
         initialSetter();
-
-        if (response?.status === 201) {
-            setShowAccountHistoryDataModal(false);
-            setCreatedAccountHistoryInfo(response.data);
-        }
+        setShowAccountHistoryDataModal(false);
+        setCreatedAccountHistoryInfo(response.data);
     }
 
     const accountHistoryUpdate = async () => {
         if (!validation()) return;
 
+        const payload: {
+            amount: number,
+            type: number,
+            content: string,
+            accountHistoryCategoryIdx: number,
+            createdAt: string,
+            accountIdx?: number
+        } = {
+            amount: Number(amount),
+            type,
+            content,
+            accountHistoryCategoryIdx: category,
+            createdAt,
+        };
+
+        if (selectedAccountIdx) {
+            payload.accountIdx = selectedAccountIdx;
+            setUpdatedAccountHistoryAccountIdx(payload.accountIdx);
+        }
+
         const response = await updateAccountHistoryApi(
             selectedAccountHistoryInfo.account.idx,
             selectedAccountHistoryInfo.idx,
-            {
-                amount: Number(amount),
-                type,
-                content,
-                accountHistoryCategoryIdx: category,
-                createdAt
-            }
+            payload
         );
 
         if (response?.status === 200) {
@@ -147,7 +180,6 @@ const AccountHistoryDataModal: FunctionComponent<{
             }
 
             setUpdatedAccountHistoryIdx(selectedAccountHistoryInfo.idx);
-
             setShowAccountHistoryDataModal(false);
         }
     }
@@ -172,7 +204,7 @@ const AccountHistoryDataModal: FunctionComponent<{
 
     const initialSetter = (): void => {
         setType(0);
-        setAmount(0);
+        setAmount('');
         resetCategory();
         setContent('');
         setCreatedAt(toDateParser());
@@ -183,8 +215,17 @@ const AccountHistoryDataModal: FunctionComponent<{
         setAmount(selectedAccountHistoryInfo?.amount || '');
         setContent(selectedAccountHistoryInfo?.content || '');
         setCategory(selectedAccountHistoryInfo?.accountHistoryCategory.idx || 0);
-        setCreatedAt(toDateParser(selectedAccountHistoryInfo?.createdAt || toDateParser()));
+        setCreatedAt(toDateParser(selectedAccountHistoryInfo?.createdAt ||
+            (dateForSelect ?
+                dateForSelect.substring(0, 4) + '-' + dateForSelect.substring(4, 6) + '-' + dateForSelect.substring(6, 8) + nowDate.substring(nowDate.indexOf('T')) : undefined) ||
+            toDateParser()));
     }, [selectedAccountHistoryInfo]);
+
+    useEffect(() => {
+        if (dateForSelect) {
+            setCreatedAt(dateForSelect.substring(0, 4) + '-' + dateForSelect.substring(4, 6) + '-' + dateForSelect.substring(6, 8) + nowDate.substring(nowDate.indexOf('T')))
+        }
+    }, [dateForSelect]);
 
     return (
         <div css={modalBackground(showAccountHistoryDataModal)}
@@ -200,7 +241,7 @@ const AccountHistoryDataModal: FunctionComponent<{
                 css={styles.accountHistoryDataWrap}
                 id={"accountInsertModal"}
             >
-                <div css={styles.accountHistoryDataBody(showAccountHistoryDataModal, modalType)}>
+                <div css={styles.accountHistoryDataBody(showAccountHistoryDataModal, modalType, isCalendar)}>
                     <div>
                         <input
                             placeholder={"금액"}
@@ -230,6 +271,15 @@ const AccountHistoryDataModal: FunctionComponent<{
                             onChange={(e) => setCreatedAt(e.target.value)}
                         />
                     </div>
+                    {
+                        isCalendar ?
+                            <div css={styles.accountSelectWrap}>
+                                <AccountSelect accountIdx={
+                                    modalType === 0 ? undefined : selectedAccountHistoryInfo?.account?.idx}/>
+                            </div>
+                            :
+                            <></>
+                    }
 
                     <div
                         css={styles.buttonWrap}

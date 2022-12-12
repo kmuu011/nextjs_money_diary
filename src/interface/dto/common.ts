@@ -6,5 +6,5 @@ export interface SelectQueryDto {
 export interface CursorSelectQueryDto {
     startCursor: number
     endCursor?: number | undefined
-    count: number
+    count?: number
 }

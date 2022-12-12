@@ -6,6 +6,7 @@ export interface AccountItemType {
     order: number
     createdAt: string
     updatedAt: string
+    checked?: boolean
 }
 
 export interface AccountDailyCostSummaryType {

@@ -1,6 +1,6 @@
 import {FunctionComponent, useEffect, useState} from "react";
 import * as styles from "../../../../styles/account/AccountCalendar.style";
-import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
+import {useRecoilValue, useSetRecoilState} from "recoil";
 import {
     calendarDataMatrixAtom,
     monthForCalendarAtom,
@@ -48,7 +48,7 @@ const CalendarFrame: FunctionComponent = () => {
     }, [selectedDay]);
 
     return (
-        <div>
+        <div css={styles.calendarFrame}>
             <div css={styles.calendarWeekWrap}>
                 {
                     ["일", "월", "화", "수", "목", "금", "토"].map(v => {

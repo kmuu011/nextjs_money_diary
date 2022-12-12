@@ -37,6 +37,7 @@ const emotionCss = {
           word-break: break-all;
         `
 }
+
 const TodoGroupItem: FunctionComponent<TodoItemProps> = (
     {
         preview,

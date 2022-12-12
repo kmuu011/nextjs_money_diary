@@ -28,20 +28,20 @@ const AccountUpdateModal: FunctionComponent<{
             setAccountName(accountInfo?.accountName || '')
             setInvisibleAmount(accountInfo?.invisibleAmount === 1);
         }
-    }, [showAccountUpdateModal])
+    }, [showAccountUpdateModal]);
 
     return (
         <div css={modalBackground(showAccountUpdateModal)}
              onClick={(e) => {
                  const element: HTMLDivElement = e.target as HTMLDivElement;
 
-                 if (element.id === 'accountInsertModal') {
+                 if (element.id === 'accountUpdateModal') {
                      setShowAccountUpdateModal(false);
                  }
              }}>
             <div
                 css={styles.accountUpdateWrap}
-                id={"accountInsertModal"}
+                id={"accountUpdateModal"}
             >
                 <div css={styles.accountUpdateBody(showAccountUpdateModal)}>
                     <div>

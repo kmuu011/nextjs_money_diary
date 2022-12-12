@@ -56,6 +56,10 @@ export const calendarAccountHistoryListWrap = css`
   overflow-y: auto;
 `;
 
+export const calendarFrame = css`
+  min-height: 280px;
+`;
+
 export const calendarWeekWrap = css`
   display: flex;
   height: 30px;

@@ -15,3 +15,13 @@ export const showAccountUpdateModalAtom = atom<boolean>({
     key: getAtomKey('showAccountDeleteButtonAtom'),
     default: false
 });
+
+export const selectedAccountIdxAtom = atom<number>({
+    key: getAtomKey('selectedAccountIdxAtom'),
+    default: undefined
+})
+
+export const showAccountChooseModalAtom = atom<boolean>({
+    key: getAtomKey('showAccountChooseModalAtom'),
+    default: false
+})

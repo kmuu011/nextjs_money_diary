@@ -1,5 +1,5 @@
 import {FunctionComponent} from "react";
-import {useRecoilState} from "recoil";
+import {useRecoilState, useSetRecoilState} from "recoil";
 import {showSideBarAtom} from "../../../recoil/atoms/common";
 import SideMenu from "./SideMenu";
 
@@ -11,11 +11,14 @@ import {hideSideMenuBar} from "../../../utils/utils";
 import {SideMenuProps} from "../../../interface/props/common";
 import {modalBackground} from "../../../../styles/common/Common.style";
 import {useRouter} from "next/router";
+import {multipleAccountIdxAtom} from "../../../recoil/atoms/calendar/calendar";
 
 const GlobalNavigation: FunctionComponent = () => {
     const [showSideBar, setShowSideBar] = useRecoilState(showSideBarAtom);
 
     const accountIdx = useRouter().query.accountIdx;
+
+    const setMultipleAccountIdx = useSetRecoilState(multipleAccountIdxAtom);
 
     const menuList: SideMenuProps[] = [
         {
@@ -23,7 +26,12 @@ const GlobalNavigation: FunctionComponent = () => {
             title: '가계부',
             subMenuList: [
                 {title: '목록 보기', url: '/account', action: () => hideSideMenuBar(setShowSideBar)},
-                {title: '월별 보기', url: '/account/calendar?accountIdx=' + accountIdx, action: () => hideSideMenuBar(setShowSideBar)},
+                {
+                    title: '월별 보기', url: `/account/${accountIdx}/calendar`, action: () => {
+                        hideSideMenuBar(setShowSideBar);
+                        setMultipleAccountIdx(accountIdx === "undefined" ? undefined : accountIdx as string);
+                    }
+                },
             ],
             path: '/account'
         },

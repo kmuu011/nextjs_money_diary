@@ -22,6 +22,11 @@ export const updatedAccountHistoryIdxAtom = atom<number>({
     default: undefined
 });
 
+export const updatedAccountHistoryAccountIdxAtom = atom<number>({
+    key: getAtomKey('updatedAccountHistoryAccountIdxAtom'),
+    default: undefined
+});
+
 export const deletedAccountHistoryIdxAtom = atom<number>({
     key: getAtomKey('deletedAccountHistoryIdxAtom'),
     default: undefined

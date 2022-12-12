@@ -1,3 +1,5 @@
+import {StaticImageData} from "next/image";
+
 export interface DateObjectType {
     year: string;
     month: string;
@@ -7,4 +9,10 @@ export interface DateObjectType {
     hour: string;
     minute: string;
     second: string;
+}
+
+export interface AdditionalButtonType {
+    image: StaticImageData
+    action: Function
+    alt: string
 }

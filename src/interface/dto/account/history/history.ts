@@ -21,5 +21,6 @@ export interface UpdateAccountHistoryDto {
     content: string
     type: number
     accountHistoryCategoryIdx: number
+    accountIdx?: number
     createdAt?: string
 }
