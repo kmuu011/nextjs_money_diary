@@ -5,21 +5,17 @@ export const accountChooseWrap = css`
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
 `;
 
 export const accountChooseBody = (show: boolean) => css`
   border-radius: var(--border-radius);
-  @media (max-width: 500px) {
-    margin: 0 5%;
-    width: 80%;
-  }
 
   padding: var(--default-modal-padding-size);
   position: relative;
   background-color: var(--background-color);
-  height: 300px;
   width: 200px;
-  bottom: ${show ? '-35%' : '-80%'};
+  bottom: ${show ? '-30%' : '-80%'};
 
   transition: all .3s, height .1s;
   box-shadow: var(--body-box-shadow);
