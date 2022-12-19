@@ -11,6 +11,7 @@
   "dependencies": {
     "@emotion/css": "^11.10.0",
     "@emotion/react": "^11.10.4",
+    "@nivo/pie": "^0.80.0",
     "@types/lodash": "^4.14.184",
     "@types/react-infinite-scroller": "^1.2.3",
     "axios": "^0.27.2",

@@ -34,6 +34,8 @@ export const accountTopOptionWrap = css`
   right: 0;
   top: 0;
   padding: var(--default-padding-size);
+  display: flex;
+  column-gap: var(--default-padding-size);
 `;
 
 export const accountOptionButton = css`

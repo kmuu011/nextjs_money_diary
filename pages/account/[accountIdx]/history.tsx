@@ -23,11 +23,15 @@ import {
 import AccountHistoryDataModal from "../../../src/component/account/history/modal/AccountHistoryDataModal";
 import Image from "next/image";
 import optionButton from "../../../public/static/button/setting/setting.svg";
+import calendarButton from "../../../public/static/button/calendar/calendar.svg";
+import pieChartButton from "../../../public/static/button/chart/pie.svg";
 import {showAccountUpdateModalAtom} from "../../../src/recoil/atoms/account/account";
 import AccountUpdateModal from "../../../src/component/account/modal/AccountUpdateModal";
+import {multipleAccountIdxAtom} from "../../../src/recoil/atoms/calendar/calendar";
 
 const AccountHistory: NextPage = () => {
-    const accountIdx = Number(useRouter().query.accountIdx);
+    const router = useRouter();
+    const accountIdx = Number(router.query.accountIdx);
 
     const [
         showAccountHistoryInsertModal,
@@ -35,6 +39,7 @@ const AccountHistory: NextPage = () => {
     ] = useRecoilState(showAccountHistoryDataModalAtom);
 
     const setShowAccountUpdateModal = useSetRecoilState(showAccountUpdateModalAtom);
+    const setMultipleAccountIdx = useSetRecoilState(multipleAccountIdxAtom);
 
     const setModalType = useSetRecoilState(accountHistoryModalTypeAtom);
     const resetSelectedAccountHistoryInfo = useResetRecoilState(selectedAccountHistoryInfoAtom);
@@ -198,6 +203,24 @@ const AccountHistory: NextPage = () => {
                 <div
                     css={styles.accountTopOptionWrap}
                 >
+                    <button
+                        onClick={() => {
+                            setMultipleAccountIdx(accountIdx.toString());
+                            return router.push(`/account/${accountIdx}/chart`);
+                        }}
+                        css={styles.accountOptionButton}
+                    >
+                        <Image src={pieChartButton} width={40} height={40} alt={"차트 버튼"}/>
+                    </button>
+                    <button
+                        onClick={() => {
+                            setMultipleAccountIdx(accountIdx.toString());
+                            return router.push(`/account/${accountIdx}/calendar`);
+                        }}
+                        css={styles.accountOptionButton}
+                    >
+                        <Image src={calendarButton} width={40} height={40} alt={"달력 버튼"}/>
+                    </button>
                     <button
                         onClick={() => setShowAccountUpdateModal(true)}
                         css={styles.accountOptionButton}
