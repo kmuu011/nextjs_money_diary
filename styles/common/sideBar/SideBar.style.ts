@@ -26,7 +26,10 @@ export const menuItem = (isSub: boolean, path?: string) => {
     let backGroundColor, isActive;
 
     if (isSub) {
-        isActive = pathName === path;
+        isActive = path !== undefined ?
+            new RegExp('^' + pathName.replace(/\[.*\]/g, '.*') + '$').test(path)
+            :
+            false;
     } else {
         isActive = path !== undefined ? pathName.indexOf(path) === 0 : false;
     }
