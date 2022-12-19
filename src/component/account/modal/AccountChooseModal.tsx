@@ -33,16 +33,16 @@ const AccountChooseModal: FunctionComponent = () => {
         }
 
         setAccountList(response.data.items.map((v: AccountItemType) => {
-            if(multipleAccountIdx) {
-                v.checked = multipleAccountIdx === '-1' ? true : (multipleAccountIdx.split(',').indexOf(v.idx+'') !== -1)
+            if (multipleAccountIdx) {
+                v.checked = multipleAccountIdx === '-1' ? true : (multipleAccountIdx.split(',').indexOf(v.idx + '') !== -1)
             }
             return v;
         }));
     }
 
-    const checkAll = () => {
+    const checkAll = (checked: boolean) => {
         setAccountList([...accountList.map(v => {
-            v.checked = true;
+            v.checked = checked;
             return v;
         })]);
     }
@@ -58,6 +58,12 @@ const AccountChooseModal: FunctionComponent = () => {
 
                  if (element.id === 'accountChooseModal') {
                      setShowAccountChooseModal(false);
+                     if (multipleAccountIdx) {
+                         accountList.forEach(v => {
+                             v.checked = multipleAccountIdx === '-1' ? true :
+                                 multipleAccountIdx.split(',').indexOf(v.idx.toString()) !== -1
+                         })
+                     }
                  }
              }}
         >
@@ -66,7 +72,20 @@ const AccountChooseModal: FunctionComponent = () => {
                 id={"accountChooseModal"}
             >
                 <div css={styles.accountChooseBody(showAccountChooseModal)}>
-                    <button onClick={checkAll}>dd</button>
+                    <label
+                        css={styles.accountChooseItem}
+                    >
+                        <div>
+                            <input
+                                type={"checkbox"}
+                                checked={accountList.every(v => v.checked)}
+                                onChange={(e) => checkAll(e.target.checked)}
+                            />
+                        </div>
+                        <div>
+                            전체선택
+                        </div>
+                    </label>
 
                     <div>
                         {
@@ -80,7 +99,7 @@ const AccountChooseModal: FunctionComponent = () => {
                                             type={"checkbox"}
                                             checked={v.checked === true}
                                             onChange={(e) => {
-                                                accountList[accountList.findIndex(a => a.idx === v.idx )].checked = e.target.checked;
+                                                accountList[accountList.findIndex(a => a.idx === v.idx)].checked = e.target.checked;
                                                 setAccountList([...accountList])
                                             }}
                                         />
@@ -94,10 +113,16 @@ const AccountChooseModal: FunctionComponent = () => {
                     </div>
 
                     <button onClick={() => {
+                        if(accountList.filter(v => v.checked).length === 0){
+                            alert('하나 이상의 가계부를 선택해주세요.');
+                            return;
+                        }
                         setMultipleAccountIdx(accountList
                             .filter(v => v.checked)
                             .map(v => v.idx).join(','))
-                    }}>적용</button>
+                        setShowAccountChooseModal(false);
+                    }}>적용
+                    </button>
                 </div>
             </div>
 

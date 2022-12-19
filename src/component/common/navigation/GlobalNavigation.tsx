@@ -39,7 +39,7 @@ const GlobalNavigation: FunctionComponent = () => {
 
         const buttonList: AdditionalButtonType[] = [];
 
-        if((/account\/.*\/calendar/).test(pathName)){
+        if((/account\/.*\/calendar|account\/.*\/chart/).test(pathName)){
             buttonList.push({
                 image: filter,
                 action: () => {

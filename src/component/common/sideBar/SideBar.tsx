@@ -32,6 +32,12 @@ const GlobalNavigation: FunctionComponent = () => {
                         setMultipleAccountIdx(accountIdx === "undefined" ? undefined : accountIdx as string);
                     }
                 },
+                {
+                    title: '차트 보기', url: `/account/${accountIdx}/chart`, action: () => {
+                        hideSideMenuBar(setShowSideBar);
+                        setMultipleAccountIdx(accountIdx === "undefined" ? undefined : accountIdx as string);
+                    }
+                },
             ],
             path: '/account'
         },

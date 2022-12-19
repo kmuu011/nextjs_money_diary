@@ -1,8 +1,8 @@
 import type {NextPage} from 'next';
-import * as styles from '../../../styles/account/AccountCalendar.style';
+import * as styles from '../../../styles/account/history/AccountHistoryCalendar.style';
 import {useEffect, useState} from "react";
 import SetHead from "../../../src/component/common/Head";
-import CalendarFrame from "../../../src/component/account/calendar/Calendar";
+import CalendarFrame from "../../../src/component/account/history/calendar/Calendar";
 import {useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState} from "recoil";
 import {
     calendarDataMatrixAtom,
@@ -54,18 +54,13 @@ const AccountHistoryCalendar: NextPage = () => {
         setMultipleAccountIdx
     ] = useRecoilState(multipleAccountIdxAtom);
 
-    const resetMultipleAccountIdx = useResetRecoilState(multipleAccountIdxAtom);
-
     const setModalType = useSetRecoilState(accountHistoryModalTypeAtom);
     const [
         showAccountHistoryInsertModal,
         setShowAccountHistoryInsertModal
     ] = useRecoilState(showAccountHistoryDataModalAtom);
 
-    const [
-        showAccountChooseModal,
-        setShowAccountChooseModal
-    ] = useRecoilState(showAccountChooseModalAtom);
+    const showAccountChooseModal = useRecoilValue(showAccountChooseModalAtom);
 
     const resetSelectedAccountHistoryInfo = useResetRecoilState(selectedAccountHistoryInfoAtom);
 

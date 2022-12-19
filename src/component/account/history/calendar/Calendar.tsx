@@ -1,15 +1,15 @@
 import {FunctionComponent, useEffect, useState} from "react";
-import * as styles from "../../../../styles/account/AccountCalendar.style";
+import * as styles from "../../../../../styles/account/history/AccountHistoryCalendar.style";
 import {useRecoilValue, useSetRecoilState} from "recoil";
 import {
     calendarDataMatrixAtom,
     monthForCalendarAtom,
     yearForCalendarAtom
-} from "../../../recoil/atoms/calendar/calendar";
-import {CalendarDateDataType} from "../../../interface/type/calendar/calendar";
-import {commaParser} from "../../../utils/utils";
-import {AccountHistoryCalendarDateData} from "../../../interface/type/account/history/history";
-import {dateForSelectAccountHistoryAtom} from "../../../recoil/atoms/account/history";
+} from "../../../../recoil/atoms/calendar/calendar";
+import {CalendarDateDataType} from "../../../../interface/type/calendar/calendar";
+import {commaParser} from "../../../../utils/utils";
+import {AccountHistoryCalendarDateData} from "../../../../interface/type/account/history/history";
+import {dateForSelectAccountHistoryAtom} from "../../../../recoil/atoms/account/history";
 
 const CalendarFrame: FunctionComponent = () => {
     const year = useRecoilValue(yearForCalendarAtom);
