@@ -41,8 +41,8 @@ const AccountHistoryCalendar: NextPage = () => {
     const accountIdx = router.query.accountIdx;
 
     const [year, setYear] = useRecoilState(yearForCalendarAtom);
-    const resetYear = useResetRecoilState(yearForCalendarAtom);
     const [month, setMonth] = useRecoilState(monthForCalendarAtom);
+    const resetYear = useResetRecoilState(yearForCalendarAtom);
     const resetMonth = useResetRecoilState(monthForCalendarAtom);
 
     const setYearForSelectAccountHistoryList = useSetRecoilState(yearForSelectAccountHistoryAtom);
