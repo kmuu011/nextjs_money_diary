@@ -32,7 +32,7 @@ const CalendarFrame: FunctionComponent = () => {
 
         setPreviousColor(e.style.backgroundColor);
         setSelectedDay(e);
-        setDateForSelect(dayInfo.year + dayInfo.month + dayInfo.date);
+        setDateForSelect(dayInfo.date);
     }
 
     useEffect(() => {

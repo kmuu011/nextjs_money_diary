@@ -13,22 +13,19 @@ import {
     accountHistoryModalTypeAtom,
     createdAccountHistoryInfoAtom,
     dateForSelectAccountHistoryAtom,
-    deletedAccountHistoryIdxAtom, selectedAccountHistoryInfoAtom,
+    deletedAccountHistoryIdxAtom, monthForSelectAccountHistoryAtom, selectedAccountHistoryInfoAtom,
     showAccountHistoryDataModalAtom,
-    updatedAccountHistoryIdxAtom
+    updatedAccountHistoryIdxAtom, yearForSelectAccountHistoryAtom
 } from "../../../src/recoil/atoms/account/history";
 import {
     AccountHistoryCalendarDateData,
     AccountHistoryItemType
 } from "../../../src/interface/type/account/history/history";
-import AccountHistoryItem from "../../../src/component/account/history/AccountHistoryItem";
-import {selectAccountHistoryApi} from "../../../src/api/account/history/history";
 import {CalendarDateDataType} from "../../../src/interface/type/calendar/calendar";
 import {SelectAccountMonthSummaryDto} from "../../../src/interface/dto/account/account";
 import {selectMonthSummaryDataApi} from "../../../src/api/account/account";
 import {AccountDailyCostSummaryType, AccountMonthCostSummaryType} from "../../../src/interface/type/account/account";
-import {calendarMatrixCreator, commaParser, freezeBackground} from "../../../src/utils/utils";
-import {SelectAccountHistoryDto} from "../../../src/interface/dto/account/history/history";
+import {calendarMatrixCreator, commaParser, dateToObject, freezeBackground} from "../../../src/utils/utils";
 import AccountHistoryDataModal from "../../../src/component/account/history/modal/AccountHistoryDataModal";
 import {useRouter} from "next/router";
 import {CircleButtonProps} from "../../../src/interface/props/common";
@@ -37,6 +34,7 @@ import {circleButtonWrap} from "../../../styles/common/Common.style";
 import CircleButton from "../../../src/component/common/button/CircleButton";
 import AccountChooseModal from "../../../src/component/account/modal/AccountChooseModal";
 import {showAccountChooseModalAtom} from "../../../src/recoil/atoms/account/account";
+import AccountHistoryList from "../../../src/component/account/history/AccountHistoryList";
 
 const AccountHistoryCalendar: NextPage = () => {
     const router = useRouter();
@@ -46,9 +44,12 @@ const AccountHistoryCalendar: NextPage = () => {
     const resetYear = useResetRecoilState(yearForCalendarAtom);
     const [month, setMonth] = useRecoilState(monthForCalendarAtom);
     const resetMonth = useResetRecoilState(monthForCalendarAtom);
-    const dateForSelectAccountHistoryList = useRecoilValue(dateForSelectAccountHistoryAtom);
+
+    const setYearForSelectAccountHistoryList = useSetRecoilState(yearForSelectAccountHistoryAtom);
+    const setMonthForSelectAccountHistoryList = useSetRecoilState(monthForSelectAccountHistoryAtom);
+
     const resetDateForSelectAccountHistoryList = useResetRecoilState(dateForSelectAccountHistoryAtom);
-    const [accountHistoryList, setAccountHistoryList] = useState<AccountHistoryItemType[]>([]);
+
     const [
         multipleAccountIdx,
         setMultipleAccountIdx
@@ -71,15 +72,9 @@ const AccountHistoryCalendar: NextPage = () => {
     const [monthIncome, setMonthIncome] = useState<number>(0);
     const [monthOutcome, setMonthOutcome] = useState<number>(0);
 
-    const [startCursor, setStartCursorIdx] = useState<number>(-1);
-    const [last, setLast] = useState<boolean>(false);
-    const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
-
     const createdAccountHistoryInfo: AccountHistoryItemType = useRecoilValue(createdAccountHistoryInfoAtom);
     const updatedAccountHistoryIdx = useRecoilValue(updatedAccountHistoryIdxAtom);
     const deletedAccountHistoryIdx = useRecoilValue(deletedAccountHistoryIdxAtom);
-
-    let io: IntersectionObserver;
 
     const getMonthlySummary = async (
         calendarMatrix: [CalendarDateDataType<AccountHistoryCalendarDateData>[]],
@@ -133,51 +128,42 @@ const AccountHistoryCalendar: NextPage = () => {
 
     const nextMonth = () => {
         if (Number(month) + 1 === 13) {
-            setMonth('01');
-            setYear((Number(year) + 1).toString());
+            const monthValue = '01';
+            const yearValue = (Number(year) + 1).toString();
+
+            setMonth(monthValue);
+            setMonthForSelectAccountHistoryList(monthValue);
+
+            setYear(yearValue);
+            setYearForSelectAccountHistoryList(yearValue);
         } else {
-            setMonth((Number(month) + 1).toString().padStart(2, '0'))
+            const monthValue = (Number(month) + 1).toString().padStart(2, '0');
+
+            setMonth(monthValue);
+            setMonthForSelectAccountHistoryList(monthValue)
         }
+
+        resetDateForSelectAccountHistoryList();
     }
 
     const previousMonth = () => {
         if (Number(month) - 1 === 0) {
-            setMonth('12');
-            setYear((Number(year) - 1).toString());
+            const monthValue = '12';
+            const yearValue = (Number(year) - 1).toString();
+
+            setMonth(monthValue);
+            setMonthForSelectAccountHistoryList(monthValue);
+
+            setYear(yearValue);
+            setYearForSelectAccountHistoryList(yearValue);
         } else {
-            setMonth((Number(month) - 1).toString().padStart(2, '0'));
-        }
-    }
+            const monthValue = (Number(month) - 1).toString().padStart(2, '0');
 
-    const getAccountHistoryList = async (reset: boolean): Promise<void> => {
-        if (!dateForSelectAccountHistoryList || !multipleAccountIdx) return;
-
-        const payload: SelectAccountHistoryDto = {
-            startCursor: reset ? -1 : startCursor,
-            count: 12,
-            date: dateForSelectAccountHistoryList,
-            multipleAccountIdx
-        };
-
-        const response = await selectAccountHistoryApi(payload);
-
-        if (response?.status !== 200) {
-            alert(response?.data.message);
-            return;
+            setMonth(monthValue);
+            setMonthForSelectAccountHistoryList(monthValue);
         }
 
-        setAccountHistoryList(reset ? [...response.data.items] : [...accountHistoryList, ...response.data.items]);
-        setLast(response.data.items.length === 0);
-    }
-
-    const nextPage = () => {
-        if (last) return;
-
-        setStartCursorIdx(accountHistoryList[accountHistoryList.length - 1]?.idx || -1);
-
-        if (io && lastElement) {
-            io.unobserve(lastElement);
-        }
+        resetDateForSelectAccountHistoryList();
     }
 
     const openAccountInsertModal = () => {
@@ -191,40 +177,15 @@ const AccountHistoryCalendar: NextPage = () => {
     };
 
     useEffect(() => {
-        setAccountHistoryList([]);
+        const nowDateObj = dateToObject();
+        setYearForSelectAccountHistoryList(nowDateObj.year);
+        setMonthForSelectAccountHistoryList(nowDateObj.month);
         resetCalendarDataMatrix();
         resetYear();
         resetMonth();
         resetDateForSelectAccountHistoryList();
 
     }, []);
-
-    useEffect(() => {
-        if (!dateForSelectAccountHistoryList) return;
-
-        getAccountHistoryList(true);
-    }, [dateForSelectAccountHistoryList, multipleAccountIdx]);
-
-    useEffect(() => {
-        if (startCursor === -1) return;
-
-        getAccountHistoryList(false);
-    }, [startCursor]);
-
-    useEffect(() => {
-        io = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    nextPage();
-                }
-            })
-        })
-
-        if (io && lastElement) {
-            io.observe(lastElement);
-        }
-
-    }, [lastElement]);
 
     useEffect(() => {
         const calendarMatrix = calendarMatrixCreator<AccountHistoryCalendarDateData>(year, month);
@@ -234,6 +195,9 @@ const AccountHistoryCalendar: NextPage = () => {
         }
 
         getMonthlySummary(calendarMatrix);
+
+        setYearForSelectAccountHistoryList(year);
+        setMonthForSelectAccountHistoryList(month);
     }, [
         year, month,
         deletedAccountHistoryIdx,
@@ -242,19 +206,6 @@ const AccountHistoryCalendar: NextPage = () => {
         accountIdx,
         multipleAccountIdx
     ]);
-
-    useEffect(() => {
-        accountHistoryList.splice(accountHistoryList.findIndex(v => v.idx === deletedAccountHistoryIdx), 1);
-        setAccountHistoryList([...accountHistoryList]);
-    }, [deletedAccountHistoryIdx]);
-
-    useEffect(() => {
-        if (createdAccountHistoryInfo === undefined) return;
-        setAccountHistoryList([
-            createdAccountHistoryInfo,
-            ...accountHistoryList
-        ]);
-    }, [createdAccountHistoryInfo]);
 
     useEffect(() => {
         freezeBackground(showAccountHistoryInsertModal, window, document);
@@ -306,18 +257,7 @@ const AccountHistoryCalendar: NextPage = () => {
                 </div>
             </div>
 
-            <div css={styles.calendarAccountHistoryListWrap}>
-                {
-                    accountHistoryList.map((accountHistory, i) => {
-                        return <AccountHistoryItem
-                            accountHistoryInfo={accountHistory}
-                            key={accountHistory.idx}
-                            isLast={accountHistoryList.length - 3 === i}
-                            setLastElement={setLastElement}
-                        />
-                    })
-                }
-            </div>
+            <AccountHistoryList/>
         </div>
     )
 }

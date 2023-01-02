@@ -47,6 +47,16 @@ export const accountHistoryCategoryAtom = atom<number>({
     default: 0
 });
 
+export const yearForSelectAccountHistoryAtom = atom<string>({
+    key: getAtomKey('yearForSelectAccountHistoryAtom'),
+    default: undefined
+});
+
+export const monthForSelectAccountHistoryAtom = atom<string>({
+    key: getAtomKey('monthForSelectAccountHistoryAtom'),
+    default: undefined
+});
+
 export const dateForSelectAccountHistoryAtom = atom<string>({
     key: getAtomKey('dateForSelectAccountHistoryAtom'),
     default: undefined
