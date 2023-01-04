@@ -3,8 +3,9 @@ import {AccountHistoryItemType} from "../../../interface/type/account/history/hi
 import {selectAccountHistoryApi} from "../../../api/account/history/history";
 import * as styles from "../../../../styles/account/history/History.style";
 import AccountHistoryItem from "./AccountHistoryItem";
-import {useRecoilValue} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {
+    accountHistoryLastAtom, accountHistoryStartCursorAtom,
     createdAccountHistoryInfoAtom,
     dateForSelectAccountHistoryAtom,
     deletedAccountHistoryIdxAtom, monthForSelectAccountHistoryAtom, yearForSelectAccountHistoryAtom
@@ -21,10 +22,10 @@ const AccountHistoryList: FunctionComponent<{
         disableDate
     }
 ) => {
-    const [startCursor, setStartCursorIdx] = useState<number>(-1);
-    const [last, setLast] = useState<boolean>(false);
     const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
     const [accountHistoryList, setAccountHistoryList] = useState<AccountHistoryItemType[]>([]);
+    const [startCursor, setStartCursorIdx] = useRecoilState(accountHistoryStartCursorAtom);
+    const [last, setLast] = useRecoilState(accountHistoryLastAtom);
 
     const createdAccountHistoryInfo: AccountHistoryItemType = useRecoilValue(createdAccountHistoryInfoAtom);
     const deletedAccountHistoryIdx = useRecoilValue(deletedAccountHistoryIdxAtom);
@@ -89,11 +90,15 @@ const AccountHistoryList: FunctionComponent<{
     }
 
     useEffect(() => {
-        getAccountHistoryList(!!yearForSelectAccountHistoryList);
+        getAccountHistoryList(!!yearForSelectAccountHistoryList && startCursor === -1);
     }, [
         multipleAccountIdx, startCursor, dateForSelectAccountHistoryList,
         yearForSelectAccountHistoryList, monthForSelectAccountHistoryList, dateForSelectAccountHistoryList
     ]);
+
+    useEffect(() => {
+
+    })
 
 
     useEffect(() => {

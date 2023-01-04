@@ -61,3 +61,13 @@ export const dateForSelectAccountHistoryAtom = atom<string>({
     key: getAtomKey('dateForSelectAccountHistoryAtom'),
     default: undefined
 });
+
+export const accountHistoryLastAtom = atom<boolean>({
+    key: getAtomKey('accountHistoryLastAtom'),
+    default: false
+});
+
+export const accountHistoryStartCursorAtom = atom<number>({
+    key: getAtomKey('accountHistoryStartCursorAtom'),
+    default: -1
+});

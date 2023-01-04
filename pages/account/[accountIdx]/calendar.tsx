@@ -10,7 +10,8 @@ import {
     yearForCalendarAtom
 } from "../../../src/recoil/atoms/calendar/calendar";
 import {
-    accountHistoryModalTypeAtom,
+    accountHistoryLastAtom,
+    accountHistoryModalTypeAtom, accountHistoryStartCursorAtom,
     createdAccountHistoryInfoAtom,
     dateForSelectAccountHistoryAtom,
     deletedAccountHistoryIdxAtom, monthForSelectAccountHistoryAtom, selectedAccountHistoryInfoAtom,
@@ -49,6 +50,9 @@ const AccountHistoryCalendar: NextPage = () => {
     const setMonthForSelectAccountHistoryList = useSetRecoilState(monthForSelectAccountHistoryAtom);
 
     const resetDateForSelectAccountHistoryList = useResetRecoilState(dateForSelectAccountHistoryAtom);
+
+    const resetAccountHistoryLast = useResetRecoilState(accountHistoryLastAtom);
+    const resetAccountHistoryStartCursor = useResetRecoilState(accountHistoryStartCursorAtom);
 
     const [
         multipleAccountIdx,
@@ -144,6 +148,8 @@ const AccountHistoryCalendar: NextPage = () => {
         }
 
         resetDateForSelectAccountHistoryList();
+        resetAccountHistoryLast();
+        resetAccountHistoryStartCursor();
     }
 
     const previousMonth = () => {
@@ -164,6 +170,8 @@ const AccountHistoryCalendar: NextPage = () => {
         }
 
         resetDateForSelectAccountHistoryList();
+        resetAccountHistoryLast();
+        resetAccountHistoryStartCursor();
     }
 
     const openAccountInsertModal = () => {

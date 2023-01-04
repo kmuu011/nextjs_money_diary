@@ -1,6 +1,6 @@
 import {FunctionComponent, useEffect, useState} from "react";
 import * as styles from "../../../../../styles/account/history/AccountHistoryCalendar.style";
-import {useRecoilValue, useSetRecoilState} from "recoil";
+import {useRecoilValue, useResetRecoilState, useSetRecoilState} from "recoil";
 import {
     calendarDataMatrixAtom,
     monthForCalendarAtom,
@@ -9,14 +9,23 @@ import {
 import {CalendarDateDataType} from "../../../../interface/type/calendar/calendar";
 import {commaParser} from "../../../../utils/utils";
 import {AccountHistoryCalendarDateData} from "../../../../interface/type/account/history/history";
-import {dateForSelectAccountHistoryAtom} from "../../../../recoil/atoms/account/history";
+import {
+    accountHistoryLastAtom,
+    accountHistoryStartCursorAtom,
+    dateForSelectAccountHistoryAtom, monthForSelectAccountHistoryAtom, yearForSelectAccountHistoryAtom
+} from "../../../../recoil/atoms/account/history";
 
 const CalendarFrame: FunctionComponent = () => {
     const year = useRecoilValue(yearForCalendarAtom);
     const month = useRecoilValue(monthForCalendarAtom);
     const setDateForSelect = useSetRecoilState(dateForSelectAccountHistoryAtom);
+    const setYearForSelect = useSetRecoilState(yearForSelectAccountHistoryAtom);
+    const setMonthForSelect = useSetRecoilState(monthForSelectAccountHistoryAtom);
     const calendarDataMatrix =
         useRecoilValue<[CalendarDateDataType<AccountHistoryCalendarDateData>[]]>(calendarDataMatrixAtom);
+
+    const resetAccountHistoryLast = useResetRecoilState(accountHistoryLastAtom);
+    const resetAccountHistoryStartCursor = useResetRecoilState(accountHistoryStartCursorAtom);
 
     const [selectedDay, setSelectedDay] = useState<HTMLDivElement>();
     const [previousColor, setPreviousColor] = useState<string>("");
@@ -33,6 +42,10 @@ const CalendarFrame: FunctionComponent = () => {
         setPreviousColor(e.style.backgroundColor);
         setSelectedDay(e);
         setDateForSelect(dayInfo.date);
+        setYearForSelect(dayInfo.year);
+        setMonthForSelect(dayInfo.month);
+        resetAccountHistoryLast();
+        resetAccountHistoryStartCursor();
     }
 
     useEffect(() => {
