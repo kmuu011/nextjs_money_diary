@@ -15,3 +15,10 @@ export interface SelectAccountMonthSummaryDto {
     endDate: string
     multipleAccountIdx?: string
 }
+
+export interface SelectAccountCategoryCostSummaryDto {
+    type: number
+    year: string
+    month?: string
+    multipleAccountIdx?: string
+}

@@ -2,7 +2,7 @@ import {AxiosResponse} from "axios";
 import {CursorSelectQueryDto} from "../../interface/dto/common";
 import {callApi} from "../../utils/axios";
 import {
-    CreateAccountDto,
+    CreateAccountDto, SelectAccountCategoryCostSummaryDto,
     SelectAccountMonthSummaryDto,
     UpdateAccountDto
 } from "../../interface/dto/account/account";
@@ -33,4 +33,10 @@ export const selectMonthSummaryDataApi = async (
     payload: SelectAccountMonthSummaryDto
 ): Promise<AxiosResponse | undefined> => {
     return await callApi('get', `account/monthCostSummary`, payload);
+}
+
+export const selectCategoryCostSummaryApi = async (
+    payload: SelectAccountCategoryCostSummaryDto
+): Promise<AxiosResponse | undefined> => {
+    return await callApi('get', `account/categoryCostSummary`, payload);
 }

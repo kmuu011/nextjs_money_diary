@@ -7,7 +7,7 @@ export const container = css`
   text-align: center;
   margin: 0 auto;
   width: 100%;
-  height: calc(100% - 56px);
+  height: calc(100% - 59px);
   overflow-y: auto;
   box-shadow: var(--body-box-shadow);
   display: flex;

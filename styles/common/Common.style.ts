@@ -23,7 +23,7 @@ export const defaultBodyCss = css`
     width: 100%;
   }
   width: 500px;
-  padding-top: 56px !important;
+  padding-top: 59px !important;
 `;
 
 export const serviceWrap = css`
