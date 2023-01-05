@@ -41,14 +41,14 @@ const GlobalNavigation: FunctionComponent = () => {
             ],
             path: '/account'
         },
-        {
-            image: todoImage,
-            title: '할일',
-            subMenuList: [
-                {title: '목록 보기', url: '/todoGroup', action: () => hideSideMenuBar(setShowSideBar)}
-            ],
-            path: '/todoGroup'
-        },
+        // {
+        //     image: todoImage,
+        //     title: '할일',
+        //     subMenuList: [
+        //         {title: '목록 보기', url: '/todoGroup', action: () => hideSideMenuBar(setShowSideBar)}
+        //     ],
+        //     path: '/todoGroup'
+        // },
         {
             image: memberImage,
             title: '사용자',

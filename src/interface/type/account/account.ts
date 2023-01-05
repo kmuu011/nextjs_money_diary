@@ -33,4 +33,6 @@ export interface AccountCategorySummaryChartType {
     label: string
     value: string
     color: string
+    categoryIdx: number
+    amount?: number
 }

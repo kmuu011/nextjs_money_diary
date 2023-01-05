@@ -1,14 +1,19 @@
-import {FunctionComponent, useCallback, useEffect, useState} from "react";
+import {FunctionComponent, useEffect, useState} from "react";
 import {AccountHistoryItemType} from "../../../interface/type/account/history/history";
 import {selectAccountHistoryApi} from "../../../api/account/history/history";
 import * as styles from "../../../../styles/account/history/History.style";
 import AccountHistoryItem from "./AccountHistoryItem";
-import {useRecoilState, useRecoilValue, useResetRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {
-    accountHistoryLastAtom, accountHistoryStartCursorAtom, accountHistoryTypeAtom,
+    accountHistoryLastAtom,
+    accountHistoryStartCursorAtom,
+    accountHistoryTypeAtom,
     createdAccountHistoryInfoAtom,
     dateForSelectAccountHistoryAtom,
-    deletedAccountHistoryIdxAtom, monthForSelectAccountHistoryAtom, yearForSelectAccountHistoryAtom
+    deletedAccountHistoryIdxAtom,
+    monthForSelectAccountHistoryAtom,
+    multipleAccountHistoryCategoryIdxAtom,
+    yearForSelectAccountHistoryAtom
 } from "../../../recoil/atoms/account/history";
 import {
     multipleAccountIdxAtom,
@@ -17,13 +22,16 @@ import {parseInt} from "lodash";
 
 const AccountHistoryList: FunctionComponent<{
     disableDate?: boolean,
-    disableType?: boolean
+    disableType?: boolean,
+    disableCategory?: boolean,
 }> = (
     {
         disableDate,
-        disableType
+        disableType,
+        disableCategory
     }
 ) => {
+    const [firstLoad, setFirstLoad] = useState<boolean>(true);
     const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
     const [accountHistoryList, setAccountHistoryList] = useState<AccountHistoryItemType[]>([]);
     const [startCursor, setStartCursorIdx] = useRecoilState(accountHistoryStartCursorAtom);
@@ -37,15 +45,12 @@ const AccountHistoryList: FunctionComponent<{
     const monthForSelectAccountHistoryList = useRecoilValue(monthForSelectAccountHistoryAtom);
     const dateForSelectAccountHistoryList = useRecoilValue(dateForSelectAccountHistoryAtom);
 
-    const resetAccountHistoryStartCursor = useResetRecoilState(accountHistoryStartCursorAtom);
-    const resetAccountHistoryLast = useResetRecoilState(accountHistoryLastAtom);
-
     const multipleAccountIdx = useRecoilValue(multipleAccountIdxAtom);
+    const multipleAccountHistoryCategoryIdx = useRecoilValue(multipleAccountHistoryCategoryIdxAtom);
 
     let io: IntersectionObserver;
 
     const getAccountHistoryList = async (reset?: boolean): Promise<void> => {
-        console.log(startCursor, reset, yearForSelectAccountHistoryList, monthForSelectAccountHistoryList)
         if (!multipleAccountIdx || isNaN(parseInt(multipleAccountIdx))) return;
 
         const payload: {
@@ -55,7 +60,8 @@ const AccountHistoryList: FunctionComponent<{
             year?: string,
             month?: string,
             date?: string
-            type?: number
+            type?: number,
+            multipleAccountHistoryCategoryIdx?: string
         } = {
             startCursor: reset ? -1 : startCursor,
             count: 12,
@@ -80,6 +86,12 @@ const AccountHistoryList: FunctionComponent<{
             payload.type = type;
         }
 
+        if(!disableCategory) {
+            if (multipleAccountHistoryCategoryIdx !== undefined) {
+                payload.multipleAccountHistoryCategoryIdx = multipleAccountHistoryCategoryIdx;
+            }
+        }
+
         const response = await selectAccountHistoryApi(payload);
 
         if (response?.status !== 200) {
@@ -102,11 +114,12 @@ const AccountHistoryList: FunctionComponent<{
     }
 
     useEffect(() => {
+        if (firstLoad) return;
         getAccountHistoryList((!!yearForSelectAccountHistoryList || disableDate) && startCursor === -1);
     }, [
         multipleAccountIdx, dateForSelectAccountHistoryList,
         yearForSelectAccountHistoryList, monthForSelectAccountHistoryList,
-        type, startCursor,
+        type, startCursor, multipleAccountHistoryCategoryIdx
     ]);
 
     useEffect(() => {
@@ -136,6 +149,12 @@ const AccountHistoryList: FunctionComponent<{
             ...accountHistoryList
         ]);
     }, [createdAccountHistoryInfo]);
+
+    useEffect(() => {
+        if (!firstLoad) return;
+        getAccountHistoryList(true);
+        setFirstLoad(false);
+    }, []);
 
     return (
         <div css={styles.accountHistoryListWrap}>

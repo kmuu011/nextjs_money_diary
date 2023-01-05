@@ -11,12 +11,17 @@ import {
 } from "../../../src/recoil/atoms/calendar/calendar";
 import {
     accountHistoryLastAtom,
-    accountHistoryModalTypeAtom, accountHistoryStartCursorAtom,
+    accountHistoryModalTypeAtom,
+    accountHistoryStartCursorAtom,
     createdAccountHistoryInfoAtom,
     dateForSelectAccountHistoryAtom,
-    deletedAccountHistoryIdxAtom, monthForSelectAccountHistoryAtom, selectedAccountHistoryInfoAtom,
+    deletedAccountHistoryIdxAtom,
+    monthForSelectAccountHistoryAtom,
+    multipleAccountHistoryCategoryIdxAtom,
+    selectedAccountHistoryInfoAtom,
     showAccountHistoryDataModalAtom,
-    updatedAccountHistoryIdxAtom, yearForSelectAccountHistoryAtom
+    updatedAccountHistoryIdxAtom,
+    yearForSelectAccountHistoryAtom
 } from "../../../src/recoil/atoms/account/history";
 import {
     AccountHistoryCalendarDateData,
@@ -53,6 +58,7 @@ const AccountHistoryCalendar: NextPage = () => {
 
     const resetAccountHistoryLast = useResetRecoilState(accountHistoryLastAtom);
     const resetAccountHistoryStartCursor = useResetRecoilState(accountHistoryStartCursorAtom);
+    const resetAccountHistoryCategoryIdx = useResetRecoilState(multipleAccountHistoryCategoryIdxAtom);
 
     const [
         multipleAccountIdx,
@@ -185,19 +191,6 @@ const AccountHistoryCalendar: NextPage = () => {
     };
 
     useEffect(() => {
-        const nowDateObj = dateToObject();
-        setYearForSelectAccountHistoryList(nowDateObj.year);
-        setMonthForSelectAccountHistoryList(nowDateObj.month);
-        resetCalendarDataMatrix();
-        resetYear();
-        resetMonth();
-        resetDateForSelectAccountHistoryList();
-        resetAccountHistoryStartCursor();
-        resetAccountHistoryLast();
-
-    }, []);
-
-    useEffect(() => {
         const calendarMatrix = calendarMatrixCreator<AccountHistoryCalendarDateData>(year, month);
 
         if(!multipleAccountIdx) {
@@ -230,6 +223,20 @@ const AccountHistoryCalendar: NextPage = () => {
         freezeBackground(showAccountChooseModal, window, document);
 
     }, [showAccountChooseModal]);
+
+    useEffect(() => {
+        const nowDateObj = dateToObject();
+        setYearForSelectAccountHistoryList(nowDateObj.year);
+        setMonthForSelectAccountHistoryList(nowDateObj.month);
+        resetCalendarDataMatrix();
+        resetYear();
+        resetMonth();
+        resetDateForSelectAccountHistoryList();
+        resetAccountHistoryLast();
+        resetAccountHistoryStartCursor();
+        resetAccountHistoryCategoryIdx();
+
+    }, []);
 
     return (
         <div
@@ -269,6 +276,7 @@ const AccountHistoryCalendar: NextPage = () => {
 
             <AccountHistoryList
                 disableType={true}
+                disableCategory={true}
             />
         </div>
     )

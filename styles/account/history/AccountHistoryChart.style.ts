@@ -20,6 +20,28 @@ export const topButtonWrap = css`
 
 export const dateWrap = css`
   display: flex;
+  column-gap: 10px;
+
+  font-size: var(--default-font-size);
+  color: var(--color-3);
+  text-align: center;
+  
+  #year {
+    width: 80px;
+  }
+  #month {
+    width: 62px;
+  }
+  
+  select {
+    height: 50px;
+    border: none;
+    font-size: var(--default-font-size);
+    color: var(--color-3);
+    text-align: center;
+    background-color: var(--color-real-white);
+  }
+  
 `;
 
 export const typeWrap = css`
@@ -39,3 +61,13 @@ export const totalAmount = css`
   top: 46%;
 `;
 
+export const categoryCost = css`
+  position: absolute;
+  bottom: 10%;
+  right: var(--default-padding-size);
+`;
+
+export const accountHistoryListWrap = css`
+  height: 500px;
+  overflow-y: auto;
+`;

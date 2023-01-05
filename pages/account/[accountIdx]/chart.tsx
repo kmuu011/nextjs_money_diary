@@ -9,9 +9,10 @@ import {showAccountChooseModalAtom} from "../../../src/recoil/atoms/account/acco
 import {useEffect, useState} from "react";
 import {commaParser, dateToObject, freezeBackground} from "../../../src/utils/utils";
 import {
+    accountHistoryCategoryCostAtom,
     accountHistoryLastAtom,
     accountHistoryStartCursorAtom,
-    accountHistoryTypeAtom, monthForSelectAccountHistoryAtom,
+    accountHistoryTypeAtom, monthForSelectAccountHistoryAtom, multipleAccountHistoryCategoryIdxAtom,
     selectedAccountHistoryInfoAtom,
     showAccountHistoryDataModalAtom, yearForSelectAccountHistoryAtom
 } from "../../../src/recoil/atoms/account/history";
@@ -48,8 +49,12 @@ const AccountHistoryChart: NextPage = () => {
 
     const resetAccountHistoryStartCursor = useResetRecoilState(accountHistoryStartCursorAtom);
     const resetAccountHistoryLast = useResetRecoilState(accountHistoryLastAtom);
+    const resetAccountHistoryCategoryIdx = useResetRecoilState(multipleAccountHistoryCategoryIdxAtom);
+    const resetAccountHistoryCategoryCost = useResetRecoilState(accountHistoryCategoryCostAtom);
 
     const showAccountHistoryDataModal = useRecoilValue(showAccountHistoryDataModalAtom);
+
+    const accountHistoryCategoryCost = useRecoilValue(accountHistoryCategoryCostAtom);
 
     const [
         multipleAccountIdx,
@@ -85,7 +90,9 @@ const AccountHistoryChart: NextPage = () => {
                 id: d.categoryName,
                 label: d.categoryName,
                 value: d.percent,
-                color: d.color
+                color: d.color,
+                amount: d.amount,
+                categoryIdx: d.accountHistoryCategoryIdx
             });
 
         }
@@ -102,14 +109,15 @@ const AccountHistoryChart: NextPage = () => {
     ]);
 
     useEffect(() => {
-        if(showAccountHistoryDataModal) return;
+        if (showAccountHistoryDataModal) return;
 
         getCategorySummary();
-    }, [ showAccountHistoryDataModal ]);
+    }, [showAccountHistoryDataModal]);
 
     useEffect(() => {
         resetAccountHistoryStartCursor();
         resetAccountHistoryLast();
+        resetAccountHistoryCategoryCost()
     }, [type, multipleAccountIdx]);
 
     useEffect(() => {
@@ -139,6 +147,8 @@ const AccountHistoryChart: NextPage = () => {
         setYear(nowDateObj.year);
         setMonth(nowDateObj.month);
         setType(0);
+        resetAccountHistoryCategoryIdx();
+        resetAccountHistoryCategoryCost();
 
     }, []);
 
@@ -154,11 +164,13 @@ const AccountHistoryChart: NextPage = () => {
                 <div css={styles.dateWrap}>
                     <div>
                         <select
+                            id={"year"}
                             value={year}
                             onChange={(e) => {
                                 setYear(e.target.value);
                                 resetAccountHistoryLast();
                                 resetAccountHistoryStartCursor();
+                                resetAccountHistoryCategoryCost();
                             }}
                         >
                             {
@@ -174,11 +186,13 @@ const AccountHistoryChart: NextPage = () => {
                     </div>
                     <div>
                         <select
+                            id={"month"}
                             value={Number(month) || 0}
                             onChange={(e) => {
                                 setMonth(e.target.value);
                                 resetAccountHistoryLast();
                                 resetAccountHistoryStartCursor();
+                                resetAccountHistoryCategoryCost();
                             }}
                         >
                             <option
@@ -207,6 +221,10 @@ const AccountHistoryChart: NextPage = () => {
                 <div css={styles.totalAmount}>
                     {totalAmount ? commaParser(totalAmount) + '원' : ''}
                 </div>
+                <div css={styles.categoryCost}>
+                    {accountHistoryCategoryCost !== undefined ?
+                        commaParser(accountHistoryCategoryCost) + '원' : ''}
+                </div>
                 {
                     chartData.length !== 0 ?
                         <AccountHistoryPieChart
@@ -217,7 +235,7 @@ const AccountHistoryChart: NextPage = () => {
                 }
             </div>
 
-            <div>
+            <div css={styles.accountHistoryListWrap}>
                 <AccountHistoryList/>
             </div>
         </div>

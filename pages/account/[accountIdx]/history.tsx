@@ -16,7 +16,7 @@ import {
     accountHistoryModalTypeAtom,
     accountHistoryStartCursorAtom,
     dateForSelectAccountHistoryAtom,
-    monthForSelectAccountHistoryAtom,
+    monthForSelectAccountHistoryAtom, multipleAccountHistoryCategoryIdxAtom,
     selectedAccountHistoryInfoAtom,
     showAccountHistoryDataModalAtom,
     yearForSelectAccountHistoryAtom,
@@ -60,6 +60,7 @@ const AccountHistory: NextPage = () => {
 
     const resetAccountHistoryStartCursor = useResetRecoilState(accountHistoryStartCursorAtom);
     const resetAccountHistoryLast = useResetRecoilState(accountHistoryLastAtom);
+    const resetAccountHistoryCategoryIdx = useResetRecoilState(multipleAccountHistoryCategoryIdxAtom);
 
     const resetYear = useResetRecoilState(yearForCalendarAtom);
     const resetMonth = useResetRecoilState(monthForCalendarAtom);
@@ -128,6 +129,7 @@ const AccountHistory: NextPage = () => {
         resetMonth();
         resetAccountHistoryLast();
         resetAccountHistoryStartCursor();
+        resetAccountHistoryCategoryIdx();
     }
 
     useEffect(() => {
@@ -173,7 +175,6 @@ const AccountHistory: NextPage = () => {
                     <button
                         onClick={() => {
                             setMultipleAccountIdx(accountIdx.toString());
-                            resetData();
                             return router.push(`/account/${accountIdx}/chart`);
                         }}
                         css={styles.accountOptionButton}
@@ -183,7 +184,6 @@ const AccountHistory: NextPage = () => {
                     <button
                         onClick={() => {
                             setMultipleAccountIdx(accountIdx.toString());
-                            resetData();
                             return router.push(`/account/${accountIdx}/calendar`);
                         }}
                         css={styles.accountOptionButton}
@@ -208,6 +208,7 @@ const AccountHistory: NextPage = () => {
             <AccountHistoryList
                 disableDate={true}
                 disableType={true}
+                disableCategory={true}
             />
 
         </div>

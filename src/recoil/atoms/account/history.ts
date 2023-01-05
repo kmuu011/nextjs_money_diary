@@ -71,3 +71,14 @@ export const accountHistoryStartCursorAtom = atom<number>({
     key: getAtomKey('accountHistoryStartCursorAtom'),
     default: -1
 });
+
+export const multipleAccountHistoryCategoryIdxAtom = atom<string>({
+    key: getAtomKey('multipleAccountHistoryCategoryIdxAtom'),
+    default: undefined
+});
+
+
+export const accountHistoryCategoryCostAtom = atom<number>({
+    key: getAtomKey('accountHistoryCategoryCostAtom'),
+    default: 0
+});

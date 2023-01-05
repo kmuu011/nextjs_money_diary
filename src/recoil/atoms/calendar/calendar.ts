@@ -26,8 +26,4 @@ export const multipleAccountIdxAtom = atom<string | undefined>({
     default: undefined
 });
 
-export const multipleAccountHistoryCategoryIdxAtom = atom<string>({
-    key: getAtomKey('multipleAccountHistoryCategoryIdxAtom'),
-    default: undefined
-});
 
