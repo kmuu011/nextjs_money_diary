@@ -1,11 +1,11 @@
-import {FunctionComponent, useEffect, useState} from "react";
+import {FunctionComponent, useCallback, useEffect, useState} from "react";
 import {AccountHistoryItemType} from "../../../interface/type/account/history/history";
 import {selectAccountHistoryApi} from "../../../api/account/history/history";
 import * as styles from "../../../../styles/account/history/History.style";
 import AccountHistoryItem from "./AccountHistoryItem";
-import {useRecoilState, useRecoilValue} from "recoil";
+import {useRecoilState, useRecoilValue, useResetRecoilState} from "recoil";
 import {
-    accountHistoryLastAtom, accountHistoryStartCursorAtom,
+    accountHistoryLastAtom, accountHistoryStartCursorAtom, accountHistoryTypeAtom,
     createdAccountHistoryInfoAtom,
     dateForSelectAccountHistoryAtom,
     deletedAccountHistoryIdxAtom, monthForSelectAccountHistoryAtom, yearForSelectAccountHistoryAtom
@@ -16,16 +16,19 @@ import {
 import {parseInt} from "lodash";
 
 const AccountHistoryList: FunctionComponent<{
-    disableDate?: boolean
+    disableDate?: boolean,
+    disableType?: boolean
 }> = (
     {
-        disableDate
+        disableDate,
+        disableType
     }
 ) => {
     const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
     const [accountHistoryList, setAccountHistoryList] = useState<AccountHistoryItemType[]>([]);
     const [startCursor, setStartCursorIdx] = useRecoilState(accountHistoryStartCursorAtom);
     const [last, setLast] = useRecoilState(accountHistoryLastAtom);
+    const type = useRecoilValue(accountHistoryTypeAtom);
 
     const createdAccountHistoryInfo: AccountHistoryItemType = useRecoilValue(createdAccountHistoryInfoAtom);
     const deletedAccountHistoryIdx = useRecoilValue(deletedAccountHistoryIdxAtom);
@@ -34,11 +37,15 @@ const AccountHistoryList: FunctionComponent<{
     const monthForSelectAccountHistoryList = useRecoilValue(monthForSelectAccountHistoryAtom);
     const dateForSelectAccountHistoryList = useRecoilValue(dateForSelectAccountHistoryAtom);
 
+    const resetAccountHistoryStartCursor = useResetRecoilState(accountHistoryStartCursorAtom);
+    const resetAccountHistoryLast = useResetRecoilState(accountHistoryLastAtom);
+
     const multipleAccountIdx = useRecoilValue(multipleAccountIdxAtom);
 
     let io: IntersectionObserver;
 
     const getAccountHistoryList = async (reset?: boolean): Promise<void> => {
+        console.log(startCursor, reset, yearForSelectAccountHistoryList, monthForSelectAccountHistoryList)
         if (!multipleAccountIdx || isNaN(parseInt(multipleAccountIdx))) return;
 
         const payload: {
@@ -48,24 +55,29 @@ const AccountHistoryList: FunctionComponent<{
             year?: string,
             month?: string,
             date?: string
+            type?: number
         } = {
             startCursor: reset ? -1 : startCursor,
             count: 12,
             multipleAccountIdx
         };
 
-        if(!disableDate) {
+        if (!disableDate) {
             if (yearForSelectAccountHistoryList) {
                 payload.year = yearForSelectAccountHistoryList;
             }
 
-            if (monthForSelectAccountHistoryList) {
+            if (monthForSelectAccountHistoryList !== undefined && Number(monthForSelectAccountHistoryList) !== 0) {
                 payload.month = monthForSelectAccountHistoryList;
             }
 
             if (dateForSelectAccountHistoryList) {
                 payload.date = dateForSelectAccountHistoryList;
             }
+        }
+
+        if (!disableType) {
+            payload.type = type;
         }
 
         const response = await selectAccountHistoryApi(payload);
@@ -90,16 +102,12 @@ const AccountHistoryList: FunctionComponent<{
     }
 
     useEffect(() => {
-        getAccountHistoryList(!!yearForSelectAccountHistoryList && startCursor === -1);
+        getAccountHistoryList((!!yearForSelectAccountHistoryList || disableDate) && startCursor === -1);
     }, [
-        multipleAccountIdx, startCursor, dateForSelectAccountHistoryList,
-        yearForSelectAccountHistoryList, monthForSelectAccountHistoryList, dateForSelectAccountHistoryList
+        multipleAccountIdx, dateForSelectAccountHistoryList,
+        yearForSelectAccountHistoryList, monthForSelectAccountHistoryList,
+        type, startCursor,
     ]);
-
-    useEffect(() => {
-
-    })
-
 
     useEffect(() => {
         io = new IntersectionObserver((entries) => {

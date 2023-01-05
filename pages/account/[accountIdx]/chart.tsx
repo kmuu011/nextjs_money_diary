@@ -9,6 +9,8 @@ import {showAccountChooseModalAtom} from "../../../src/recoil/atoms/account/acco
 import {useEffect, useState} from "react";
 import {commaParser, dateToObject, freezeBackground} from "../../../src/utils/utils";
 import {
+    accountHistoryLastAtom,
+    accountHistoryStartCursorAtom,
     accountHistoryTypeAtom, monthForSelectAccountHistoryAtom,
     selectedAccountHistoryInfoAtom,
     showAccountHistoryDataModalAtom, yearForSelectAccountHistoryAtom
@@ -22,6 +24,7 @@ import {
     AccountCategorySummaryChartType
 } from "../../../src/interface/type/account/account";
 import AccountHistoryType from "../../../src/component/account/history/AccountHistoryType";
+import AccountHistoryList from "../../../src/component/account/history/AccountHistoryList";
 
 const nowDateObj = dateToObject();
 
@@ -43,10 +46,10 @@ const AccountHistoryChart: NextPage = () => {
     const [chartData, setChartData] = useState<AccountCategorySummaryChartType[]>([]);
     const [totalAmount, setTotalAmount] = useState<number>(0);
 
-    const [
-        showAccountHistoryInsertModal,
-        setShowAccountHistoryInsertModal
-    ] = useRecoilState(showAccountHistoryDataModalAtom);
+    const resetAccountHistoryStartCursor = useResetRecoilState(accountHistoryStartCursorAtom);
+    const resetAccountHistoryLast = useResetRecoilState(accountHistoryLastAtom);
+
+    const showAccountHistoryDataModal = useRecoilValue(showAccountHistoryDataModalAtom);
 
     const [
         multipleAccountIdx,
@@ -60,6 +63,7 @@ const AccountHistoryChart: NextPage = () => {
         const payload: SelectAccountCategoryCostSummaryDto = {
             type,
             year,
+            multipleAccountIdx
         }
 
         if (Number(month) !== 0) payload.month = month;
@@ -92,9 +96,21 @@ const AccountHistoryChart: NextPage = () => {
 
     useEffect(() => {
         getCategorySummary();
+    }, [
+        type, year, month,
+        multipleAccountIdx
+    ]);
 
+    useEffect(() => {
+        if(showAccountHistoryDataModal) return;
 
-    }, [type, year, month]);
+        getCategorySummary();
+    }, [ showAccountHistoryDataModal ]);
+
+    useEffect(() => {
+        resetAccountHistoryStartCursor();
+        resetAccountHistoryLast();
+    }, [type, multipleAccountIdx]);
 
     useEffect(() => {
         if (!multipleAccountIdx) {
@@ -106,13 +122,13 @@ const AccountHistoryChart: NextPage = () => {
     ]);
 
     useEffect(() => {
-        freezeBackground(showAccountHistoryInsertModal, window, document);
+        freezeBackground(showAccountHistoryDataModal, window, document);
 
-        if (!showAccountHistoryInsertModal) {
+        if (!showAccountHistoryDataModal) {
             resetSelectedAccountHistoryInfo();
         }
 
-    }, [showAccountHistoryInsertModal]);
+    }, [showAccountHistoryDataModal]);
 
     useEffect(() => {
         freezeBackground(showAccountChooseModal, window, document);
@@ -139,7 +155,11 @@ const AccountHistoryChart: NextPage = () => {
                     <div>
                         <select
                             value={year}
-                            onChange={(e) => setYear(e.target.value)}
+                            onChange={(e) => {
+                                setYear(e.target.value);
+                                resetAccountHistoryLast();
+                                resetAccountHistoryStartCursor();
+                            }}
                         >
                             {
                                 yearList.map(v => {
@@ -155,7 +175,11 @@ const AccountHistoryChart: NextPage = () => {
                     <div>
                         <select
                             value={Number(month) || 0}
-                            onChange={(e) => setMonth(e.target.value)}
+                            onChange={(e) => {
+                                setMonth(e.target.value);
+                                resetAccountHistoryLast();
+                                resetAccountHistoryStartCursor();
+                            }}
                         >
                             <option
                                 value={0}
@@ -193,7 +217,9 @@ const AccountHistoryChart: NextPage = () => {
                 }
             </div>
 
-
+            <div>
+                <AccountHistoryList/>
+            </div>
         </div>
     )
 }

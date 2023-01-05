@@ -5,7 +5,7 @@ import SetHead from "../../src/component/common/Head";
 import {createAccountApi, deleteAccountApi, selectAccountApi, updateAccountApi} from "../../src/api/account/account";
 import {AccountItemType} from "../../src/interface/type/account/account";
 import AccountItem from "../../src/component/account/AccountItem";
-import {useRecoilState, useResetRecoilState, useSetRecoilState} from "recoil";
+import {useRecoilState, useResetRecoilState} from "recoil";
 import {showAccountDeleteButtonAtom, showAccountOrderChangeButtonAtom} from "../../src/recoil/atoms/account/account";
 import swapButton from "../../public/static/button/swap/swap_white.svg";
 import deleteSweepButton from "../../public/static/button/delete/delete_sweep.svg";

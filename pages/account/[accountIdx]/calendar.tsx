@@ -192,6 +192,8 @@ const AccountHistoryCalendar: NextPage = () => {
         resetYear();
         resetMonth();
         resetDateForSelectAccountHistoryList();
+        resetAccountHistoryStartCursor();
+        resetAccountHistoryLast();
 
     }, []);
 
@@ -265,7 +267,9 @@ const AccountHistoryCalendar: NextPage = () => {
                 </div>
             </div>
 
-            <AccountHistoryList/>
+            <AccountHistoryList
+                disableType={true}
+            />
         </div>
     )
 }

@@ -10,11 +10,16 @@ import {circleButtonWrap} from "../../../styles/common/Common.style";
 import {CircleButtonProps} from "../../../src/interface/props/common";
 import addWhiteButton from "../../../public/static/button/add/addWhite.svg";
 import {useRecoilState, useResetRecoilState, useSetRecoilState} from "recoil";
-import {commaParser, freezeBackground} from "../../../src/utils/utils";
+import {commaParser, dateToObject, freezeBackground} from "../../../src/utils/utils";
 import {
-    accountHistoryModalTypeAtom, dateForSelectAccountHistoryAtom, monthForSelectAccountHistoryAtom,
+    accountHistoryLastAtom,
+    accountHistoryModalTypeAtom,
+    accountHistoryStartCursorAtom,
+    dateForSelectAccountHistoryAtom,
+    monthForSelectAccountHistoryAtom,
     selectedAccountHistoryInfoAtom,
-    showAccountHistoryDataModalAtom, yearForSelectAccountHistoryAtom,
+    showAccountHistoryDataModalAtom,
+    yearForSelectAccountHistoryAtom,
 } from "../../../src/recoil/atoms/account/history";
 import AccountHistoryDataModal from "../../../src/component/account/history/modal/AccountHistoryDataModal";
 import Image from "next/image";
@@ -24,9 +29,12 @@ import pieChartButton from "../../../public/static/button/chart/pie.svg";
 import {showAccountUpdateModalAtom} from "../../../src/recoil/atoms/account/account";
 import AccountUpdateModal from "../../../src/component/account/modal/AccountUpdateModal";
 import {
-    multipleAccountIdxAtom,
+    monthForCalendarAtom,
+    multipleAccountIdxAtom, yearForCalendarAtom,
 } from "../../../src/recoil/atoms/calendar/calendar";
 import AccountHistoryList from "../../../src/component/account/history/AccountHistoryList";
+
+const nowDateObj = dateToObject();
 
 const AccountHistory: NextPage = () => {
     const router = useRouter();
@@ -46,17 +54,23 @@ const AccountHistory: NextPage = () => {
     const setModalType = useSetRecoilState(accountHistoryModalTypeAtom);
     const resetSelectedAccountHistoryInfo = useResetRecoilState(selectedAccountHistoryInfoAtom);
 
-    const resetYearForSelectAccountHistoryList = useResetRecoilState(yearForSelectAccountHistoryAtom);
-    const resetMonthForSelectAccountHistoryList = useResetRecoilState(monthForSelectAccountHistoryAtom);
+    const setYearForSelectAccountHistoryList = useSetRecoilState(yearForSelectAccountHistoryAtom);
+    const setMonthForSelectAccountHistoryList = useSetRecoilState(monthForSelectAccountHistoryAtom);
     const resetDateForSelectAccountHistoryList = useResetRecoilState(dateForSelectAccountHistoryAtom);
+
+    const resetAccountHistoryStartCursor = useResetRecoilState(accountHistoryStartCursorAtom);
+    const resetAccountHistoryLast = useResetRecoilState(accountHistoryLastAtom);
+
+    const resetYear = useResetRecoilState(yearForCalendarAtom);
+    const resetMonth = useResetRecoilState(monthForCalendarAtom);
 
     const [accountInfo, setAccountInfo] = useState<AccountItemType>();
 
     const getAccountInfo = async (): Promise<void> => {
         let accountIdxForSelect = isNaN(Number(multipleAccountIdx)) ?
-        accountIdx : multipleAccountIdx;
+            accountIdx : multipleAccountIdx;
 
-        if(isNaN(Number(accountIdxForSelect))) return;
+        if (isNaN(Number(accountIdxForSelect))) return;
 
         const response = await selectOneAccountApi(
             Number(accountIdxForSelect)
@@ -106,10 +120,17 @@ const AccountHistory: NextPage = () => {
         action: openAccountInsertModal
     };
 
-    useEffect(() => {
-        resetYearForSelectAccountHistoryList();
-        resetMonthForSelectAccountHistoryList();
+    const resetData = () => {
+        setYearForSelectAccountHistoryList(nowDateObj.year);
+        setMonthForSelectAccountHistoryList(nowDateObj.month);
         resetDateForSelectAccountHistoryList();
+        resetYear();
+        resetMonth();
+        resetAccountHistoryLast();
+        resetAccountHistoryStartCursor();
+    }
+
+    useEffect(() => {
         getAccountInfo();
         setMultipleAccountIdx(accountIdx.toString());
     }, [accountIdx]);
@@ -122,6 +143,10 @@ const AccountHistory: NextPage = () => {
         }
 
     }, [showAccountHistoryInsertModal]);
+
+    useEffect(() => {
+        resetData();
+    }, [])
 
     return (
         <div css={styles.container}>
@@ -148,6 +173,7 @@ const AccountHistory: NextPage = () => {
                     <button
                         onClick={() => {
                             setMultipleAccountIdx(accountIdx.toString());
+                            resetData();
                             return router.push(`/account/${accountIdx}/chart`);
                         }}
                         css={styles.accountOptionButton}
@@ -157,6 +183,7 @@ const AccountHistory: NextPage = () => {
                     <button
                         onClick={() => {
                             setMultipleAccountIdx(accountIdx.toString());
+                            resetData();
                             return router.push(`/account/${accountIdx}/calendar`);
                         }}
                         css={styles.accountOptionButton}
@@ -180,6 +207,7 @@ const AccountHistory: NextPage = () => {
 
             <AccountHistoryList
                 disableDate={true}
+                disableType={true}
             />
 
         </div>

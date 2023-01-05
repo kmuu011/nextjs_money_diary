@@ -3,11 +3,12 @@ import * as styles from "../../../styles/account/Account.style";
 import Link from "next/link";
 import {AccountItemProps} from "../../interface/props/account/account";
 import {commaParser} from "../../utils/utils";
-import {useRecoilState, useSetRecoilState} from "recoil";
+import {useRecoilState, useResetRecoilState, useSetRecoilState} from "recoil";
 import {showAccountDeleteButtonAtom, showAccountOrderChangeButtonAtom} from "../../recoil/atoms/account/account";
 import arrowImg from "../../../public/static/button/arrow/arrow_forward.svg";
 import Image from "next/image";
 import {multipleAccountIdxAtom} from "../../recoil/atoms/calendar/calendar";
+import {accountHistoryLastAtom, accountHistoryStartCursorAtom} from "../../recoil/atoms/account/history";
 
 const AccountItem: FunctionComponent<AccountItemProps> = (
     {
@@ -34,6 +35,9 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
     ] = useState(false);
 
     const setMultipleAccountIdx = useSetRecoilState(multipleAccountIdxAtom);
+
+    const resetAccountHistoryStartCursor = useResetRecoilState(accountHistoryStartCursorAtom);
+    const resetAccountHistoryLast = useResetRecoilState(accountHistoryLastAtom);
 
     const updateAccountOrder = (e: SyntheticEvent, order: number, up: boolean) => {
         e.stopPropagation();
@@ -69,6 +73,8 @@ const AccountItem: FunctionComponent<AccountItemProps> = (
                 setShowAccountOrderChangeButton(false);
                 setShowAccountDeleteButton(false);
                 setMultipleAccountIdx(accountInfo.idx.toString());
+                resetAccountHistoryLast();
+                resetAccountHistoryStartCursor();
             }}
         >
             <Link
