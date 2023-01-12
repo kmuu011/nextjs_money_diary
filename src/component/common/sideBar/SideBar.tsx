@@ -5,7 +5,7 @@ import SideMenu from "./SideMenu";
 
 import settingsImage from "../../../../public/static/button/setting/setting.svg";
 import memberImage from "../../../../public/static/button/member/member.svg";
-import todoImage from "../../../../public/static/button/todo/list.svg";
+import moneyDiaryImage from "../../../../public/static/button/account/moneyDiary.svg";
 import * as styles from "../../../../styles/common/sideBar/SideBar.style";
 import {hideSideMenuBar} from "../../../utils/utils";
 import {SideMenuProps} from "../../../interface/props/common";
@@ -22,7 +22,7 @@ const GlobalNavigation: FunctionComponent = () => {
 
     const menuList: SideMenuProps[] = [
         {
-            image: todoImage,
+            image: moneyDiaryImage,
             title: '가계부',
             subMenuList: [
                 {title: '목록 보기', url: '/account', action: () => hideSideMenuBar(setShowSideBar)},

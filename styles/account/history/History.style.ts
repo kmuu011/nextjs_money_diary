@@ -49,7 +49,7 @@ export const accountOptionButton = css`
 `;
 
 export const accountName = css`
-  color: var(--color-0);
+  color: var(--color-real-white);
   font-size: var(--default-font-size);
 `;
 
