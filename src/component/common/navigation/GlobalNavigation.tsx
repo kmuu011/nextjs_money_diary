@@ -11,7 +11,7 @@ import {useRouter} from "next/router";
 import {showAccountChooseModalAtom} from "../../../recoil/atoms/account/account";
 
 const disabledLocationList: string[] = [
-    '/', 'signUp'
+    '/', '/signUp'
 ];
 
 const GlobalNavigation: FunctionComponent = () => {
