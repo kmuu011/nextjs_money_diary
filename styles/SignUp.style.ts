@@ -3,13 +3,13 @@ import {css} from "@emotion/react";
 export const container = css`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   box-shadow: var(--body-box-shadow);
   padding: 10%;
+  box-sizing: border-box;
 `;
 
 export const title = css`
-  margin-top: 70px;
   font-size: 28px;
 `;
 
