@@ -10,7 +10,7 @@ import {
     deletedAccountHistoryIdxAtom,
     selectedAccountHistoryInfoAtom,
     showAccountHistoryDataModalAtom, updatedAccountHistoryAccountIdxAtom,
-    updatedAccountHistoryIdxAtom
+    updatedAccountHistoryIdxAtom,
 } from "../../../../recoil/atoms/account/history";
 import {cancelButton, deleteButton, modalBackground} from "../../../../../styles/common/Common.style";
 import * as styles from "../../../../../styles/account/history/AccountHistoryDataModal.style";
@@ -27,6 +27,7 @@ import {selectAccountHistoryCategoryApi} from "../../../../api/account/history/c
 import AccountHistoryType from "../AccountHistoryType";
 import AccountSelect from "../../AccountSelect";
 import {selectedAccountIdxAtom} from "../../../../recoil/atoms/account/account";
+import {monthForCalendarAtom, yearForCalendarAtom} from "../../../../recoil/atoms/calendar/calendar";
 
 const AccountHistoryDataModal: FunctionComponent<{
     reloadAccountInfo?: Function,
@@ -59,6 +60,8 @@ const AccountHistoryDataModal: FunctionComponent<{
     const setUpdatedAccountHistoryAccountIdx = useSetRecoilState(updatedAccountHistoryAccountIdxAtom);
     const setDeletedAccountHistoryIdx = useSetRecoilState(deletedAccountHistoryIdxAtom);
 
+    const yearForSelect = useRecoilValue(yearForCalendarAtom);
+    const monthForSelect = useRecoilValue(monthForCalendarAtom);
     const dateForSelect = useRecoilValue(dateForSelectAccountHistoryAtom);
 
     const nowDate = toDateParser();
@@ -217,13 +220,14 @@ const AccountHistoryDataModal: FunctionComponent<{
         setCategory(selectedAccountHistoryInfo?.accountHistoryCategory.idx || 0);
         setCreatedAt(toDateParser(selectedAccountHistoryInfo?.createdAt ||
             (dateForSelect ?
-                dateForSelect.substring(0, 4) + '-' + dateForSelect.substring(4, 6) + '-' + dateForSelect.substring(6, 8) + nowDate.substring(nowDate.indexOf('T')) : undefined) ||
+                yearForSelect + '-' + monthForSelect + '-' + dateForSelect + nowDate.substring(nowDate.indexOf('T')) : undefined) ||
             toDateParser()));
+
     }, [selectedAccountHistoryInfo]);
 
     useEffect(() => {
         if (dateForSelect) {
-            setCreatedAt(dateForSelect.substring(0, 4) + '-' + dateForSelect.substring(4, 6) + '-' + dateForSelect.substring(6, 8) + nowDate.substring(nowDate.indexOf('T')))
+            setCreatedAt(yearForSelect + '-' + monthForSelect + '-' + dateForSelect + nowDate.substring(nowDate.indexOf('T')))
         }
     }, [dateForSelect]);
 

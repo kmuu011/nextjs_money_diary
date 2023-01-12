@@ -1,24 +1,25 @@
 import type {NextPage} from 'next';
 import * as styles from '../../../styles/account/history/History.style';
 import {useEffect, useState} from "react";
-import {AccountHistoryItemType} from "../../../src/interface/type/account/history/history";
-import {selectAccountHistoryApi} from "../../../src/api/account/history/history";
 import {useRouter} from "next/router";
 import SetHead from "../../../src/component/common/Head";
-import AccountHistoryItem from "../../../src/component/account/history/AccountHistoryItem";
 import {AccountItemType} from "../../../src/interface/type/account/account";
 import {selectOneAccountApi, updateAccountApi} from "../../../src/api/account/account";
 import CircleButton from "../../../src/component/common/button/CircleButton";
 import {circleButtonWrap} from "../../../styles/common/Common.style";
 import {CircleButtonProps} from "../../../src/interface/props/common";
 import addWhiteButton from "../../../public/static/button/add/addWhite.svg";
-import {useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState} from "recoil";
-import {commaParser, freezeBackground} from "../../../src/utils/utils";
+import {useRecoilState, useResetRecoilState, useSetRecoilState} from "recoil";
+import {commaParser, dateToObject, freezeBackground} from "../../../src/utils/utils";
 import {
-    accountHistoryModalTypeAtom, createdAccountHistoryInfoAtom,
-    deletedAccountHistoryIdxAtom,
+    accountHistoryLastAtom,
+    accountHistoryModalTypeAtom,
+    accountHistoryStartCursorAtom,
+    dateForSelectAccountHistoryAtom,
+    monthForSelectAccountHistoryAtom, multipleAccountHistoryCategoryIdxAtom,
     selectedAccountHistoryInfoAtom,
     showAccountHistoryDataModalAtom,
+    yearForSelectAccountHistoryAtom,
 } from "../../../src/recoil/atoms/account/history";
 import AccountHistoryDataModal from "../../../src/component/account/history/modal/AccountHistoryDataModal";
 import Image from "next/image";
@@ -27,7 +28,13 @@ import calendarButton from "../../../public/static/button/calendar/calendar.svg"
 import pieChartButton from "../../../public/static/button/chart/pie.svg";
 import {showAccountUpdateModalAtom} from "../../../src/recoil/atoms/account/account";
 import AccountUpdateModal from "../../../src/component/account/modal/AccountUpdateModal";
-import {multipleAccountIdxAtom} from "../../../src/recoil/atoms/calendar/calendar";
+import {
+    monthForCalendarAtom,
+    multipleAccountIdxAtom, yearForCalendarAtom,
+} from "../../../src/recoil/atoms/calendar/calendar";
+import AccountHistoryList from "../../../src/component/account/history/AccountHistoryList";
+
+const nowDateObj = dateToObject();
 
 const AccountHistory: NextPage = () => {
     const router = useRouter();
@@ -39,26 +46,35 @@ const AccountHistory: NextPage = () => {
     ] = useRecoilState(showAccountHistoryDataModalAtom);
 
     const setShowAccountUpdateModal = useSetRecoilState(showAccountUpdateModalAtom);
-    const setMultipleAccountIdx = useSetRecoilState(multipleAccountIdxAtom);
+    const [
+        multipleAccountIdx,
+        setMultipleAccountIdx
+    ] = useRecoilState(multipleAccountIdxAtom);
 
     const setModalType = useSetRecoilState(accountHistoryModalTypeAtom);
     const resetSelectedAccountHistoryInfo = useResetRecoilState(selectedAccountHistoryInfoAtom);
-    const createdAccountHistoryInfo: AccountHistoryItemType = useRecoilValue(createdAccountHistoryInfoAtom);
-    const deletedAccountHistoryIdx = useRecoilValue(deletedAccountHistoryIdxAtom);
+
+    const setYearForSelectAccountHistoryList = useSetRecoilState(yearForSelectAccountHistoryAtom);
+    const setMonthForSelectAccountHistoryList = useSetRecoilState(monthForSelectAccountHistoryAtom);
+    const resetDateForSelectAccountHistoryList = useResetRecoilState(dateForSelectAccountHistoryAtom);
+
+    const resetAccountHistoryStartCursor = useResetRecoilState(accountHistoryStartCursorAtom);
+    const resetAccountHistoryLast = useResetRecoilState(accountHistoryLastAtom);
+    const resetAccountHistoryCategoryIdx = useResetRecoilState(multipleAccountHistoryCategoryIdxAtom);
+
+    const resetYear = useResetRecoilState(yearForCalendarAtom);
+    const resetMonth = useResetRecoilState(monthForCalendarAtom);
 
     const [accountInfo, setAccountInfo] = useState<AccountItemType>();
-    const [accountHistoryList, setAccountHistoryList] = useState<AccountHistoryItemType[]>([]);
-    const [startCursor, setStartCursorIdx] = useState<number>(-1);
-    const [last, setLast] = useState<boolean>(false);
-    const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
-
-    let io: IntersectionObserver;
 
     const getAccountInfo = async (): Promise<void> => {
-        if (isNaN(accountIdx)) return;
+        let accountIdxForSelect = isNaN(Number(multipleAccountIdx)) ?
+            accountIdx : multipleAccountIdx;
+
+        if (isNaN(Number(accountIdxForSelect))) return;
 
         const response = await selectOneAccountApi(
-            accountIdx
+            Number(accountIdxForSelect)
         );
 
         if (response?.status !== 200) {
@@ -69,39 +85,9 @@ const AccountHistory: NextPage = () => {
         setAccountInfo(response.data);
     }
 
-    const getAccountHistoryList = async (): Promise<void> => {
-        if (isNaN(accountIdx)) return;
-
-        const response = await selectAccountHistoryApi(
-            {
-                startCursor,
-                count: 12,
-                multipleAccountIdx: accountIdx.toString()
-            }
-        );
-
-        if (response?.status !== 200) {
-            alert(response?.data.message);
-            return;
-        }
-
-        setAccountHistoryList([...accountHistoryList, ...response.data.items]);
-        setLast(response.data.items.length === 0);
-    }
-
     const openAccountInsertModal = () => {
         setModalType(0);
         setShowAccountHistoryInsertModal(true);
-    }
-
-    const nextPage = () => {
-        if (last) return;
-
-        setStartCursorIdx(accountHistoryList[accountHistoryList.length - 1]?.idx || -1);
-
-        if (io && lastElement) {
-            io.unobserve(lastElement);
-        }
     }
 
     const accountUpdate = async (
@@ -135,14 +121,21 @@ const AccountHistory: NextPage = () => {
         action: openAccountInsertModal
     };
 
-    useEffect(() => {
-        getAccountInfo();
-        getAccountHistoryList();
-    }, [accountIdx]);
+    const resetData = () => {
+        setYearForSelectAccountHistoryList(nowDateObj.year);
+        setMonthForSelectAccountHistoryList(nowDateObj.month);
+        resetDateForSelectAccountHistoryList();
+        resetYear();
+        resetMonth();
+        resetAccountHistoryLast();
+        resetAccountHistoryStartCursor();
+        resetAccountHistoryCategoryIdx();
+    }
 
     useEffect(() => {
-        getAccountHistoryList();
-    }, [startCursor]);
+        getAccountInfo();
+        setMultipleAccountIdx(accountIdx.toString());
+    }, [accountIdx]);
 
     useEffect(() => {
         freezeBackground(showAccountHistoryInsertModal, window, document);
@@ -154,32 +147,8 @@ const AccountHistory: NextPage = () => {
     }, [showAccountHistoryInsertModal]);
 
     useEffect(() => {
-        io = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    nextPage();
-                }
-            })
-        })
-
-        if (io && lastElement) {
-            io.observe(lastElement);
-        }
-
-    }, [lastElement]);
-
-    useEffect(() => {
-        accountHistoryList.splice(accountHistoryList.findIndex(v => v.idx === deletedAccountHistoryIdx), 1);
-        setAccountHistoryList(accountHistoryList);
-    }, [deletedAccountHistoryIdx]);
-
-    useEffect(() => {
-        if (createdAccountHistoryInfo === undefined) return;
-        setAccountHistoryList([
-            createdAccountHistoryInfo,
-            ...accountHistoryList
-        ]);
-    }, [createdAccountHistoryInfo]);
+        resetData();
+    }, [])
 
     return (
         <div css={styles.container}>
@@ -235,18 +204,12 @@ const AccountHistory: NextPage = () => {
                     {commaParser(accountInfo?.totalAmount || 0)}원
                 </div>
             </div>
-            <div css={styles.accountHistoryListWrap}>
-                {
-                    accountHistoryList.map((accountHistory, i) => {
-                        return <AccountHistoryItem
-                            accountHistoryInfo={accountHistory}
-                            key={accountHistory.idx}
-                            isLast={accountHistoryList.length - 1 === i}
-                            setLastElement={setLastElement}
-                        />
-                    })
-                }
-            </div>
+
+            <AccountHistoryList
+                disableDate={true}
+                disableType={true}
+                disableCategory={true}
+            />
 
         </div>
     )

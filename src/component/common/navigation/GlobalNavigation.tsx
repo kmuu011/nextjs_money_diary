@@ -3,13 +3,12 @@ import {FunctionComponent, useEffect, useState} from "react";
 import menuButton from "../../../../public/static/button/menu/menu.svg"
 import Image from "next/image";
 import {freezeBackground, orRegExpMaker} from "../../../utils/utils";
-import {useRecoilState, useResetRecoilState} from "recoil";
+import {useRecoilState} from "recoil";
 import {showSideBarAtom} from "../../../recoil/atoms/common";
 import filter from "../../../../public/static/button/filter/filter.svg";
 import {AdditionalButtonType} from "../../../interface/type/common";
 import {useRouter} from "next/router";
 import {showAccountChooseModalAtom} from "../../../recoil/atoms/account/account";
-import {calendarDataMatrixAtom} from "../../../recoil/atoms/calendar/calendar";
 
 const disabledLocationList: string[] = [
     '/', 'signUp'

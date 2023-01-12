@@ -47,7 +47,38 @@ export const accountHistoryCategoryAtom = atom<number>({
     default: 0
 });
 
+export const yearForSelectAccountHistoryAtom = atom<string>({
+    key: getAtomKey('yearForSelectAccountHistoryAtom'),
+    default: undefined
+});
+
+export const monthForSelectAccountHistoryAtom = atom<string>({
+    key: getAtomKey('monthForSelectAccountHistoryAtom'),
+    default: undefined
+});
+
 export const dateForSelectAccountHistoryAtom = atom<string>({
     key: getAtomKey('dateForSelectAccountHistoryAtom'),
     default: undefined
+});
+
+export const accountHistoryLastAtom = atom<boolean>({
+    key: getAtomKey('accountHistoryLastAtom'),
+    default: false
+});
+
+export const accountHistoryStartCursorAtom = atom<number>({
+    key: getAtomKey('accountHistoryStartCursorAtom'),
+    default: -1
+});
+
+export const multipleAccountHistoryCategoryIdxAtom = atom<string>({
+    key: getAtomKey('multipleAccountHistoryCategoryIdxAtom'),
+    default: undefined
+});
+
+
+export const accountHistoryCategoryCostAtom = atom<number>({
+    key: getAtomKey('accountHistoryCategoryCostAtom'),
+    default: 0
 });

@@ -11,6 +11,11 @@ import swapButton from "../../public/static/button/swap/swap_white.svg";
 import deleteSweepButton from "../../public/static/button/delete/delete_sweep.svg";
 import Image from "next/image";
 import {commaParser} from "../../src/utils/utils";
+import {monthForCalendarAtom, yearForCalendarAtom} from "../../src/recoil/atoms/calendar/calendar";
+import {
+    monthForSelectAccountHistoryAtom,
+    yearForSelectAccountHistoryAtom
+} from "../../src/recoil/atoms/account/history";
 
 const Account: NextPage = () => {
     const [accountList, setAccountList] = useState<AccountItemType[]>([]);
@@ -19,6 +24,12 @@ const Account: NextPage = () => {
     const [last, setLast] = useState<boolean>(false);
     const [lastElement, setLastElement] = useState<HTMLDivElement | null>(null);
     const [totalAmount, setTotalAmount] = useState<number>(0);
+
+    const resetYear = useResetRecoilState(yearForCalendarAtom);
+    const resetMonth = useResetRecoilState(monthForCalendarAtom);
+
+    const resetYearForSelectAccountHistoryList = useResetRecoilState(yearForSelectAccountHistoryAtom);
+    const resetMonthForSelectAccountHistoryList = useResetRecoilState(monthForSelectAccountHistoryAtom);
 
     const [
         showAccountOrderChangeButton,
@@ -113,6 +124,14 @@ const Account: NextPage = () => {
 
         getAccountList(true);
     }
+
+    useEffect(() => {
+        resetYear();
+        resetMonth();
+        resetYearForSelectAccountHistoryList();
+        resetMonthForSelectAccountHistoryList();
+
+    }, []);
 
     useEffect(() => {
         getAccountList();
