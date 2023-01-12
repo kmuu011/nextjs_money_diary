@@ -22,7 +22,7 @@ export const accountTotalStatisticWrap = css`
 `;
 
 export const allAccountTotalAmountDesc = css`
-  color: var(--color-0);
+  color: var(--color-real-white);
   font-size: var(--default-font-size);
 `;
 
@@ -136,20 +136,20 @@ export const accountLastItem = css`
 
 export const accountName = css`
   font-size: var(--default-font-size);
-  color: var(--color-4);
+  color: var(--color-5);
 `;
 
 export const accountAmount = css`
   font-size: var(--default-font-size);
-  color: var(--color-7);
+  color: var(--color-5);
 `;
 
 export const accountAddPlus = css`
   font-size: 40px;
-  color: var(--color-2);
+  color: var(--color-3);
 `;
 
 export const accountAddText = css`
   font-size: var(--default-font-size);
-  color: var(--color-2);
+  color: var(--color-3);
 `;

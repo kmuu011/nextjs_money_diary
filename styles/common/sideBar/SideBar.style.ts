@@ -35,9 +35,9 @@ export const menuItem = (isSub: boolean, path?: string) => {
     }
 
     if (isActive) {
-        backGroundColor = isSub ? '#d1d1d1' : '#ababab';
+        backGroundColor = isSub ? '#fff7f4' : '#ffe7de';
     } else {
-        backGroundColor = isSub ? '#f9f9f9' : '#ffffff';
+        backGroundColor = isSub ? '#ffffff' : '#ffffff';
     }
 
     return css`
